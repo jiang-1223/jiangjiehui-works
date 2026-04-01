@@ -1,6 +1,8 @@
 // Vercel Serverless Function - Coze API 代理
 // 解决浏览器直接调用 Coze API 的 CORS 问题
 
+const https = require('https');
+
 module.exports = async function handler(req, res) {
   // 设置 CORS 头
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -18,21 +20,44 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // 转发到 Coze API
-    const cozeResponse = await fetch('https://2fd7jvzwph.coze.site/run', {
+    const bodyString = JSON.stringify(req.body);
+    
+    const options = {
+      hostname: '2fd7jvzwph.coze.site',
+      port: 443,
+      path: '/run',
       method: 'POST',
       headers: {
-        'Authorization': req.headers.authorization,
+        'Authorization': req.headers.authorization || '',
         'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(req.body),
+        'Content-Length': Buffer.byteLength(bodyString)
+      }
+    };
+
+    const cozeResponse = await new Promise((resolve, reject) => {
+      const proxyReq = https.request(options, (proxyRes) => {
+        let data = '';
+        proxyRes.on('data', chunk => data += chunk);
+        proxyRes.on('end', () => {
+          try {
+            resolve({
+              status: proxyRes.statusCode,
+              data: JSON.parse(data)
+            });
+          } catch (e) {
+            resolve({
+              status: proxyRes.statusCode,
+              data: data
+            });
+          }
+        });
+      });
+      proxyReq.on('error', reject);
+      proxyReq.write(bodyString);
+      proxyReq.end();
     });
 
-    // 获取响应
-    const responseData = await cozeResponse.json();
-
-    // 返回给浏览器
-    return res.status(cozeResponse.status).json(responseData);
+    return res.status(cozeResponse.status).json(cozeResponse.data);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }
