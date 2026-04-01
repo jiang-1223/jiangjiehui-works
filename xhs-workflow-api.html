@@ -208,10 +208,6 @@
             font-weight: 600;
             color: #333;
         }
-        .result-time {
-            font-size: 0.85rem;
-            color: #999;
-        }
         .result-content {
             background: #f8f9fa;
             border-radius: 10px;
@@ -337,7 +333,6 @@
 
     <script>
         // 配置 - 使用 Vercel API 代理
-        // 部署后替换为你的 Vercel API 地址，例如：https://jiangjiehui.vercel.app/api/coze-proxy
         const API_URL = '/api/coze-proxy';
         const PAT_TOKEN = 'pat_13K3m66F6GRhDcZt9fouvTn8J3YOmKUdas2RtF0PgX5Q6v4nMpNgpliwNyEd3VlP';
         
@@ -408,7 +403,7 @@
             const startTime = Date.now();
             
             try {
-                // 构建请求体（直接传给 Coze API）
+                // 构建请求体
                 const body = {
                     requirement: requirement
                 };
