@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>测试扣子API代理</title>
+</head>
+<body>
+    <h1>测试扣子API代理</h1>
+    <button onclick="testProxy()">测试代理</button>
+    <div id="result" style="margin-top:20px;padding:10px;border:1px solid #ccc;"></div>
+    
+    <script>
+        async function testProxy() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '正在测试...';
+            
+            try {
+                const response = await fetch('/api/coze-proxy', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer pat_13K3m66F6GRhDcZt9fouvTn8J3YOmKUdas2RtF0PgX5Q6v4nMpNgpliwNyEd3VlP',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        requirement: '测试一下这个代理是否工作正常'
+                    })
+                });
+                
+                if (!response.ok) {
+                    resultDiv.innerHTML = `代理错误: ${response.status} ${response.statusText}<br>详细: ${await response.text()}`;
+                    return;
+                }
+                
+                const data = await response.json();
+                resultDiv.innerHTML = `✅ 代理工作正常！<br><pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                resultDiv.innerHTML = `❌ 代理错误: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>
