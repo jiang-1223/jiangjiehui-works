@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小红书文案生成（简化版）</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 30px;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 18px;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 120px;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .image-upload {
+            border: 3px dashed #667eea;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .image-upload:hover {
+            background: #f9f9ff;
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .image-preview {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .image-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 30px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .result {
+            margin-top: 40px;
+            padding: 30px;
+            background: #f9f9ff;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            display: none;
+        }
+        
+        .result h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .result-content {
+            white-space: pre-wrap;
+            line-height: 1.6;
+            font-size: 16px;
+            color: #444;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        
+        .error {
+            background: #ffebee;
+            border-left: 5px solid #ff5252;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📝 小红书文案生成器</h1>
+            <p>输入需求，上传图片，一键生成爆款文案</p>
+        </div>
+        
+        <div class="content">
+            <div class="form-group">
+                <label for="requirement">💡 文案需求：</label>
+                <textarea id="requirement" placeholder="例如：生成一篇关于1型糖尿病日常管理的科普文案，要求轻松活泼，适合年轻患者..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>🖼️ 上传配图（可选）：</label>
+                <div class="image-upload" onclick="document.getElementById('imageInput').click()">
+                    <div class="upload-icon">📁</div>
+                    <p>点击上传图片，或拖拽到此处</p>
+                    <p style="font-size: 14px; color: #666; margin-top: 5px;">支持 JPG、PNG 格式</p>
+                </div>
+                <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+            </div>
+            
+            <div class="image-preview" id="imagePreview"></div>
+            
+            <button class="btn" onclick="generateCopy()">✨ 生成文案</button>
+            
+            <div class="loading" id="loading">
+                <p>⏳ 正在生成文案，请稍等...</p>
+            </div>
+            
+            <div class="error" id="error"></div>
+            
+            <div class="result" id="result">
+                <h3>📄 生成结果：</h3>
+                <div class="result-content" id="resultContent"></div>
+                <button class="btn" style="margin-top: 20px; background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);" onclick="copyToClipboard()">📋 复制文案</button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Powered by Coze Workflow API | 虾米宝宝为泡泡定制 🦐💖</p>
+        </div>
+    </div>
+    
+    <script>
+        let selectedImageBase64 = null;
+        let selectedImageType = null;
+        
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            selectedImageType = file.type;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                selectedImageBase64 = e.target.result;
+                
+                const preview = document.getElementById('imagePreview');
+                preview.innerHTML = `<img src="${selectedImageBase64}" alt="上传的图片">`;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        async function generateCopy() {
+            const requirement = document.getElementById('requirement').value.trim();
+            if (!requirement) {
+                alert('请输入文案需求！');
+                return;
+            }
+            
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('error').style.display = 'none';
+            
+            try {
+                const token = 'pat_13K3m66F6GRhDcZt9fouvTn8J3YOmKUdas2RtF0PgX5Q6v4nMpNgpliwNyEd3VlP';
+                
+                const body = {
+                    requirement: requirement
+                };
+                
+                if (selectedImageBase64) {
+                    body.image = {
+                        url: selectedImageBase64,
+                        file_type: selectedImageType || 'image/jpeg'
+                    };
+                }
+                
+                console.log('发送的请求体:', body);
+                
+                const response = await fetch('/api/coze-proxy-simple', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+                
+                console.log('响应状态:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+                
+                const data = await response.json();
+                console.log('响应数据:', data);
+                
+                // 假设返回的数据结构中有文案内容
+                const copyText = data.content || data.text || data.output || JSON.stringify(data, null, 2);
+                
+                document.getElementById('resultContent').textContent = copyText;
+                document.getElementById('result').style.display = 'block';
+                
+            } catch (error) {
+                console.error('生成文案失败:', error);
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').innerHTML = `<strong>错误：</strong>${error.message}<br><br>请检查网络连接或稍后再试。`;
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+        
+        function copyToClipboard() {
+            const text = document.getElementById('resultContent').textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('文案已复制到剪贴板！📋');
+            }).catch(err => {
+                console.error('复制失败:', err);
+                alert('复制失败，请手动选择复制。');
+            });
+        }
+        
+        // 拖拽上传功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropZone = document.querySelector('.image-upload');
+            
+            dropZone.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.background = '#eef2ff';
+            });
+            
+            dropZone.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.style.background = '';
+            });
+            
+            dropZone.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.style.background = '';
+                
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    selectedImageType = file.type;
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        selectedImageBase64 = e.target.result;
+                        
+                        const preview = document.getElementById('imagePreview');
+                        preview.innerHTML = `<img src="${selectedImageBase64}" alt="上传的图片">`;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    alert('请上传图片文件！');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
