@@ -20,7 +20,14 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const bodyString = JSON.stringify(req.body);
+    // 读取请求体
+    const chunks = [];
+    for await (const chunk of req) {
+      chunks.push(chunk);
+    }
+    const bodyData = Buffer.concat(chunks).toString();
+    const parsedBody = JSON.parse(bodyData);
+    const bodyString = JSON.stringify(parsedBody);
     
     const options = {
       hostname: '2fd7jvzwph.coze.site',
@@ -59,6 +66,7 @@ module.exports = async function handler(req, res) {
 
     return res.status(cozeResponse.status).json(cozeResponse.data);
   } catch (error) {
+    console.error('Proxy error:', error);
     return res.status(500).json({ error: error.message });
   }
 };
