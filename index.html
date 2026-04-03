@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>泡泡的AI作品集 | 30天零代码拿下AI</title>
     <meta name="description" content="春日泡泡的个人主页，探索AI工具与效率提升">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -183,36 +186,7 @@
             transform: translateY(-2px);
         }
 
-        /* 统计数据 */
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 48px;
-            margin-top: 60px;
-            padding: 32px;
-            background: var(--bg-card);
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
 
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-num {
-            font-size: 36px;
-            font-weight: 800;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-top: 4px;
-        }
 
         /* 区块标题 */
         .section {
@@ -307,7 +281,6 @@
                 grid-template-columns: 1fr;
             }
             .hero h1 { font-size: 36px; }
-            .stats { flex-wrap: wrap; gap: 24px; }
         }
 
         /* 关于我 */
@@ -351,19 +324,7 @@
             border: 1px solid rgba(108, 99, 255, 0.2);
         }
 
-        /* 简历区 */
-        .resume-box {
-            background: var(--bg-card);
-            border-radius: 20px;
-            padding: 48px;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
 
-        .resume-box p {
-            color: var(--text-muted);
-            margin-bottom: 24px;
-        }
 
         /* 页脚 */
         footer {
@@ -448,7 +409,6 @@
             <ul class="nav-links">
                 <li><a href="#works">作品展示</a></li>
                 <li><a href="#about">关于我</a></li>
-                <li><a href="#resume">简历</a></li>
             </ul>
         </nav>
 
@@ -459,28 +419,50 @@
             <p class="hero-subtitle">从AI生图到AI视频，从自动化工作流到智能Agent</p>
             <p class="hero-desc">用30天时间证明：没有技术背景，一样可以玩转AI！这里记录了我每一步的成长和作品，希望你也能被点燃 ✨</p>
             <div class="hero-btns">
-                <a href="https://mp.weixin.qq.com" class="btn btn-primary" target="_blank">公众号：春日泡泡</a>
+                <button class="btn btn-primary" onclick="showQRCode()">公众号：春日泡泡</button>
                 <a href="#works" class="btn btn-secondary">查看我的作品</a>
             </div>
 
-            <div class="stats">
-                <div class="stat-item">
-                    <div class="stat-num">30</div>
-                    <div class="stat-label">天AI学习</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-num">2万+</div>
-                    <div class="stat-label">小红书粉丝</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-num">7+</div>
-                    <div class="stat-label">AI作品</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-num">365</div>
-                    <div class="stat-label">天学习打卡</div>
+            <!-- 二维码弹窗 -->
+            <div id="qrcode-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;" onclick="hideQRCode()">
+                <div style="background: white; padding: 24px; border-radius: 16px; text-align: center; max-width: 320px;" onclick="event.stopPropagation()">
+                    <h3 style="color: #333; margin-bottom: 16px;">扫码关注「春日泡泡」</h3>
+                    <div style="position: relative; width: 240px; height: 240px; margin: 0 auto;">
+                        <img id="wechat-qr" src="assets/wechat-qrcode.png" alt="公众号二维码" style="width: 240px; height: 240px; border-radius: 8px;" onerror="this.style.display='none'; document.getElementById('qr-fallback').style.display='flex';">
+                        <div id="qr-fallback" style="display: none; width: 240px; height: 240px; background: #f5f5f5; border-radius: 8px; align-items: center; justify-content: center; color: #999; font-size: 14px; text-align: center; padding: 20px;">
+                            请添加二维码图片到<br>assets/wechat-qrcode.png
+                        </div>
+                    </div>
+                    <p style="color: #666; margin-top: 12px; font-size: 14px;">微信扫一扫，关注我的AI学习之旅</p>
+                    <button onclick="hideQRCode()" style="margin-top: 16px; padding: 8px 24px; background: var(--gradient-1); color: white; border: none; border-radius: 20px; cursor: pointer;">关闭</button>
                 </div>
             </div>
+
+
+        </section>
+
+        <!-- 30天AI学习进度 -->
+        <section id="learning-progress" class="section">
+            <h2 class="section-title">🎯 30天AI学习计划</h2>
+            <p class="section-desc">泡泡的AI学习之旅，记录每天的成长与突破</p>
+
+            <a href="https://www.jiangjiehui.top/ai_learning_plan.html" id="ai-learning-card" class="work-card" target="_blank">
+                <div class="work-card-header">
+                    <div class="work-card-icon" style="background: var(--gradient-1);">🎯</div>
+                    <div class="work-card-title">30天AI学习之旅</div>
+                </div>
+                <p class="work-card-desc" id="learning-desc">每天进步一点点，记录我的AI探索与成长。从零开始，每天解锁新技能，用行动证明：没有技术背景，一样可以玩转AI！</p>
+                <div class="progress-container" style="margin: 20px 0;">
+                    <div class="progress-bar" id="progress-bar" style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                        <div id="progress-fill" style="height: 100%; background: var(--gradient-1); width: 0%; transition: width 0.5s;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 8px; color: var(--text-muted); font-size: 14px;">
+                        <span id="progress-text">读取进度中...</span>
+                        <span id="progress-percent">0%</span>
+                    </div>
+                </div>
+                <span class="work-card-tag">📚 学习记录</span>
+            </a>
         </section>
 
         <!-- 作品展示 -->
@@ -488,29 +470,21 @@
             <h2 class="section-title">作品展示</h2>
             <p class="section-desc">从数据分析到视频创作，从工作流自动化到AI Agent探索</p>
 
-            <!-- 30天AI学习计划 -->
-            <a href="ai_learning_plan.html" class="work-card" target="_blank">
-                <div class="work-card-header">
-                    <div class="work-card-icon" style="background: var(--gradient-1);">🎯</div>
-                    <div class="work-card-title">30天AI学习之旅</div>
-                </div>
-                <p class="work-card-desc">每天进步一点点，记录我的AI探索与成长。从零开始，每天解锁新技能，用行动证明：没有技术背景，一样可以玩转AI！</p>
-                <span class="work-card-tag">📚 学习记录</span>
-            </a>
+            <!-- 🎯 AI数据工具 -->
+            <h3 style="color: var(--text); margin: 48px 0 24px; font-size: 20px;">🎯 AI数据工具</h3>
 
             <!-- AI数据分析 -->
             <a href="assets/reports/xhs_radar_v2.html" class="work-card" target="_blank">
                 <div class="work-card-header">
                     <div class="work-card-icon" style="background: var(--gradient-2);">📊</div>
-                    <div class="work-card-title">小红书糖尿病热点雷达</div>
+                    <div class="work-card-title">小红书数据雷达</div>
                 </div>
-                <p class="work-card-desc">使用WorkBuddy AI + 小红书Skill，自动采集分析爆款笔记规律，找出流量密码！</p>
+                <p class="work-card-desc">保留这份小红书糖尿病热点雷达报告，集中展示爆款笔记规律、热点分布和运营洞察。</p>
                 <span class="work-card-tag">📈 数据分析</span>
             </a>
 
             <!-- AI视频作品 -->
             <h3 style="color: var(--text); margin: 40px 0 24px; font-size: 20px;">🎬 AI视频作品</h3>
-            <p style="color: var(--text-muted); margin-bottom: 24px;">Week 2 学习成果：独立完成30秒-2分钟AI视频创作</p>
             <div class="video-grid">
                 <a href="assets/videos/diabetes_type1_vs_type2_v4.mp4" class="video-card" target="_blank">
                     <div class="video-cover" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
@@ -543,22 +517,34 @@
 
             <!-- AI工作流 -->
             <h3 style="color: var(--text); margin: 48px 0 24px; font-size: 20px;">⚙️ AI工作流 & 自动化</h3>
-            <p style="color: var(--text-muted); margin-bottom: 24px;">Week 3 学习成果：搭建内容自动化生产流程</p>
             <div class="grid-3">
-                <a href="https://docs.coze.cn/tutorial/openclaw" class="work-card" target="_blank" style="margin-bottom: 0;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">🦞</div>
-                    <div class="work-card-title" style="font-size: 17px;">OpenClaw小龙虾工作流</div>
-                    <p class="work-card-desc" style="margin-top: 8px;">AI Agent多平台接入 · 自动化任务</p>
+                <a href="https://www.coze.cn/store/agent/7624352186398490667?bot_id=true" class="work-card" target="_blank" style="margin-bottom: 0;">
+                    <div class="card-icon-svg" style="width: 48px; height: 48px; margin-bottom: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            <circle cx="12" cy="12" r="3" fill="rgba(255,255,255,0.3)"/>
+                            <path d="M12 6v2M12 16v2M6 12h2M16 12h2" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="work-card-title" style="font-size: 17px;">扣子智能体搭建</div>
+                    <p class="work-card-desc" style="margin-top: 8px;">AI Agent多平台接入 · 自动化任务 · 点击查看详情</p>
                 </a>
-                <a href="https://www.coze.cn" class="work-card" target="_blank" style="margin-bottom: 0;">
-                    <div style="font-size: 32px; margin-bottom: 12px;">🤖</div>
+                <a href="https://www.jiangjiehui.top/coze-workflow.html" class="work-card" target="_blank" style="margin-bottom: 0;">
+                    <div class="card-icon-svg" style="width: 48px; height: 48px; margin-bottom: 12px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <svg viewBox="0 0 24 24" width="28" height="28" fill="white">
+                            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+                            <circle cx="9" cy="10" r="1.5" fill="rgba(255,255,255,0.6)"/>
+                            <circle cx="15" cy="10" r="1.5" fill="rgba(255,255,255,0.6)"/>
+                            <path d="M9 13.5c.5 1.5 1.8 2.5 3 2.5s2.5-1 3-2.5" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        </svg>
+                    </div>
                     <div class="work-card-title" style="font-size: 17px;">扣子Coze Bot</div>
-                    <p class="work-card-desc" style="margin-top: 8px;">AI应用搭建 · 工作流编排</p>
+                    <p class="work-card-desc" style="margin-top: 8px;">个性化小红书宣传文案生成 · 点击查看详情</p>
                 </a>
                 <a href="https://www.workbuddy.cn" class="work-card" target="_blank" style="margin-bottom: 0;">
                     <div style="font-size: 32px; margin-bottom: 12px;">⚡</div>
                     <div class="work-card-title" style="font-size: 17px;">WorkBuddy AI</div>
-                    <p class="work-card-desc" style="margin-top: 8px;">AI编程助手 · 自动化脚本</p>
+                    <p class="work-card-desc" style="margin-top: 8px;">AI编程助手 · 自动化脚本 · 腾讯版小龙虾</p>
                 </a>
             </div>
         </section>
@@ -594,18 +580,11 @@
             </div>
         </section>
 
-        <!-- 简历 -->
-        <section id="resume" class="section">
-            <div class="resume-box">
-                <h2 style="margin-bottom: 16px;">获取简历</h2>
-                <p>查看完整简历，了解我的详细经历和项目经验</p>
-                <a href="mailto:1760893265@qq.com" class="btn btn-primary">📧 联系我获取简历</a>
-            </div>
-        </section>
+
 
         <!-- 页脚 -->
         <footer>
-            <p>© 2026 春日泡泡 | 用 💖 和 AI 制作</p>
+            <p>© 2026 春日泡泡 | 用 💖 和 AI 制作 | <span style="color: var(--text-muted); font-size: 0.9em;">最后更新：2026-04-03 21:44</span></p>
             <p style="margin-top: 8px;">
                 <a href="https://github.com/jiang-1223/jiangjiehui-works" target="_blank">GitHub</a> ·
                 <a href="https://jiangjiehui.top" target="_blank">jiangjiehui.top</a>
@@ -614,6 +593,54 @@
     </div>
 
     <script>
+        // 二维码弹窗控制
+        function showQRCode() {
+            document.getElementById('qrcode-modal').style.display = 'flex';
+        }
+        function hideQRCode() {
+            document.getElementById('qrcode-modal').style.display = 'none';
+        }
+        
+        // 读取30天AI学习进度（与学习计划页面使用相同的localStorage key）
+        function loadLearningProgress() {
+            try {
+                // 尝试从localStorage读取进度，key为 'ai_30day_progress'
+                const progressData = localStorage.getItem('ai_30day_progress');
+                const progressElement = document.getElementById('progress-fill');
+                const progressText = document.getElementById('progress-text');
+                const progressPercent = document.getElementById('progress-percent');
+                const learningDesc = document.getElementById('learning-desc');
+                
+                if (progressData) {
+                    // 假设存储格式为 JSON: {completed_days: 5, total_days: 30}
+                    const data = JSON.parse(progressData);
+                    const completedDays = data.completed_days || 0;
+                    const totalDays = data.total_days || 30;
+                    const percentage = Math.round((completedDays / totalDays) * 100);
+                    
+                    // 更新进度条
+                    progressElement.style.width = `${percentage}%`;
+                    progressText.textContent = `已学习 ${completedDays}/${totalDays} 天`;
+                    progressPercent.textContent = `${percentage}%`;
+                    
+                    // 更新描述文字
+                    learningDesc.textContent = `已完成第${completedDays}天的学习！30天目标进度已达${percentage}%。继续加油，每天解锁新技能，用行动证明：没有技术背景，一样可以玩转AI！`;
+                    
+                    console.log(`从localStorage读取学习进度: ${completedDays}/${totalDays}天 (${percentage}%)`);
+                } else {
+                    // 如果没有存储进度，显示默认状态
+                    progressText.textContent = '尚未开始学习，点击卡片开始你的30天AI之旅';
+                    learningDesc.textContent = '每天进步一点点，记录我的AI探索与成长。从零开始，每天解锁新技能，用行动证明：没有技术背景，一样可以玩转AI！';
+                }
+            } catch (error) {
+                console.error('读取学习进度失败:', error);
+                document.getElementById('progress-text').textContent = '读取进度失败，请检查控制台';
+            }
+        }
+        
+        // 页面加载完成后读取进度
+        document.addEventListener('DOMContentLoaded', loadLearningProgress);
+        
         // 生成背景粒子
         const particlesContainer = document.getElementById('particles');
         const colors = ['#6C63FF', '#FF6584', '#00d2ff', '#f093fb', '#ffd93d'];
