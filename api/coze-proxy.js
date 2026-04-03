@@ -1,9 +1,7 @@
 // Vercel Serverless Function - Coze API 代理
-// 解决浏览器直接调用 Coze API 的 CORS 问题
+// 使用 fetch API（Vercel 内置支持）
 
-const https = require('https');
-
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   // 设置 CORS 头
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -20,53 +18,44 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // 读取请求体
-    const chunks = [];
-    for await (const chunk of req) {
-      chunks.push(chunk);
+    // Vercel 会自动解析 JSON body
+    let bodyString;
+    if (req.body) {
+      bodyString = JSON.stringify(req.body);
+    } else {
+      // 兜底：手动读取
+      const chunks = [];
+      for await (const chunk of req) {
+        chunks.push(chunk);
+      }
+      bodyString = Buffer.concat(chunks).toString();
     }
-    const bodyData = Buffer.concat(chunks).toString();
-    const parsedBody = JSON.parse(bodyData);
-    const bodyString = JSON.stringify(parsedBody);
-    
-    const options = {
-      hostname: '2fd7jvzwph.coze.site',
-      port: 443,
-      path: '/run',
+
+    console.log('Forwarding request to Coze API...');
+    console.log('Body:', bodyString);
+
+    const cozeResponse = await fetch('https://2fd7jvzwph.coze.site/run', {
       method: 'POST',
       headers: {
         'Authorization': req.headers.authorization || '',
         'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(bodyString)
-      }
-    };
-
-    const cozeResponse = await new Promise((resolve, reject) => {
-      const proxyReq = https.request(options, (proxyRes) => {
-        let data = '';
-        proxyRes.on('data', chunk => data += chunk);
-        proxyRes.on('end', () => {
-          try {
-            resolve({
-              status: proxyRes.statusCode,
-              data: JSON.parse(data)
-            });
-          } catch (e) {
-            resolve({
-              status: proxyRes.statusCode,
-              data: data
-            });
-          }
-        });
-      });
-      proxyReq.on('error', reject);
-      proxyReq.write(bodyString);
-      proxyReq.end();
+      },
+      body: bodyString
     });
 
-    return res.status(cozeResponse.status).json(cozeResponse.data);
+    const responseText = await cozeResponse.text();
+    console.log('Coze response status:', cozeResponse.status);
+    console.log('Coze response:', responseText);
+
+    res.status(cozeResponse.status);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(responseText);
+
   } catch (error) {
     console.error('Proxy error:', error);
-    return res.status(500).json({ error: error.message });
+    res.status(500).json({
+      error: error.message,
+      stack: error.stack
+    });
   }
-};
+}
