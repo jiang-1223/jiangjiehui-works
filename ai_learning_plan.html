@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30天AI学习计划 | 春日泡泡的AI作品集</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #6C63FF;
+            --primary-light: #8B83FF;
+            --secondary: #FF6584;
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-card-hover: #222240;
+            --text: #e0e0e0;
+            --text-muted: #8888aa;
+            --gradient-1: linear-gradient(135deg, #6C63FF 0%, #FF6584 100%);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.8;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+        
+        h1 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .card h2 {
+            color: var(--text);
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .card p {
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        
+        .day-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .day {
+            background: rgba(108, 99, 255, 0.1);
+            border: 1px solid rgba(108, 99, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .day:hover {
+            background: rgba(108, 99, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .day-number {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-light);
+            margin-bottom: 4px;
+        }
+        
+        .day-completed {
+            background: rgba(86, 227, 115, 0.2);
+            border-color: rgba(86, 227, 115, 0.3);
+        }
+        
+        .back-btn {
+            display: inline-block;
+            background: var(--gradient-1);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(108, 99, 255, 0.3);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 32px; }
+            .day-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>30天AI学习计划</h1>
+            <p class="subtitle">从零开始，每天解锁一个AI新技能</p>
+        </div>
+        
+        <div class="card">
+            <h2>🎯 学习目标</h2>
+            <p>在30天内掌握核心AI工具和技能，包括：</p>
+            <ul style="color: var(--text-muted); margin-left: 20px; margin-top: 12px; margin-bottom: 20px;">
+                <li>AI图像生成（Midjourney、可灵、即梦）</li>
+                <li>AI视频制作（Runway、剪映AI）</li>
+                <li>AI工作流自动化（Coze扣子、WorkBuddy）</li>
+                <li>数据分析与可视化</li>
+                <li>AI写作与内容创作</li>
+            </ul>
+            <p>每天记录学习心得，输出可展示的作品！</p>
+        </div>
+        
+        <div class="card">
+            <h2>📅 学习进度</h2>
+            <p>点击下面的天数查看当天的学习内容和成果</p>
+            
+            <div class="day-grid" id="dayGrid"></div>
+            
+            <div style="margin-top: 24px; display: flex; gap: 16px; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="width: 16px; height: 16px; background: rgba(108, 99, 255, 0.2); border: 1px solid rgba(108, 99, 255, 0.3); border-radius: 4px;"></div>
+                    <span style="color: var(--text-muted); font-size: 14px;">未开始</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <div style="width: 16px; height: 16px; background: rgba(86, 227, 115, 0.2); border: 1px solid rgba(86, 227, 115, 0.3); border-radius: 4px;"></div>
+                    <span style="color: var(--text-muted); font-size: 14px;">已完成</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>💡 学习资源</h2>
+            <p>推荐的学习平台和工具：</p>
+            <ul style="color: var(--text-muted); margin-left: 20px; margin-top: 12px;">
+                <li><strong>视频教程</strong>: B站、YouTube上的AI工具教程</li>
+                <li><strong>在线课程</strong>: 腾讯课堂、慕课网的相关AI课程</li>
+                <li><strong>社区交流</strong>: 小红书AI话题、GitHub AI项目</li>
+                <li><strong>实践平台</strong>: WorkBuddy、Coze扣子、即时AI</li>
+            </ul>
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="index.html" class="back-btn">返回首页</a>
+        </div>
+        
+        <div class="footer">
+            <p>© 2026 春日泡泡 | 30天AI学习计划 | 最后更新: <span id="current-date"></span></p>
+        </div>
+    </div>
+    
+    <script>
+        // 生成30天的学习卡片
+        const dayGrid = document.getElementById('dayGrid');
+        for (let i = 1; i <= 30; i++) {
+            const dayDiv = document.createElement('div');
+            dayDiv.className = 'day';
+            dayDiv.innerHTML = `
+                <div class="day-number">${i}</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Day ${i}</div>
+            `;
+            
+            // 随机设置一些已完成的天数（演示用）
+            if (Math.random() > 0.7) {
+                dayDiv.classList.add('day-completed');
+            }
+            
+            dayGrid.appendChild(dayDiv);
+        }
+        
+        // 更新当前日期
+        const currentDate = new Date().toLocaleDateString('zh-CN', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+        document.getElementById('current-date').textContent = currentDate;
+        
+        // 保存学习进度到localStorage
+        document.querySelectorAll('.day').forEach(day => {
+            day.addEventListener('click', function() {
+                const dayNumber = this.querySelector('.day-number').textContent;
+                const isCompleted = this.classList.contains('day-completed');
+                
+                if (!isCompleted) {
+                    // 标记为已完成
+                    this.classList.add('day-completed');
+                    
+                    // 保存到localStorage
+                    const progressKey = 'ai_30day_progress';
+                    let progressData = localStorage.getItem(progressKey);
+                    let data = progressData ? JSON.parse(progressData) : { completed_days: 0, total_days: 30 };
+                    
+                    data.completed_days = Math.min(data.completed_days + 1, 30);
+                    localStorage.setItem(progressKey, JSON.stringify(data));
+                    
+                    alert(`恭喜你完成第${dayNumber}天的学习！`);
+                    
+                    // 返回首页时会自动更新进度
+                } else {
+                    alert(`第${dayNumber}天已经完成啦！`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
