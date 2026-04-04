@@ -198,6 +198,25 @@
     <script>
         // 生成30天的学习卡片
         const dayGrid = document.getElementById('dayGrid');
+        
+        // 从localStorage读取完成记录
+        const progressKey = 'ai_30day_progress';
+        let progressData = localStorage.getItem(progressKey);
+        let completedDays = [];
+        
+        if (progressData) {
+            let data = JSON.parse(progressData);
+            // 兼容旧格式（数字）和新格式（数组）
+            if (Array.isArray(data.completed_days)) {
+                completedDays = data.completed_days;
+            } else if (typeof data.completed_days === 'number') {
+                // 旧格式：数字表示完成了前N天
+                for (let i = 1; i <= data.completed_days; i++) {
+                    completedDays.push(i);
+                }
+            }
+        }
+        
         for (let i = 1; i <= 30; i++) {
             const dayDiv = document.createElement('div');
             dayDiv.className = 'day';
@@ -206,8 +225,8 @@
                 <div style="font-size: 12px; color: var(--text-muted);">Day ${i}</div>
             `;
             
-            // 随机设置一些已完成的天数（演示用）
-            if (Math.random() > 0.7) {
+            // 根据localStorage记录设置完成状态
+            if (completedDays.includes(i)) {
                 dayDiv.classList.add('day-completed');
             }
             
@@ -225,19 +244,29 @@
         // 保存学习进度到localStorage
         document.querySelectorAll('.day').forEach(day => {
             day.addEventListener('click', function() {
-                const dayNumber = this.querySelector('.day-number').textContent;
+                const dayNumber = parseInt(this.querySelector('.day-number').textContent);
                 const isCompleted = this.classList.contains('day-completed');
                 
                 if (!isCompleted) {
                     // 标记为已完成
                     this.classList.add('day-completed');
                     
-                    // 保存到localStorage
+                    // 保存到localStorage - 记录具体哪些天完成了
                     const progressKey = 'ai_30day_progress';
                     let progressData = localStorage.getItem(progressKey);
-                    let data = progressData ? JSON.parse(progressData) : { completed_days: 0, total_days: 30 };
+                    let data = progressData ? JSON.parse(progressData) : { completed_days: [], total_days: 30 };
                     
-                    data.completed_days = Math.min(data.completed_days + 1, 30);
+                    // 确保completed_days是数组
+                    if (!Array.isArray(data.completed_days)) {
+                        data.completed_days = [];
+                    }
+                    
+                    // 添加完成的天数
+                    if (!data.completed_days.includes(dayNumber)) {
+                        data.completed_days.push(dayNumber);
+                        data.completed_days.sort((a, b) => a - b);
+                    }
+                    
                     localStorage.setItem(progressKey, JSON.stringify(data));
                     
                     alert(`恭喜你完成第${dayNumber}天的学习！`);
