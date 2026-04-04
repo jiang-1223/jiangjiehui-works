@@ -34,10 +34,12 @@ export default async function handler(req, res) {
     console.log('Forwarding request to Coze API...');
     console.log('Body:', bodyString);
 
+    const COZE_TOKEN = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjY0MmFmZTQ3LTA0NTYtNDlmNi1hNTliLWU5OTY3ZTliOWFlMiJ9.eyJpc3MiOiJodHRwczovL2FwaS5jb3plLmNuIiwiYXVkIjpbIllFbE1vclBGTnRkWFNoN2N4dXpWWU83YlFDaExQQVpsIl0sImV4cCI6ODIxMDI2Njg3Njc5OSwiaWF0IjoxNzc1MDQ2NTczLCJzdWIiOiJzcGlmZmU6Ly9hcGkuY296ZS5jbi93b3JrbG9hZF9pZGVudGl0eS9pZDo3NjIzNzE1MjgxNjU4OTcwMTIxIiwic3JjIjoiaW5ib3VuZF9hdXRoX2FjY2Vzc190b2tlbl9pZDo3NjIzNzY2OTgyODczMDU1MjY4In0.VX3b9vMVn6PKQRtIy6Y0q9xBj843LcWieWHzBnuuBzagG4_p6XGipuUkeBkyVDZzetUWdnrPbJkI_xZjqr0yi6ZPtGmGgyQhGF70cScbECK9-4g5WxvL1Cs9x0bToFqxm3LQUfYtGSFwWHE3tkwwJ6dQbYMCyFsK6zwQ0jh8nsSjc5eueNvuKYzcUsrUIzuG7t35YAFdmhHWqJUyjGSHA6gQzmLYMPsjSzJahsE7nW_rm3Lb9It_b1ECwOgtZEbzhC5hD3VfbZBlZkRpWgJsVVwYcxrvEkxwsi55i-z_GYln7EGYPt5A1g-582_dW82dFbYZCUGyrv_tw6P0u8sgDg';
+    
     const cozeResponse = await fetch('https://2fd7jvzwph.coze.site/run', {
       method: 'POST',
       headers: {
-        'Authorization': req.headers.authorization || '',
+        'Authorization': 'Bearer ' + COZE_TOKEN,
         'Content-Type': 'application/json',
       },
       body: bodyString
