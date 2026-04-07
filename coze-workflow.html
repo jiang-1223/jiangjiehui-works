@@ -286,7 +286,7 @@
             <div class="input-label">📝 创作需求</div>
             <textarea id="requirement" placeholder="描述你想要的创作需求，比如：根据这张图帮我写一下文案"></textarea>
 
-            <div class="input-label" style="margin-top: 20px;">🖼️ 上传图片（可选）</div>
+            <div class="input-label" style="margin-top: 20px;">🖼️ 上传图片（可选，自动压缩）</div>
             <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
                 <div class="upload-icon">📷</div>
                 <div class="upload-text">点击上传图片或拖拽到此处</div>
@@ -328,21 +328,46 @@
             handleFiles(e.dataTransfer.files);
         });
 
-        // 处理文件
-        function handleFiles(files) {
+        // 压缩图片到指定最大尺寸，返回Promise
+        function compressImage(file, maxSizeKB, maxDim) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        // 按比例缩放
+                        let w = img.width, h = img.height;
+                        if (w > maxDim || h > maxDim) {
+                            if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+                            else { w = Math.round(w * maxDim / h); h = maxDim; }
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = w; canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, w, h);
+                        // 逐步降低质量直到满足大小限制
+                        let quality = 0.8;
+                        let dataUrl = canvas.toDataURL('image/jpeg', quality);
+                        while (dataUrl.length > maxSizeKB * 1024 * 1.37 && quality > 0.1) {
+                            quality -= 0.1;
+                            dataUrl = canvas.toDataURL('image/jpeg', quality);
+                        }
+                        resolve({ url: dataUrl, file_type: 'image/jpeg' });
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // 处理文件（带压缩）
+        async function handleFiles(files) {
             for (let file of files) {
                 if (uploadedImages.length >= 5) break;
                 if (!file.type.startsWith('image/')) continue;
-
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    uploadedImages.push({
-                        url: e.target.result,  // base64
-                        file_type: file.type    // image/jpeg, image/png
-                    });
-                    renderPreviews();
-                };
-                reader.readAsDataURL(file);
+                const compressed = await compressImage(file, 200, 1024);
+                uploadedImages.push(compressed);
+                renderPreviews();
             }
         }
 
@@ -416,8 +441,19 @@
                     body: JSON.stringify(body)
                 });
 
-                const data = await resp.json();
-                
+                // 先读文本，再尝试解析JSON（防止非JSON响应报错）
+                const text = await resp.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    // 非JSON响应（如 Request Entity Too Large）
+                    resultSection.classList.remove('show');
+                    errorMsg.textContent = '出错了：' + (text.substring(0, 200) || `请求失败 (${resp.status})`);
+                    errorMsg.classList.add('show');
+                    return;
+                }
+
                 if (!resp.ok) {
                     throw new Error(data.error || data.message || `请求失败 (${resp.status})`);
                 }
