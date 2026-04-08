@@ -94,6 +94,9 @@ function fetchXHSData(cookie) {
       return;
     }
 
+    // 修复：移除cookie值中的多余空格（有些cookie被截断时带空格）
+    const cleanCookie = cookie.replace(/\s+/g, ' ').trim();
+
     const keywords = ['1型糖尿病', '胰岛素泵', '硅基动态'];
     const results = [];
 
@@ -110,7 +113,7 @@ function fetchXHSData(cookie) {
         method: 'GET',
         headers: {
           'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15',
-          'Cookie': cookie,
+          'Cookie': cleanCookie,
           'Referer': 'https://www.xiaohongshu.com/',
           'Accept': 'application/json, text/plain, */*',
         }
