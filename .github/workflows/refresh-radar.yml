@@ -11,39 +11,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Trigger Vercel Cron refresh
+      - name: Update data timestamp
         run: |
-          echo "Triggering Vercel Cron refresh..."
           python -c "
 import json
 from datetime import datetime
-
 data_path = 'public/data/radar-data.json'
 try:
     with open(data_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
 except:
     data = {'weekly': [], 'monthly': [], 'last_updated': None}
-
 data['last_updated'] = datetime.now().isoformat()
-
 with open(data_path, 'w', encoding='utf-8') as f:
     json.dump(data, f, ensure_ascii=False, indent=2)
-
-print(f'Data file updated: {data[\'last_updated\']}')
+print('Updated:', data['last_updated'])
 "
 
-      - name: Commit and push updated data
+      - name: Commit and push
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           git add public/data/radar-data.json
-          if git diff --staged --quiet; then
-            echo "No data changes to commit"
-          else
-            git commit -m "chore: auto-refresh XHS radar data \$(date +'%Y-%m-%d')"
-            git push
-            echo "Pushed successfully!"
-          fi
+          git commit -m "chore: auto-refresh XHS radar data $(date +'%Y-%m-%d')" || echo "No changes"
+          git push || echo "Push skipped"
         env:
-          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
