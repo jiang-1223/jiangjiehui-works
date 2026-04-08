@@ -1,0 +1,83 @@
+name: Refresh XHS Radar Data
+
+on:
+  # 每周一早上 9:00 自动运行（北京时间）
+  schedule:
+    - cron: '0 1 * * 1'
+  # 手动触发：GitHub -> Actions -> "Refresh XHS Radar Data" -> Run workflow
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Force refresh even if data is fresh'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  check-and-scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install httpx lxml beautifulsoup4
+
+      - name: Check data freshness
+        id: freshness
+        run: |
+          import os, json
+          from datetime import datetime, timedelta
+
+          path = 'public/data/radar-data.json'
+          force = os.environ.get('FORCE_REFRESH', 'false').lower() == 'true'
+
+          if force:
+            print('FORCE_REFRESH=true, will scrape')
+            with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write('needs_refresh=true\n')
+            exit(0)
+
+          if not os.path.exists(path):
+            print('No data file, will scrape')
+            with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write('needs_refresh=true\n')
+          else:
+            with open(path, encoding='utf-8') as f:
+              meta = json.load(f)
+            updated = meta.get('updated_at') or meta.get('generated_at', '')
+            if not updated:
+              print('No timestamp, will scrape')
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                f.write('needs_refresh=true\n')
+            else:
+              print(f'Data timestamp: {updated}')
+              with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+                f.write('needs_refresh=false\n')
+              print('Data is fresh, skipping scrape')
+
+      - name: Scrape XHS data
+        if: steps.freshness.outputs.needs_refresh == 'true'
+        run: python scripts/scrape_xhs.py
+        env:
+          FORCE_REFRESH: ${{ inputs.force }}
+
+      - name: Commit and push
+        if: steps.freshness.outputs.needs_refresh == 'true'
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/radar-data.json
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: refresh XHS radar data $(date +'%Y-%m-%d')"
+            git push
+          fi
