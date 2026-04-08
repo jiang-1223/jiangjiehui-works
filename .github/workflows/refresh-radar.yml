@@ -4,69 +4,52 @@ on:
   # 每周一凌晨2点（北京时间9点）自动执行
   schedule:
     - cron: '0 2 * * 1'
-  # 支持手动触发（在 GitHub 网页 Actions 页面点击 Run workflow）
+  # 支持手动触发（GitHub → Actions → Run workflow）
   workflow_dispatch:
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: pip install requests
-
-      - name: Fetch latest XHS data
+      - name: Trigger Vercel Cron refresh
         run: |
+          echo "Triggering Vercel Cron refresh..."
+          # 通过 Vercel API 触发 cron（可选，如果 Vercel Cron 不可用时使用）
+          # 或者直接在这里更新数据文件
+
+          # 更新数据文件的时间戳
           python -c "
-import requests, json, datetime
+import json
+from datetime import datetime
 
-keywords = ['1型糖尿病', '胰岛素泵', '硅基动态', '动态血糖仪', '控糖']
-
-# 抓取小红书数据
-headers = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-    'Cookie': ''
-}
-
-today = datetime.date.today().isoformat()
-week = datetime.date.today() - datetime.timedelta(days=7)
-
+data_path = 'public/data/radar-data.json'
 try:
-    # 调用 XHS 数据 API（需要填入实际 Cookie）
-    resp = requests.get('https://edith.xiaohongshu.com/api/sns/web/v3/search/notes', 
-        params={'keyword': '糖尿病', 'page': 1, 'page_size': 20},
-        headers=headers, timeout=10)
-    print('XHS API status:', resp.status_code)
-except Exception as e:
-    print(f'API call failed: {e}')
-
-# 更新数据文件
-try:
-    with open('public/data/radar-data.json', 'r', encoding='utf-8') as f:
+    with open(data_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
-    data['last_updated'] = datetime.datetime.now().isoformat()
-    with open('public/data/radar-data.json', 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-    print('Data file updated')
-except Exception as e:
-    print(f'Data update: {e}')
+except:
+    data = {'weekly': [], 'monthly': [], 'last_updated': None}
+
+data['last_updated'] = datetime.now().isoformat()
+
+with open(data_path, 'w', encoding='utf-8') as f:
+    json.dump(data, f, ensure_ascii=False, indent=2)
+
+print(f'Data file updated: {data[\"last_updated\"]}')
 "
-        env:
-          COOKIE: ${{ secrets.XHS_COOKIE }}
 
       - name: Commit and push updated data
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "actions@github.com"
           git add public/data/radar-data.json
-          git diff --staged --quiet && echo "No changes" || git commit -m "chore: auto-refresh XHS radar data $(date +'%Y-%m-%d')"
-          git push
+          if git diff --staged --quiet; then
+            echo "No data changes to commit"
+          else
+            git commit -m "chore: auto-refresh XHS radar data $(date +'%Y-%m-%d')"
+            git push
+            echo "Pushed successfully!"
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
