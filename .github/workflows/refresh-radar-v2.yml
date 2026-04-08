@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: '0 2 * * 1'
   workflow_dispatch: {}
+  repository_dispatch:
+    types:
+      - refresh-radar
 
 jobs:
   refresh:
