@@ -30,7 +30,7 @@ data['last_updated'] = datetime.now().isoformat()
 with open(data_path, 'w', encoding='utf-8') as f:
     json.dump(data, f, ensure_ascii=False, indent=2)
 
-print(f'Data file updated: {data[\"last_updated\"]}')
+print(f'Data file updated: {data[\'last_updated\']}')
 "
 
       - name: Commit and push updated data
@@ -41,9 +41,9 @@ print(f'Data file updated: {data[\"last_updated\"]}')
           if git diff --staged --quiet; then
             echo "No data changes to commit"
           else
-            git commit -m "chore: auto-refresh XHS radar data $(date +'%Y-%m-%d')"
+            git commit -m "chore: auto-refresh XHS radar data \$(date +'%Y-%m-%d')"
             git push
             echo "Pushed successfully!"
           fi
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
