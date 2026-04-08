@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">小红书糖尿病爆款雷达 · 春日泡泡</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f0f2f5;color:#333;min-height:100vh}
+
+/* Header */
+.header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:32px 20px;text-align:center;position:relative}
+.header h1{font-size:28px;margin-bottom:8px}
+.hd-time{font-size:13px;opacity:.8;margin-top:6px}
+.refresh-btn{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:8px 20px;background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.5);border-radius:24px;color:#fff;font-size:13px;cursor:pointer;transition:all .2s}
+.refresh-btn:hover{background:rgba(255,255,255,.3);border-color:#fff}
+.refresh-btn:disabled{opacity:.6;cursor:not-allowed}
+.refresh-btn .ri{font-size:15px}
+.refresh-btn.spinning .ri{animation:spin .8s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Container */
+.container{max-width:960px;margin:0 auto;padding:24px 16px}
+
+/* Cards */
+.card{background:#fff;border-radius:16px;padding:24px;margin-bottom:20px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.card h2{font-size:18px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+/* Topic stats */
+.topic-stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.topic-stat{background:#fafbff;border-radius:12px;padding:14px 16px;border-left:4px solid #667eea}
+.ts-head{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.ts-icon{font-size:16px}
+.ts-name{font-size:13px;font-weight:600;color:#333}
+.ts-nums{font-size:12px;color:#666;margin-bottom:4px}
+.ts-nums b{color:#667eea;font-weight:700}
+.ts-top{font-size:11px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Analysis grid */
+.analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.panel{background:#fafbff;border-radius:12px;padding:16px}
+.panel h3{font-size:14px;font-weight:600;margin-bottom:12px;color:#444}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.bar-lbl{font-size:12px;color:#555;width:80px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:14px;background:#eee;border-radius:7px;overflow:hidden}
+.bar-fill{height:100%;border-radius:7px;transition:width 1.2s cubic-bezier(.22,1,.36,1);display:flex;align-items:center;padding-left:6px}
+.bar-fill span{font-size:10px;color:#fff;font-weight:600;white-space:nowrap}
+.bar-cnt{min-width:28px}
+.bar-pct{font-size:12px;color:#888;width:40px;text-align:right;flex-shrink:0}
+
+/* Filters */
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:20px}
+.filter-group{display:flex;gap:6px}
+.filter-btn{padding:6px 16px;border:1px solid #e0e0e0;border-radius:20px;background:#fff;cursor:pointer;font-size:13px;transition:all .2s;color:#555}
+.filter-btn:hover{border-color:#667eea;color:#667eea}
+.filter-btn.active{background:#667eea;color:#fff;border-color:#667eea}
+.filter-label{font-size:13px;color:#888;font-weight:500}
+
+/* Stats bar */
+.stats-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.stat-chip{background:#f0f2ff;color:#667eea;padding:6px 14px;border-radius:12px;font-size:13px;font-weight:500}
+.stat-chip strong{margin-right:4px}
+
+/* Table */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:#f8f9ff;padding:12px 10px;text-align:left;font-weight:600;color:#555;border-bottom:2px solid #e8ecf4;white-space:nowrap}
+td{padding:12px 10px;border-bottom:1px solid #f0f0f0}
+tr:hover{background:#fafbff}
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;margin-right:4px;white-space:nowrap}
+.tag-topic{background:#f0f0ff;color:#667eea}
+.tag-pattern{background:#fff0f0;color:#ff4757}
+.tag-pattern.normal{background:#f0f0f0;color:#999}
+.num{font-weight:600;text-align:right}
+.note-title{max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.note-title a{color:#333;text-decoration:none}
+.note-title a:hover{color:#667eea}
+
+/* Empty state */
+.empty-state{text-align:center;padding:60px 20px;color:#999}
+.empty-state .emoji{font-size:48px;margin-bottom:12px}
+
+/* Footer */
+.footer{text-align:center;padding:20px;color:#999;font-size:13px;line-height:1.8}
+
+/* Loading */
+.loading-overlay{position:fixed;inset:0;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;z-index:1000}
+.loading-overlay .spinner{width:40px;height:40px;border:4px solid #e8ecf4;border-top-color:#667eea;border-radius:50%;animation:spin .8s linear infinite}
+.loading-overlay p{color:#667eea;font-size:14px}
+
+@media(max-width:600px){
+.analysis-grid{grid-template-columns:1fr}
+.topic-stats{grid-template-columns:1fr 1fr}
+.keyword-grid{grid-template-columns:repeat(3,1fr)}
+th,td{padding:8px 6px;font-size:12px}
+.note-title{max-width:150px}
+}
+</style>
+</head>
+<body>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <p>正在加载数据...</p>
+</div>
+
+<!-- Header -->
+<div class="header">
+  <h1>📊 小红书糖尿病爆款雷达</h1>
+  <div class="subtitle">实时追踪糖尿病领域热门笔记，发现流量密码</div>
+  <div class="hd-time" id="hdTime">加载中...</div>
+  <button class="refresh-btn" id="refreshBtn" onclick="doRefresh(this)">
+    <span class="ri">🔄</span> 刷新获取最新数据
+  </button>
+</div>
+
+<div class="container">
+
+  <!-- Topic stats -->
+  <div class="card">
+    <h2>📌 话题热度概览</h2>
+    <div class="topic-stats" id="topicStats">
+      <div class="topic-stat" style="border-left-color:#e0e0e0"><div class="ts-head"><span class="ts-icon">⏳</span><span class="ts-name">加载中...</span></div></div>
+    </div>
+  </div>
+
+  <!-- Analysis -->
+  <div class="card analysis-grid">
+    <div class="panel">
+      <h3>🔥 爆款内容模式</h3>
+      <div class="bar-row" id="patternBars">
+        <span style="color:#ccc;font-size:12px">加载中...</span>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>📊 话题分布</h3>
+      <div class="bar-row" id="topicBars">
+        <span style="color:#ccc;font-size:12px">加载中...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="card">
+    <h2>📋 热门笔记列表</h2>
+    <div class="filters">
+      <span class="filter-label">话题：</span>
+      <div class="filter-group" id="topicFilter">
+        <button class="filter-btn active" data-filter="all" onclick="filterTopic('all')">全部</button>
+      </div>
+      <span class="filter-label" style="margin-left:12px">时间：</span>
+      <div class="filter-group" id="timeFilter">
+        <button class="filter-btn active" data-filter="all" onclick="filterTime('all')">全部</button>
+        <button class="filter-btn" data-filter="week" onclick="filterTime('week')">近1周</button>
+      </div>
+      <span class="filter-label" style="margin-left:12px">排序：</span>
+      <div class="filter-group" id="sortFilter">
+        <button class="filter-btn active" data-sort="engage" onclick="sortBy('engage')">互动量</button>
+        <button class="filter-btn" data-sort="liked" onclick="sortBy('liked')">点赞</button>
+        <button class="filter-btn" data-sort="collected" onclick="sortBy('collected')">收藏</button>
+      </div>
+    </div>
+    <div class="stats-bar" id="statsBar"></div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>#</th><th>标题</th><th>作者</th><th>话题</th>
+          <th class="num">👍点赞</th><th class="num">⭐收藏</th><th class="num">💬评论</th><th class="num">互动量</th>
+        </tr></thead>
+        <tbody id="noteTable"></tbody>
+      </table>
+    </div>
+    <div class="empty-state" id="emptyState" style="display:none">
+      <div class="emoji">📭</div>
+      <p>暂无数据</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  数据来源：小红书公开笔记 &nbsp;·&nbsp; AI 自动采集分析 &nbsp;·&nbsp; <span id="footerTime">加载中...</span><br>
+  点击上方「刷新获取最新数据」按钮更新内容
+</div>
+
+<script>
+// ── 全局状态 ──────────────────────────────────────────────────
+let RAW = null;
+let PAGE_META = null;
+
+// 当前筛选状态
+let currentTopic = 'all';
+let currentTime  = 'all';
+let currentSort  = 'engage';
+
+// ── 颜色映射 ──────────────────────────────────────────────────
+const TOPIC_COLORS = {
+  '1型糖尿病': '#667eea',
+  '2型糖尿病': '#f093fb',
+  '胰岛素泵':  '#4facfe',
+  '糖尿病饮食':'#43e97b',
+  '血糖管理':  '#fa709a'
+};
+const PAT_COLORS = {
+  '情绪共鸣': '#ff6b6b',
+  '实用干货': '#667eea',
+  '亲身经历': '#4facfe',
+  '数据支撑': '#43e97b',
+  '情感故事': '#fa709a'
+};
+
+// ── 初始化：加载数据 ──────────────────────────────────────────
+async function init() {
+  try {
+    const resp = await fetch('/api/radar-data');
+    if (!resp.ok) throw new Error('API error: ' + resp.status);
+    const meta = await resp.json();
+    RAW = meta.data;
+    PAGE_META = meta;
+
+    // 隐藏 loading
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) overlay.style.display = 'none';
+
+    // 更新标题
+    document.getElementById('pageTitle').textContent =
+      (meta.title || '小红书糖尿病爆款雷达') + ' · 春日泡泡';
+
+    // 更新 header 时间
+    const updated = meta.updated_at || meta.generated_at || new Date().toLocaleString('zh-CN');
+    const total = (RAW.week || []).length;
+    document.getElementById('hdTime').textContent =
+      `数据更新：${updated} · 共 ${total} 篇笔记`;
+    document.getElementById('footerTime').textContent = `更新于 ${updated}`;
+
+    // 初始化话题筛选按钮
+    initTopicFilters();
+
+    // 渲染所有
+    renderTopicStats();
+    renderAnalysis();
+    renderTable();
+
+    // 柱状图动画
+    setTimeout(() => {
+      document.querySelectorAll('.bar-fill').forEach(el => {
+        const w = el.dataset.w;
+        if (w) {
+          el.style.width = '0';
+          setTimeout(() => { el.style.width = w + '%'; }, 100);
+        }
+      });
+    }, 200);
+
+  } catch (err) {
+    console.error('Failed to load data:', err);
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) overlay.innerHTML =
+      '<div class="emoji">🤕</div><p>数据加载失败</p><small style="color:#999">'+ err.message +'</small><br><button class="refresh-btn" onclick="location.reload()" style="margin-top:16px">重新加载</button>';
+    document.getElementById('hdTime').textContent = '数据加载失败，请点击重试';
+  }
+}
+
+// ── 渲染话题统计 ─────────────────────────────────────────────
+function renderTopicStats() {
+  const container = document.getElementById('topicStats');
+  if (!container || !RAW) return;
+  const topics = Object.keys(TOPIC_COLORS);
+  const icons  = { '1型糖尿病':'🩸','2型糖尿病':'🩺','胰岛素泵':'⚙️','糖尿病饮食':'🥗','血糖管理':'📊' };
+  const weekList = RAW.week || [];
+  const halfList = RAW.half || weekList;
+
+  let html = '';
+  topics.forEach(topic => {
+    const weekCnt = weekList.filter(n => n.topic === topic).length;
+    const halfCnt = halfList.filter(n => n.topic === topic).length;
+    const topNote = weekList
+      .filter(n => n.topic === topic)
+      .sort((a, b) => (b.total_engage || 0) - (a.total_engage || 0))[0];
+    const color = TOPIC_COLORS[topic] || '#ccc';
+    const icon  = icons[topic] || '📌';
+    html += `<div class="topic-stat" style="border-left-color:${color}">
+  <div class="ts-head"><span class="ts-icon">${icon}</span><span class="ts-name">${topic}</span></div>
+  <div class="ts-nums"><span>近1周 <b>${weekCnt}</b> 篇</span> &nbsp;<span>半年 <b>${halfCnt}</b> 篇</span></div>
+  <div class="ts-top">🔥 ${topNote ? topNote.title.slice(0, 20) : '暂无'}</div>
+</div>`;
+  });
+  container.innerHTML = html;
+}
+
+// ── 渲染分析区 ────────────────────────────────────────────────
+function renderAnalysis() {
+  if (!RAW) return;
+  const allNotes  = [...(RAW.week || []), ...(RAW.half || [])];
+  const weekNotes = RAW.week || [];
+
+  // 爆款模式统计
+  const patCounts = {};
+  allNotes.forEach(n => { (n.boom_patterns || []).forEach(p => { patCounts[p] = (patCounts[p] || 0) + 1; }); });
+  const maxPat = Math.max(...Object.values(patCounts), 1);
+
+  let patHtml = '';
+  Object.entries(patCounts)
+    .sort((a, b) => b[1] - a[1])
+    .forEach(([pat, cnt]) => {
+      const pct = Math.round(cnt / allNotes.length * 1000) / 10;
+      const w   = Math.round(cnt / maxPat * 100);
+      const color = PAT_COLORS[pat] || '#ccc';
+      patHtml += `<div class="bar-row">
+  <span class="bar-lbl">${pat}</span>
+  <div class="bar-track"><div class="bar-fill" style="background:${color}" data-w="${w}"><span class="bar-cnt">${cnt}篇</span></div></div>
+  <span class="bar-pct">${pct}%</span>
+</div>`;
+    });
+  if (!patHtml) patHtml = '<span style="color:#ccc;font-size:12px">暂无数据</span>';
+  document.getElementById('patternBars').innerHTML = patHtml;
+
+  // 话题分布（周数据）
+  const topicCounts = {};
+  weekNotes.forEach(n => { topicCounts[n.topic] = (topicCounts[n.topic] || 0) + 1; });
+  const maxTopic = Math.max(...Object.values(topicCounts), 1);
+
+  let topicHtml = '';
+  Object.entries(topicCounts)
+    .sort((a, b) => b[1] - a[1])
+    .forEach(([topic, cnt]) => {
+      const pct = Math.round(cnt / weekNotes.length * 1000) / 10;
+      const w   = Math.round(cnt / maxTopic * 100);
+      const color = TOPIC_COLORS[topic] || '#ccc';
+      topicHtml += `<div class="bar-row">
+  <span class="bar-lbl">${topic}</span>
+  <div class="bar-track"><div class="bar-fill" style="background:${color}" data-w="${w}"><span class="bar-cnt">${cnt}篇</span></div></div>
+  <span class="bar-pct">${pct}%</span>
+</div>`;
+    });
+  if (!topicHtml) topicHtml = '<span style="color:#ccc;font-size:12px">暂无数据</span>';
+  document.getElementById('topicBars').innerHTML = topicHtml;
+}
+
+// ── 初始化话题筛选按钮 ───────────────────────────────────────
+function initTopicFilters() {
+  const container = document.getElementById('topicFilter');
+  if (!container || !RAW) return;
+  const topics = Object.keys(TOPIC_COLORS);
+  const weekNotes = RAW.week || [];
+
+  let html = '<button class="filter-btn active" data-filter="all" onclick="filterTopic(\'all\')">全部</button>';
+  topics.forEach(topic => {
+    const cnt = weekNotes.filter(n => n.topic === topic).length;
+    if (cnt > 0) {
+      html += `<button class="filter-btn" data-filter="${topic}" onclick="filterTopic('${topic}')">${topic} (${cnt})</button>`;
+    }
+  });
+  container.innerHTML = html;
+}
+
+// ── 渲染笔记列表 ─────────────────────────────────────────────
+function renderTable() {
+  if (!RAW) return;
+  let notes = RAW.week || [];
+
+  // 筛选
+  if (currentTopic !== 'all') notes = notes.filter(n => n.topic === currentTopic);
+  if (currentTime  === 'week') notes = notes.filter(n => (n.days_ago || 0) <= 7);
+
+  // 排序
+  notes.sort((a, b) => (b[currentSort] || 0) - (a[currentSort] || 0));
+
+  const tbody = document.getElementById('noteTable');
+  const empty = document.getElementById('emptyState');
+  const stats = document.getElementById('statsBar');
+
+  if (notes.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    stats.innerHTML = '';
+    return;
+  }
+  empty.style.display = 'none';
+
+  const unique       = new Set(notes.map(n => n.title)).size;
+  const totalLiked   = notes.reduce((s, n) => s + (n.liked || 0), 0);
+  const totalCollect = notes.reduce((s, n) => s + (n.collected || 0), 0);
+  stats.innerHTML =
+    `<div class="stat-chip">共 <strong>${unique}</strong> 篇笔记</div>` +
+    `<div class="stat-chip">总赞 <strong>${fmtNum(totalLiked)}</strong></div>` +
+    `<div class="stat-chip">总藏 <strong>${fmtNum(totalCollect)}</strong></div>`;
+
+  let html = '';
+  notes.forEach((n, i) => {
+    const patterns = (n.boom_patterns || []).map(p => {
+      const map = { '情绪共鸣':'情绪共鸣','实用干货':'实用干货','亲身经历':'亲身经历','数据支撑':'数据支撑','情感故事':'情感故事','normal':'普通','普通内容':'普通' };
+      return `<span class="tag tag-pattern ${p === 'normal' ? 'normal' : ''}">${map[p] || p}</span>`;
+    }).join('');
+
+    html += `<tr>
+  <td>${i + 1}</td>
+  <td class="note-title">${n.link ? `<a href="${n.link}" target="_blank">${escHtml(n.title)}</a>` : escHtml(n.title)}</td>
+  <td>${escHtml(n.author)}</td>
+  <td><span class="tag tag-topic">${n.topic}</span></td>
+  <td class="num">${fmtNum(n.liked)}</td>
+  <td class="num">${fmtNum(n.collected)}</td>
+  <td class="num">${fmtNum(n.commented || n.comments || 0)}</td>
+  <td class="num" style="color:#667eea;font-weight:700">${fmtNum(n.total_engage)}</td>
+</tr>`;
+  });
+  tbody.innerHTML = html;
+}
+
+// ── 筛选/排序 ─────────────────────────────────────────────────
+function filterTopic(topic) {
+  currentTopic = topic;
+  document.querySelectorAll('#topicFilter .filter-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.filter === topic));
+  renderTable();
+}
+function filterTime(time) {
+  currentTime = time;
+  document.querySelectorAll('#timeFilter .filter-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.filter === time));
+  renderTable();
+}
+function sortBy(key) {
+  currentSort = key;
+  document.querySelectorAll('#sortFilter .filter-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.sort === key));
+  renderTable();
+}
+
+// ── 刷新按钮（真正从 API 拉新数据）────────────────────────────
+function doRefresh(btn) {
+  btn.classList.add('spinning');
+  btn.disabled = true;
+  btn.querySelector('.ri').textContent = '⏳';
+  init().finally(() => {
+    btn.classList.remove('spinning');
+    btn.disabled = false;
+    btn.querySelector('.ri').textContent = '🔄';
+  });
+}
+
+// ── 工具函数 ─────────────────────────────────────────────────
+function fmtNum(n) {
+  if (!n && n !== 0) return '0';
+  if (n >= 10000) return (n / 10000).toFixed(1) + 'w';
+  if (n >= 1000)  return (n / 1000).toFixed(1) + 'k';
+  return String(n);
+}
+function escHtml(s) {
+  return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+// ── 页面加载时自动拉取 ─────────────────────────────────────────
+window.addEventListener('load', init);
+</script>
+</body>
+</html>
