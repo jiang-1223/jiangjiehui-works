@@ -1,11 +1,9 @@
 name: Refresh XHS Radar Data
 
 on:
-  # 每周一凌晨2点（北京时间9点）自动执行
   schedule:
     - cron: '0 2 * * 1'
-  # 支持手动触发（GitHub → Actions → Run workflow）
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 jobs:
   refresh:
@@ -16,10 +14,6 @@ jobs:
       - name: Trigger Vercel Cron refresh
         run: |
           echo "Triggering Vercel Cron refresh..."
-          # 通过 Vercel API 触发 cron（可选，如果 Vercel Cron 不可用时使用）
-          # 或者直接在这里更新数据文件
-
-          # 更新数据文件的时间戳
           python -c "
 import json
 from datetime import datetime
