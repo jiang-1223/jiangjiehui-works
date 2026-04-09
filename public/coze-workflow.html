@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>扣子内容创作工作流 | 春日泡泡</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #6C63FF;
+            --primary-light: #8B83FF;
+            --secondary: #FF6584;
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --text: #e0e0e0;
+            --text-muted: #8888aa;
+            --gradient-1: linear-gradient(135deg, #6C63FF 0%, #FF6584 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 24px 20px;
+        }
+
+        /* 顶部返回 */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 32px;
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: var(--text); }
+
+        /* 标题 */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        /* 输入区域 */
+        .input-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .input-label {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 14px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        textarea:focus { border-color: var(--primary); }
+        textarea::placeholder { color: var(--text-muted); }
+
+        /* 图片上传 */
+        .upload-area {
+            border: 2px dashed rgba(108, 99, 255, 0.3);
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 16px;
+        }
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(108, 99, 255, 0.05);
+        }
+        .upload-area.has-images {
+            border-style: solid;
+            padding: 16px;
+        }
+        .upload-icon { font-size: 32px; margin-bottom: 8px; }
+        .upload-text { color: var(--text-muted); font-size: 14px; }
+        .upload-hint { color: var(--text-muted); font-size: 12px; margin-top: 4px; }
+
+        .image-previews {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .image-preview {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .image-preview .remove-btn {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 22px;
+            height: 22px;
+            background: rgba(0,0,0,0.7);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #fileInput { display: none; }
+
+        /* 提交按钮 */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: var(--gradient-1);
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(108,99,255,0.4); }
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* 结果区域 */
+        .result-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 28px;
+            border: 1px solid rgba(255,255,255,0.06);
+            display: none;
+        }
+        .result-section.show { display: block; }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .result-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .result-content {
+            line-height: 1.8;
+            font-size: 15px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .result-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 12px 0;
+        }
+
+        /* 加载动画 */
+        .loading {
+            text-align: center;
+            padding: 40px 0;
+        }
+        .loading-dots {
+            display: inline-flex;
+            gap: 6px;
+        }
+        .loading-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+        .loading-text {
+            margin-top: 16px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* 错误提示 */
+        .error-msg {
+            background: rgba(255, 101, 132, 0.1);
+            border: 1px solid rgba(255, 101, 132, 0.3);
+            border-radius: 10px;
+            padding: 16px;
+            color: var(--secondary);
+            font-size: 14px;
+            display: none;
+            margin-top: 16px;
+        }
+        .error-msg.show { display: block; }
+
+        /* 复制按钮 */
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            background: rgba(108, 99, 255, 0.15);
+            border: 1px solid rgba(108, 99, 255, 0.3);
+            border-radius: 8px;
+            color: var(--primary-light);
+            font-size: 13px;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.3s;
+        }
+        .copy-btn:hover { background: rgba(108, 99, 255, 0.25); }
+
+        @media (max-width: 768px) {
+            .container { padding: 16px; }
+            .page-header h1 { font-size: 22px; }
+            .input-section { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← 返回首页</a>
+
+        <div class="page-header">
+            <h1>🤖 扣子内容创作工作流</h1>
+            <p>为1型糖知道的事和美悦达服务账号小红书定制的内容创作工作流</p>
+        </div>
+
+        <div class="input-section">
+            <div class="input-label">📝 创作需求</div>
+            <textarea id="requirement" placeholder="描述你想要的创作需求，比如：根据这张图帮我写一下文案"></textarea>
+
+            <div class="input-label" style="margin-top: 20px;">🖼️ 上传图片（可选，自动压缩）</div>
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                <div class="upload-icon">📷</div>
+                <div class="upload-text">点击上传图片或拖拽到此处</div>
+                <div class="upload-hint">支持 JPG、PNG，最多 5 张</div>
+                <div class="image-previews" id="imagePreviews"></div>
+            </div>
+            <input type="file" id="fileInput" accept="image/*" multiple onchange="handleFiles(this.files)">
+
+            <button class="submit-btn" id="submitBtn" onclick="submitWorkflow()">
+                🚀 开始创作
+            </button>
+            <div class="error-msg" id="errorMsg"></div>
+        </div>
+
+        <div class="result-section" id="resultSection">
+            <div class="result-header">
+                <h3>✨ 创作结果</h3>
+                <button class="copy-btn" onclick="copyResult()">📋 复制</button>
+            </div>
+            <div class="result-content" id="resultContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let uploadedImages = [];
+
+        // 拖拽上传
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', e => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#6C63FF';
+        });
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '';
+        });
+        uploadArea.addEventListener('drop', e => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '';
+            handleFiles(e.dataTransfer.files);
+        });
+
+        // 压缩图片到指定最大尺寸，返回Promise
+        function compressImage(file, maxSizeKB, maxDim) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        // 按比例缩放
+                        let w = img.width, h = img.height;
+                        if (w > maxDim || h > maxDim) {
+                            if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
+                            else { w = Math.round(w * maxDim / h); h = maxDim; }
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = w; canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, w, h);
+                        // 逐步降低质量直到满足大小限制
+                        let quality = 0.8;
+                        let dataUrl = canvas.toDataURL('image/jpeg', quality);
+                        while (dataUrl.length > maxSizeKB * 1024 * 1.37 && quality > 0.1) {
+                            quality -= 0.1;
+                            dataUrl = canvas.toDataURL('image/jpeg', quality);
+                        }
+                        resolve({ url: dataUrl, file_type: 'image/jpeg' });
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // 处理文件（带压缩）
+        async function handleFiles(files) {
+            for (let file of files) {
+                if (uploadedImages.length >= 5) break;
+                if (!file.type.startsWith('image/')) continue;
+                const compressed = await compressImage(file, 200, 1024);
+                uploadedImages.push(compressed);
+                renderPreviews();
+            }
+        }
+
+        // 渲染预览
+        function renderPreviews() {
+            const container = document.getElementById('imagePreviews');
+            container.innerHTML = uploadedImages.map((img, i) => `
+                <div class="image-preview">
+                    <img src="${img.url}" alt="预览">
+                    <button class="remove-btn" onclick="removeImage(${i}, event)">×</button>
+                </div>
+            `).join('');
+
+            const area = document.getElementById('uploadArea');
+            if (uploadedImages.length > 0) {
+                area.classList.add('has-images');
+            } else {
+                area.classList.remove('has-images');
+            }
+        }
+
+        function removeImage(index, event) {
+            event.stopPropagation();
+            uploadedImages.splice(index, 1);
+            renderPreviews();
+        }
+
+        // 提交工作流
+        async function submitWorkflow() {
+            const requirement = document.getElementById('requirement').value.trim();
+            const btn = document.getElementById('submitBtn');
+            const errorMsg = document.getElementById('errorMsg');
+            const resultSection = document.getElementById('resultSection');
+            const resultContent = document.getElementById('resultContent');
+
+            errorMsg.classList.remove('show');
+            resultSection.classList.remove('show');
+
+            if (!requirement) {
+                errorMsg.textContent = '请输入创作需求～';
+                errorMsg.classList.add('show');
+                return;
+            }
+
+            // 构建请求体
+            const body = {
+                requirement: requirement,
+                images: uploadedImages.map(img => ({
+                    url: img.url,
+                    file_type: img.file_type
+                }))
+            };
+
+            // 显示加载
+            btn.disabled = true;
+            btn.textContent = '⏳ AI创作中...';
+            resultSection.classList.add('show');
+            resultContent.innerHTML = `
+                <div class="loading">
+                    <div class="loading-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div class="loading-text">AI 正在努力创作中，请稍候...</div>
+                </div>
+            `;
+
+            try {
+                const resp = await fetch('/api/coze-proxy', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+
+                // 先读文本，再尝试解析JSON（防止非JSON响应报错）
+                const text = await resp.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    // 非JSON响应（如 Request Entity Too Large）
+                    resultSection.classList.remove('show');
+                    errorMsg.textContent = '出错了：' + (text.substring(0, 200) || `请求失败 (${resp.status})`);
+                    errorMsg.classList.add('show');
+                    return;
+                }
+
+                if (!resp.ok) {
+                    throw new Error(data.error || data.message || `请求失败 (${resp.status})`);
+                }
+
+                // 解析结果 - 扣子工作流的返回格式
+                displayResult(data);
+
+            } catch (error) {
+                resultSection.classList.remove('show');
+                errorMsg.textContent = '出错了：' + error.message;
+                errorMsg.classList.add('show');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🚀 开始创作';
+            }
+        }
+
+        // 展示结果
+        function displayResult(data) {
+            const resultContent = document.getElementById('resultContent');
+            let html = '';
+
+            if (data.title || data.content) {
+                if (data.title) {
+                    html += '<h2 style="font-size:20px;font-weight:700;margin-bottom:16px;">' + escHtml(data.title) + '</h2>';
+                }
+                if (data.content) {
+                    html += '<div style="line-height:1.8;">' + renderMarkdown(data.content) + '</div>';
+                }
+            } else if (data.output) {
+                let text = typeof data.output === 'string' ? data.output : JSON.stringify(data.output, null, 2);
+                html = renderMarkdown(text);
+            } else if (data.data) {
+                let text = typeof data.data === 'string' ? data.data : JSON.stringify(data.data, null, 2);
+                html = renderMarkdown(text);
+            } else {
+                html = '<pre style="white-space:pre-wrap;">' + escHtml(JSON.stringify(data, null, 2)) + '</pre>';
+            }
+
+            resultContent.innerHTML = html;
+        }
+
+        function escHtml(str) {
+            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        }
+
+        function renderMarkdown(text) {
+            text = escHtml(text);
+            text = text.replace(/\n/g, '<br>');
+            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            return text;
+        }
+
+        // 复制结果
+        function copyResult() {
+            const text = document.getElementById('resultContent').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const old = btn.innerHTML;
+                btn.innerHTML = '✅ 已复制';
+                setTimeout(() => btn.innerHTML = old, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
