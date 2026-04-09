@@ -1,7 +1,7 @@
 {
   "title": "小红书糖尿病爆款雷达",
-  "updated_at": "2026/04/09 19:03",
-  "generated_at": "2026-04-09T19:03:00.232498",
+  "updated_at": "2026年04月08日 22:01",
+  "generated_at": "2026-04-08T22:01:37.115407",
   "data": {
     "week": [
       {
@@ -1026,7 +1026,5 @@
         "link": "https://www.xiaohongshu.com/explore/random胰岛素泵"
       }
     ]
-  },
-  "last_updated": "2026-04-08T23:12:20.907012",
-  "_debug": "trigger workflow"
+  }
 }
