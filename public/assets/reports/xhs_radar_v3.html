@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小红书糖尿病爆款雷达 · 春日泡泡</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:#f0f2f5;color:#1a1a2e}
+a{color:#667eea;text-decoration:none}
+a:hover{text-decoration:underline}
+
+.header{
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  color:#fff;padding:40px 20px;text-align:center;position:relative;overflow:hidden
+}
+.header::before{
+  content:"";position:absolute;inset:0;
+  background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='80' cy='20' r='30' fill='rgba(255,255,255,0.05)'/><circle cx='20' cy='80' r='40' fill='rgba(255,255,255,0.05)'/></svg>") center/cover;
+}
+.header{position:relative;z-index:0}
+.header h1{font-size:2em;margin-bottom:8px;position:relative}
+.header .subtitle{opacity:0.9;font-size:1em;position:relative}
+.header .update-time{opacity:0.7;font-size:0.82em;margin-top:8px;position:relative}
+.header .badge{display:inline-block;background:rgba(255,255,255,0.2);padding:4px 12px;border-radius:20px;font-size:0.8em;margin-top:8px;position:relative}
+
+.wrap{max-width:1100px;margin:0 auto;padding:20px}
+
+.card{background:#fff;border-radius:16px;padding:24px;margin-bottom:20px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.card-title{font-size:1.05em;color:#333;margin-bottom:18px;font-weight:600;display:flex;align-items:center;gap:8px}
+.card-title::before{content:"";width:4px;height:18px;background:#667eea;border-radius:2px}
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.stat-card{background:linear-gradient(135deg,#f5f7ff,#ede9fe);border-radius:12px;padding:16px;transition:transform .2s;cursor:default}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(102,126,234,0.15)}
+.stat-kw{font-size:0.82em;font-weight:700;margin-bottom:4px}
+.stat-num{font-size:2.2em;font-weight:800;color:#333;line-height:1}
+.stat-label{font-size:0.75em;color:#888;margin-bottom:6px}
+.stat-top{font-size:0.78em;color:#555;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat-likes{font-size:0.8em;color:#e74c3c;font-weight:600}
+
+.boom-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.boom-card{border:2px solid #f0f0f0;border-radius:14px;padding:18px;text-align:center;position:relative;transition:all .2s}
+.boom-card.boom-1{border-color:#ffd700;background:linear-gradient(180deg,#fffdf0,#fff);box-shadow:0 4px 20px rgba(255,215,0,0.15)}
+.boom-card.boom-2{border-color:#c0c0c0}
+.boom-card.boom-3{border-color:#cd7f32}
+.boom-rank{font-size:1.6em;margin-bottom:6px}
+.boom-likes{font-size:1.3em;color:#e74c3c;font-weight:800}
+.boom-title{font-size:0.88em;color:#333;margin:8px 0 4px;line-height:1.4;font-weight:500}
+.boom-meta{font-size:0.78em;color:#999;margin-bottom:8px}
+.boom-link{display:inline-block;background:#667eea;color:#fff;padding:5px 14px;border-radius:20px;font-size:0.8em}
+.boom-link:hover{background:#764ba2;color:#fff}
+
+.double-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.topic-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.topic-label{display:flex;align-items:center;gap:6px;min-width:150px}
+.topic-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.topic-name{font-size:0.88em;color:#333;font-weight:500;white-space:nowrap}
+.topic-count{font-size:0.78em;color:#999;white-space:nowrap}
+.bar-track{flex:1;height:20px;background:#f5f7ff;border-radius:10px;overflow:hidden}
+.bar-fill{height:100%;border-radius:10px;transition:width 1s cubic-bezier(.22,1,.36,1);min-width:4px}
+.topic-top1{font-size:0.75em;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+
+.filter-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+select,.search-input{padding:8px 14px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:0.88em;cursor:pointer;background:#fff;color:#333}
+select:focus,.search-input:focus{outline:none;border-color:#667eea}
+.search-input{width:200px}
+.stats-info{font-size:0.85em;color:#888;margin-bottom:12px}
+.stats-info span{color:#667eea;font-weight:600}
+
+table{width:100%;border-collapse:collapse}
+th{background:#f5f7ff;padding:11px 12px;text-align:left;font-size:0.8em;color:#667eea;font-weight:600;border-bottom:2px solid #e8e8f4;cursor:pointer;user-select:none;white-space:nowrap}
+th:hover{background:#ede9fe}
+td{padding:11px 12px;border-bottom:1px solid #f0f0f4;font-size:0.88em;vertical-align:middle}
+tr:hover{background:#fafbff}
+.likes{color:#e74c3c;font-weight:700;white-space:nowrap;font-size:0.9em}
+.rank-col{color:#999;font-size:0.82em;text-align:center;width:40px}
+.note-title{max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.note-title a{color:#333}
+.note-title a:hover{color:#667eea}
+.kw-tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:0.76em;white-space:nowrap}
+.author-col{color:#888;font-size:0.82em;white-space:nowrap}
+
+.pagination{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:20px}
+.page-btn{padding:6px 14px;border:1px solid #ddd;border-radius:8px;background:#fff;cursor:pointer;font-size:0.88em;color:#667eea}
+.page-btn:hover{background:#667eea;color:#fff;border-color:#667eea}
+.page-info{font-size:0.85em;color:#888;padding:0 10px}
+
+.footer{text-align:center;padding:32px;color:#aaa;font-size:0.82em;line-height:1.8}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.stat-card,.boom-card,.topic-row{animation:fadeIn .4s ease both}
+
+@media(max-width:700px){
+  .boom-grid,.double-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .topic-label{min-width:110px}
+  .note-title{max-width:150px}
+  .filter-bar{flex-direction:column;align-items:stretch}
+  .search-input{width:100%}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📊 小红书糖尿病爆款雷达</h1>
+  <div class="subtitle">实时追踪糖尿病领域热门笔记，发现流量密码</div>
+  <div class="update-time">🕐 2026-04-09 21:01:20</div>
+  <div class="badge">🔥 MCP自动化采集</div>
+</div>
+
+<div class="wrap">
+
+  <div class="card">
+    <div class="card-title">🏆 话题热度概览</div>
+    <div class="stats-grid">
+
+    <div class="stat-card" style="border-left:4px solid #43e97b">
+      <div class="stat-kw" style="color:#43e97b">糖尿病饮食食谱</div>
+      <div class="stat-num">20</div>
+      <div class="stat-label">热门笔记</div>
+      <div class="stat-top">🔥 48款天然胰岛素食谱清单🧾！建议收藏…</div>
+      <div class="stat-likes">4.4w赞</div>
+    </div>
+    <div class="stat-card" style="border-left:4px solid #f093fb">
+      <div class="stat-kw" style="color:#f093fb">2型糖尿病控糖</div>
+      <div class="stat-num">18</div>
+      <div class="stat-label">热门笔记</div>
+      <div class="stat-top">🔥 关于帮爸爸控糖的三年，我有发言权</div>
+      <div class="stat-likes">1.5w赞</div>
+    </div>
+    <div class="stat-card" style="border-left:4px solid #4facfe">
+      <div class="stat-kw" style="color:#4facfe">胰岛素泵</div>
+      <div class="stat-num">17</div>
+      <div class="stat-label">热门笔记</div>
+      <div class="stat-top">🔥 摘下到期的动态，下面怎么又那么多🩸啊…</div>
+      <div class="stat-likes">1.4k赞</div>
+    </div>
+    <div class="stat-card" style="border-left:4px solid #fa709a">
+      <div class="stat-kw" style="color:#fa709a">动态血糖监测</div>
+      <div class="stat-num">17</div>
+      <div class="stat-label">热门笔记</div>
+      <div class="stat-top">🔥 动态血糖仪的针也太长了吧</div>
+      <div class="stat-likes">612赞</div>
+    </div>
+    <div class="stat-card" style="border-left:4px solid #ff6b6b">
+      <div class="stat-kw" style="color:#ff6b6b">糖尿病并发症</div>
+      <div class="stat-num">16</div>
+      <div class="stat-label">热门笔记</div>
+      <div class="stat-top">🔥 糖尿病20年😭我爸是怎么发展到尿毒症…</div>
+      <div class="stat-likes">3.9k赞</div>
+    </div>
+    <div class="stat-card" style="border-left:4px solid #a29bfe">
+      <div class="stat-kw" style="color:#a29bfe">糖尿病运动</div>
+      <div class="stat-num">16</div>
+      <div class="stat-label">热门笔记</div>
+      <div class="stat-top">🔥 练这10个降糖动作🔥每天4min亲测…</div>
+      <div class="stat-likes">7.3w赞</div>
+    </div>
+    <div class="stat-card" style="border-left:4px solid #667eea">
+      <div class="stat-kw" style="color:#667eea">1型糖尿病</div>
+      <div class="stat-num">15</div>
+      <div class="stat-label">热门笔记</div>
+      <div class="stat-top">🔥 《柳叶刀》铁证：1型糖尿病不是你的错</div>
+      <div class="stat-likes">624赞</div>
+    </div>
+    <div class="stat-card" style="border-left:4px solid #ff9f43">
+      <div class="stat-kw" style="color:#ff9f43">妊娠糖尿病</div>
+      <div class="stat-num">15</div>
+      <div class="stat-label">热门笔记</div>
+      <div class="stat-top">🔥 5000+孕妈亲测有效的孕期控糖食谱</div>
+      <div class="stat-likes">1.4w赞</div>
+    </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">💥 今日爆款 TOP3</div>
+    <div class="boom-grid">
+
+    <div class="boom-card boom-1">
+      <div class="boom-rank">🥇</div>
+      <div class="boom-likes">7.3w 赞</div>
+      <div class="boom-title">练这10个降糖动作🔥每天4min亲测有效‼️</div>
+      <div class="boom-meta">@晓安妈妈陪伴育儿 · 糖尿病运动</div>
+      <a class="boom-link" href="https://www.xiaohongshu.com/explore/65c4bd80000000002c013a9f" target="_blank">查看原文 →</a>
+    </div>
+    <div class="boom-card boom-2">
+      <div class="boom-rank">🥈</div>
+      <div class="boom-likes">6.4w 赞</div>
+      <div class="boom-title">耗糖快不需要您跑步和跳操，饭后这样练</div>
+      <div class="boom-meta">@Leo · 糖尿病运动</div>
+      <a class="boom-link" href="https://www.xiaohongshu.com/explore/69b14785000000002203a322" target="_blank">查看原文 →</a>
+    </div>
+    <div class="boom-card boom-3">
+      <div class="boom-rank">🥉</div>
+      <div class="boom-likes">4.4w 赞</div>
+      <div class="boom-title">48款天然胰岛素食谱清单🧾！建议收藏！</div>
+      <div class="boom-meta">@了空养生笔记 · 糖尿病饮食食谱</div>
+      <a class="boom-link" href="https://www.xiaohongshu.com/explore/66ac878d00000000050220b3" target="_blank">查看原文 →</a>
+    </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="double-grid">
+      <div>
+        <div class="card-title">📈 话题热度分布</div>
+        <div class="bar-list">
+
+  <div class="topic-row">
+    <div class="topic-label">
+      <span class="topic-dot" style="background:#43e97b"></span>
+      <span class="topic-name">糖尿病饮食食谱</span>
+      <span class="topic-count">20篇</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:100%;background:#43e97b"></div></div>
+    <div class="topic-top1">🔥 48款天然胰岛素食谱清单🧾！建议收藏！</div>
+  </div>
+  <div class="topic-row">
+    <div class="topic-label">
+      <span class="topic-dot" style="background:#f093fb"></span>
+      <span class="topic-name">2型糖尿病控糖</span>
+      <span class="topic-count">18篇</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:90%;background:#f093fb"></div></div>
+    <div class="topic-top1">🔥 关于帮爸爸控糖的三年，我有发言权</div>
+  </div>
+  <div class="topic-row">
+    <div class="topic-label">
+      <span class="topic-dot" style="background:#4facfe"></span>
+      <span class="topic-name">胰岛素泵</span>
+      <span class="topic-count">17篇</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:85%;background:#4facfe"></div></div>
+    <div class="topic-top1">🔥 摘下到期的动态，下面怎么又那么多🩸啊😖</div>
+  </div>
+  <div class="topic-row">
+    <div class="topic-label">
+      <span class="topic-dot" style="background:#fa709a"></span>
+      <span class="topic-name">动态血糖监测</span>
+      <span class="topic-count">17篇</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:85%;background:#fa709a"></div></div>
+    <div class="topic-top1">🔥 动态血糖仪的针也太长了吧</div>
+  </div>
+  <div class="topic-row">
+    <div class="topic-label">
+      <span class="topic-dot" style="background:#ff6b6b"></span>
+      <span class="topic-name">糖尿病并发症</span>
+      <span class="topic-count">16篇</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:80%;background:#ff6b6b"></div></div>
+    <div class="topic-top1">🔥 糖尿病20年😭我爸是怎么发展到尿毒症的</div>
+  </div>
+  <div class="topic-row">
+    <div class="topic-label">
+      <span class="topic-dot" style="background:#a29bfe"></span>
+      <span class="topic-name">糖尿病运动</span>
+      <span class="topic-count">16篇</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:80%;background:#a29bfe"></div></div>
+    <div class="topic-top1">🔥 练这10个降糖动作🔥每天4min亲测有效‼️</div>
+  </div>
+  <div class="topic-row">
+    <div class="topic-label">
+      <span class="topic-dot" style="background:#667eea"></span>
+      <span class="topic-name">1型糖尿病</span>
+      <span class="topic-count">15篇</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:75%;background:#667eea"></div></div>
+    <div class="topic-top1">🔥 《柳叶刀》铁证：1型糖尿病不是你的错</div>
+  </div>
+  <div class="topic-row">
+    <div class="topic-label">
+      <span class="topic-dot" style="background:#ff9f43"></span>
+      <span class="topic-name">妊娠糖尿病</span>
+      <span class="topic-count">15篇</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:75%;background:#ff9f43"></div></div>
+    <div class="topic-top1">🔥 5000+孕妈亲测有效的孕期控糖食谱</div>
+  </div>
+        </div>
+      </div>
+      <div>
+        <div class="card-title">🏷️ 爆款内容模式</div>
+        <div class="bar-list">
+
+  <div class="topic-row">
+    <div class="topic-label">
+      <span class="topic-dot" style="background:#ff9f43"></span>
+      <span class="topic-name">食谱</span>
+      <span class="topic-count">14篇</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:100%;background:#ff9f43"></div></div>
+  </div>
+  <div class="topic-row">
+    <div class="topic-label">
+      <span class="topic-dot" style="background:#ff6b6b"></span>
+      <span class="topic-name">亲测有效</span>
+      <span class="topic-count">5篇</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:100%;background:#ff6b6b"></div></div>
+  </div>
+  <div class="topic-row">
+    <div class="topic-label">
+      <span class="topic-dot" style="background:#a29bfe"></span>
+      <span class="topic-name">逆转</span>
+      <span class="topic-count">3篇</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:100%;background:#a29bfe"></div></div>
+  </div>
+  <div class="topic-row">
+    <div class="topic-label">
+      <span class="topic-dot" style="background:#667eea"></span>
+      <span class="topic-name">建议收藏</span>
+      <span class="topic-count">2篇</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" style="width:100%;background:#667eea"></div></div>
+  </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 热门笔记列表</div>
+    <div class="filter-bar">
+      <select id="kwFilter"><option value="">全部话题</option>
+        <option value="1型糖尿病">1型糖尿病</option>
+        <option value="胰岛素泵">胰岛素泵</option>
+        <option value="动态血糖监测">动态血糖监测</option>
+        <option value="2型糖尿病控糖">2型糖尿病控糖</option>
+        <option value="糖尿病饮食食谱">糖尿病饮食食谱</option>
+        <option value="妊娠糖尿病">妊娠糖尿病</option>
+        <option value="糖尿病并发症">糖尿病并发症</option>
+        <option value="糖尿病运动">糖尿病运动</option>
+      </select>
+      <input class="search-input" id="searchInput" type="text" placeholder="搜索标题/作者…" />
+      <select id="sortBy">
+        <option value="likes">按点赞排序</option>
+        <option value="keyword">按话题分组</option>
+      </select>
+    </div>
+    <div class="stats-info">共 <span id="totalCount">134</span> 条真实笔记</div>
+    <table>
+      <thead>
+        <tr>
+          <th class="rank-col">#</th>
+          <th>标题</th>
+          <th>话题</th>
+          <th>作者</th>
+          <th id="thLikes">👍 点赞</th>
+        </tr>
+      </thead>
+      <tbody id="noteTable"></tbody>
+    </table>
+    <div class="pagination" id="pagination"></div>
+  </div>
+
+</div>
+
+<div class="footer">
+  春日泡泡 · 数据来源：小红书公开笔记 · MCP自动化抓取<br>
+  更新时间：2026-04-09 21:01:20 · 数据每周自动更新
+</div>
+
+<script>
+var NOTES = [{"keyword": "糖尿病运动", "title": "练这10个降糖动作🔥每天4min亲测有效‼️", "author": "晓安妈妈陪伴育儿", "id": "65c4bd80000000002c013a9f", "likes": 73440, "type": "note", "url": "https://www.xiaohongshu.com/explore/65c4bd80000000002c013a9f"}, {"keyword": "糖尿病运动", "title": "耗糖快不需要您跑步和跳操，饭后这样练", "author": "Leo", "id": "69b14785000000002203a322", "likes": 64298, "type": "note", "url": "https://www.xiaohongshu.com/explore/69b14785000000002203a322"}, {"keyword": "糖尿病饮食食谱", "title": "48款天然胰岛素食谱清单🧾！建议收藏！", "author": "了空养生笔记", "id": "66ac878d00000000050220b3", "likes": 44330, "type": "note", "url": "https://www.xiaohongshu.com/explore/66ac878d00000000050220b3"}, {"keyword": "糖尿病饮食食谱", "title": "一周控糖食谱‼️糖友快快收藏📝", "author": "秋秋养生笔记", "id": "678c4e920000000016023c78", "likes": 31215, "type": "note", "url": "https://www.xiaohongshu.com/explore/678c4e920000000016023c78"}, {"keyword": "糖尿病运动", "title": "糖友降糖操，每天在家就能做", "author": "心脏血管外科李炜", "id": "6731a012000000001a01dfff", "likes": 25031, "type": "note", "url": "https://www.xiaohongshu.com/explore/6731a012000000001a01dfff"}, {"keyword": "糖尿病饮食食谱", "title": "🍃一周控糖餐合集 | 吃干净又丰富的食物", "author": "猪小妹cc控糖日记", "id": "66c84427000000001f018e91", "likes": 17074, "type": "note", "url": "https://www.xiaohongshu.com/explore/66c84427000000001f018e91"}, {"keyword": "2型糖尿病控糖", "title": "关于帮爸爸控糖的三年，我有发言权", "author": "柴宝", "id": "6660490f000000000d00c75e", "likes": 14714, "type": "note", "url": "https://www.xiaohongshu.com/explore/6660490f000000000d00c75e"}, {"keyword": "妊娠糖尿病", "title": "5000+孕妈亲测有效的孕期控糖食谱", "author": "营养师糖糖", "id": "67e7e075000000001d02164b", "likes": 13894, "type": "note", "url": "https://www.xiaohongshu.com/explore/67e7e075000000001d02164b"}, {"keyword": "2型糖尿病控糖", "title": "㊙️ 早餐控糖黄金法则（一）！建议收藏！", "author": "了空养生笔记", "id": "65d6d359000000000b00ecf3", "likes": 10779, "type": "note", "url": "https://www.xiaohongshu.com/explore/65d6d359000000000b00ecf3"}, {"keyword": "糖尿病运动", "title": "糖友们做起来吧！", "author": "内分泌科主任甘洪桥", "id": "678e06500000000003022caf", "likes": 9721, "type": "note", "url": "https://www.xiaohongshu.com/explore/678e06500000000003022caf"}, {"keyword": "2型糖尿病控糖", "title": "水果GI值一览表❗️吃水果不怕血糖高的秘密", "author": "陈包仔的营养师妈妈", "id": "66156a2f000000001a00c3ed", "likes": 8409, "type": "note", "url": "https://www.xiaohongshu.com/explore/66156a2f000000001a00c3ed"}, {"keyword": "2型糖尿病控糖", "title": "控糖必看！“211饮食法”搭配降糖技巧！！", "author": "清风控糖笔记", "id": "68345721000000002102e3ac", "likes": 6129, "type": "note", "url": "https://www.xiaohongshu.com/explore/68345721000000002102e3ac"}, {"keyword": "糖尿病饮食食谱", "title": "糖尿病一周食谱推荐（想减肥的也可以试试）", "author": "营养博士-阿琴", "id": "692429cd000000001e00cc1e", "likes": 5799, "type": "note", "url": "https://www.xiaohongshu.com/explore/692429cd000000001e00cc1e"}, {"keyword": "糖尿病饮食食谱", "title": "网友在医院拍的控糖食谱，存记！感谢", "author": "我们是春天的花花", "id": "6916ed900000000005002f14", "likes": 4977, "type": "note", "url": "https://www.xiaohongshu.com/explore/6916ed900000000005002f14"}, {"keyword": "糖尿病饮食食谱", "title": "糖尿病人一日三餐食谱大全，一周控糖饮食！", "author": "内分泌科胡医生", "id": "6932ac07000000001e021bde", "likes": 4664, "type": "note", "url": "https://www.xiaohongshu.com/explore/6932ac07000000001e021bde"}, {"keyword": "糖尿病饮食食谱", "title": "🔥慢升糖饮食一日六餐｜让曲线更稳～", "author": "了空养生笔记", "id": "689d5a33000000001b037b88", "likes": 4599, "type": "note", "url": "https://www.xiaohongshu.com/explore/689d5a33000000001b037b88"}, {"keyword": "糖尿病运动", "title": "餐后血糖操，血糖轻松控", "author": "糖尿病逆转顾耀", "id": "6892b55d000000002302b821", "likes": 4405, "type": "note", "url": "https://www.xiaohongshu.com/explore/6892b55d000000002302b821"}, {"keyword": "糖尿病饮食食谱", "title": "糖尿病合并高血压🆘食谱，你一定要收藏", "author": "糖人华姐控糖笔记", "id": "67c43db90000000009017d91", "likes": 4002, "type": "note", "url": "https://www.xiaohongshu.com/explore/67c43db90000000009017d91"}, {"keyword": "糖尿病并发症", "title": "糖尿病20年😭我爸是怎么发展到尿毒症的", "author": "糖肾老爸在变好", "id": "67add3580000000018006492", "likes": 3864, "type": "note", "url": "https://www.xiaohongshu.com/explore/67add3580000000018006492"}, {"keyword": "糖尿病运动", "title": "新手糖友可别跑跳，这套动作，膝关节很爱。", "author": "控了糖的豪", "id": "67d7ffad0000000007035683", "likes": 3622, "type": "note", "url": "https://www.xiaohongshu.com/explore/67d7ffad0000000007035683"}, {"keyword": "糖尿病饮食食谱", "title": "㊙️糖尿病一周食谱｜三餐不重样，照着吃就行", "author": "糖友韩妈妈", "id": "6962434a0000000022020cb4", "likes": 3536, "type": "note", "url": "https://www.xiaohongshu.com/explore/6962434a0000000022020cb4"}, {"keyword": "糖尿病运动", "title": "感觉跑步没什么用", "author": "小红薯🍠", "id": "670a44dd00000000210080dc", "likes": 3477, "type": "note", "url": "https://www.xiaohongshu.com/explore/670a44dd00000000210080dc"}, {"keyword": "糖尿病并发症", "title": "糖尿病的妈妈让我精神崩溃，灾难开局。", "author": "Ice", "id": "6672b83c000000000e0332bf", "likes": 3158, "type": "note", "url": "https://www.xiaohongshu.com/explore/6672b83c000000000e0332bf"}, {"keyword": "糖尿病饮食食谱", "title": "控糖期一周饮食计划｜【亲测有效】", "author": "了空养生笔记", "id": "67ac416d000000001902d959", "likes": 2795, "type": "note", "url": "https://www.xiaohongshu.com/explore/67ac416d000000001902d959"}, {"keyword": "妊娠糖尿病", "title": "糖耐不过？90%孕妈都输在这⚠️", "author": "木子李的小十一", "id": "68caae37000000000e033bdc", "likes": 2549, "type": "note", "url": "https://www.xiaohongshu.com/explore/68caae37000000000e033bdc"}, {"keyword": "糖尿病运动", "title": "跟练版❗️不跑不跳，5分钟饭后降糖操🔥", "author": "优雅小老太大金", "id": "6985a750000000000b013cd6", "likes": 2390, "type": "note", "url": "https://www.xiaohongshu.com/explore/6985a750000000000b013cd6"}, {"keyword": "2型糖尿病控糖", "title": "糖尿病患者一周食谱，逆转的我告诉你吃什么", "author": "会控糖的皓月", "id": "67d0054b000000002802a17f", "likes": 2263, "type": "note", "url": "https://www.xiaohongshu.com/explore/67d0054b000000002802a17f"}, {"keyword": "糖尿病运动", "title": "一人说一降糖运动", "author": "阿茶在控糖", "id": "692da534000000001e00cab6", "likes": 2223, "type": "note", "url": "https://www.xiaohongshu.com/explore/692da534000000001e00cab6"}, {"keyword": "糖尿病运动", "title": "10min站立下糖 ! 糖友必备 ！急性子快来练", "author": "控了糖的豪", "id": "69242fb6000000001e026703", "likes": 2183, "type": "note", "url": "https://www.xiaohongshu.com/explore/69242fb6000000001e026703"}, {"keyword": "糖尿病饮食食谱", "title": "🍽️ 高血糖怎么吃？记住这份红黑榜！", "author": "婷婷的营养研究所", "id": "694502cb000000001e00864e", "likes": 1894, "type": "note", "url": "https://www.xiaohongshu.com/explore/694502cb000000001e00864e"}, {"keyword": "2型糖尿病控糖", "title": "超详细！1型和2型糖尿病差异解读📖", "author": "营养科程梦婕", "id": "6830279a000000002100ada1", "likes": 1691, "type": "note", "url": "https://www.xiaohongshu.com/explore/6830279a000000002100ada1"}, {"keyword": "2型糖尿病控糖", "title": "控糖这样吃，有助于平稳X糖", "author": "爱养生 爱健康", "id": "6671bf78000000001c0378ed", "likes": 1675, "type": "note", "url": "https://www.xiaohongshu.com/explore/6671bf78000000001c0378ed"}, {"keyword": "胰岛素泵", "title": "摘下到期的动态，下面怎么又那么多🩸啊😖", "author": "雪花酥🍬（一型）", "id": "698d5c80000000001b01e387", "likes": 1439, "type": "note", "url": "https://www.xiaohongshu.com/explore/698d5c80000000001b01e387"}, {"keyword": "糖尿病饮食食谱", "title": "一周不重样控糖汤💯附做法", "author": "是小时光呀（控糖）", "id": "677e6ccf000000000900e690", "likes": 1251, "type": "note", "url": "https://www.xiaohongshu.com/explore/677e6ccf000000000900e690"}, {"keyword": "糖尿病运动", "title": "二型糖工位坐着控糖，6分钟完整版跟练", "author": "小糖快跑💨", "id": "69d639700000000022000759", "likes": 1204, "type": "note", "url": "https://www.xiaohongshu.com/explore/69d639700000000022000759"}, {"keyword": "糖尿病饮食食谱", "title": "国家卫健委认证‼️控糖三餐食谱糖友必 藏", "author": "糖人华姐控糖笔记", "id": "683306e8000000001101c396", "likes": 1198, "type": "note", "url": "https://www.xiaohongshu.com/explore/683306e8000000001101c396"}, {"keyword": "糖尿病并发症", "title": "请注意😨 糖尿病的9大并发症💥你一定要了解", "author": "当当日记", "id": "67307b1c000000003c01aadb", "likes": 1125, "type": "note", "url": "https://www.xiaohongshu.com/explore/67307b1c000000003c01aadb"}, {"keyword": "糖尿病饮食食谱", "title": "控糖不饿肚！一日五餐这样吃", "author": "肉丸营养记", "id": "69c9ded400000000210070f3", "likes": 1097, "type": "note", "url": "https://www.xiaohongshu.com/explore/69c9ded400000000210070f3"}, {"keyword": "妊娠糖尿病", "title": "妊娠期糖尿病，孕期糖尿病的危害、治疗", "author": "猪蛋仔(孕产育儿）", "id": "675ff74a000000001300f05f", "likes": 1075, "type": "note", "url": "https://www.xiaohongshu.com/explore/675ff74a000000001300f05f"}, {"keyword": "糖尿病运动", "title": "🔥6个降糖动作，糖友在家就能做！", "author": "内分泌科何雷大夫", "id": "6912e4cc000000000500268f", "likes": 1044, "type": "note", "url": "https://www.xiaohongshu.com/explore/6912e4cc000000000500268f"}, {"keyword": "糖尿病饮食食谱", "title": "糖尿病饮食清单❤️8吃8不吃，食谱大全", "author": "控糖少女白胖儿", "id": "69611191000000000a02ff89", "likes": 1036, "type": "note", "url": "https://www.xiaohongshu.com/explore/69611191000000000a02ff89"}, {"keyword": "糖尿病运动", "title": "4分钟降糖跟练版", "author": "星星控糖运动", "id": "68e8f0800000000004012364", "likes": 851, "type": "note", "url": "https://www.xiaohongshu.com/explore/68e8f0800000000004012364"}, {"keyword": "糖尿病运动", "title": "糖尿病推荐的运动", "author": "CC", "id": "69ca2f9d000000001a037582", "likes": 757, "type": "note", "url": "https://www.xiaohongshu.com/explore/69ca2f9d000000001a037582"}, {"keyword": "妊娠糖尿病", "title": "别慌！妊娠糖尿病是“给孩子的福分”我靠医院", "author": "晴子麻麻", "id": "69202734000000001e0035cf", "likes": 733, "type": "note", "url": "https://www.xiaohongshu.com/explore/69202734000000001e0035cf"}, {"keyword": "糖尿病并发症", "title": "糖尿病不可怕，可怕的是并发症", "author": "小小个の芊蓉🦁", "id": "66baafa40000000009014da8", "likes": 695, "type": "note", "url": "https://www.xiaohongshu.com/explore/66baafa40000000009014da8"}, {"keyword": "糖尿病运动", "title": "跑步是糖尿病患者的最佳运动吗？", "author": "只关于自己稀碎的生活", "id": "68f184cc000000000503bba2", "likes": 627, "type": "note", "url": "https://www.xiaohongshu.com/explore/68f184cc000000000503bba2"}, {"keyword": "2型糖尿病控糖", "title": "分享给二型糖尿病的爸爸做的注意清单‼️", "author": "～～To", "id": "67abb8f30000000018011f81", "likes": 626, "type": "note", "url": "https://www.xiaohongshu.com/explore/67abb8f30000000018011f81"}, {"keyword": "1型糖尿病", "title": "《柳叶刀》铁证：1型糖尿病不是你的错", "author": "Dr.咩🐑", "id": "685f92460000000017033522", "likes": 624, "type": "note", "url": "https://www.xiaohongshu.com/explore/685f92460000000017033522"}, {"keyword": "动态血糖监测", "title": "动态血糖仪的针也太长了吧", "author": "羊yyyy", "id": "66e6e8ee000000002603ed17", "likes": 612, "type": "note", "url": "https://www.xiaohongshu.com/explore/66e6e8ee000000002603ed17"}, {"keyword": "2型糖尿病控糖", "title": "糖尿病请逼自己一把", "author": "糖友梁先生", "id": "683ecccd000000002100e606", "likes": 586, "type": "note", "url": "https://www.xiaohongshu.com/explore/683ecccd000000002100e606"}, {"keyword": "2型糖尿病控糖", "title": "糖友收藏！｜糖尿病天然胰岛素食物清单🧾", "author": "不甜控糖", "id": "6938ef83000000001e013661", "likes": 559, "type": "note", "url": "https://www.xiaohongshu.com/explore/6938ef83000000001e013661"}, {"keyword": "糖尿病饮食食谱", "title": "糖尿病饮食|血唐高这样吃", "author": "县沐", "id": "67dd3a9c000000000903bec4", "likes": 556, "type": "note", "url": "https://www.xiaohongshu.com/explore/67dd3a9c000000000903bec4"}, {"keyword": "妊娠糖尿病", "title": "孕期控糖超详细整理！什么是妊娠糖尿病", "author": "营养师宋明月", "id": "686354780000000010026292", "likes": 523, "type": "note", "url": "https://www.xiaohongshu.com/explore/686354780000000010026292"}, {"keyword": "动态血糖监测", "title": "开始带动态了 据说前两天不准？", "author": "活力犬", "id": "684a8792000000000f03036a", "likes": 520, "type": "note", "url": "https://www.xiaohongshu.com/explore/684a8792000000000f03036a"}, {"keyword": "2型糖尿病控糖", "title": "25岁二型糖尿病｜小糖人一天都吃啥", "author": "阿美的控糖日记（二型）", "id": "66990bdd00000000250037d4", "likes": 509, "type": "note", "url": "https://www.xiaohongshu.com/explore/66990bdd00000000250037d4"}, {"keyword": "动态血糖监测", "title": "4款CGM动态血糖仪自用测评 (2)", "author": "芝士盐酥鸡", "id": "69ab0f6a0000000028009773", "likes": 463, "type": "note", "url": "https://www.xiaohongshu.com/explore/69ab0f6a0000000028009773"}, {"keyword": "糖尿病饮食食谱", "title": "上海三甲医院开的妊娠糖尿病食谱，亲测有效", "author": "戴拉", "id": "6972bf15000000000d009f53", "likes": 430, "type": "note", "url": "https://www.xiaohongshu.com/explore/6972bf15000000000d009f53"}, {"keyword": "妊娠糖尿病", "title": "上海三甲医院开的妊娠糖尿病食谱，亲测有效", "author": "戴拉", "id": "6972bf15000000000d009f53", "likes": 430, "type": "note", "url": "https://www.xiaohongshu.com/explore/6972bf15000000000d009f53"}, {"keyword": "2型糖尿病控糖", "title": "逆转糖尿病，拯救95%糖尿病人（二型糖尿病）", "author": "橘胖要瘦60斤", "id": "679db3f8000000002a003306", "likes": 369, "type": "note", "url": "https://www.xiaohongshu.com/explore/679db3f8000000002a003306"}, {"keyword": "糖尿病并发症", "title": "失明？截肢？透析？", "author": "小红薯67D190C8", "id": "67e4fd7e00000000030285c9", "likes": 310, "type": "note", "url": "https://www.xiaohongshu.com/explore/67e4fd7e00000000030285c9"}, {"keyword": "妊娠糖尿病", "title": "关于妊娠期糖尿病，我的血糖恢复了！(附经验", "author": "Jerry不吃辣(哺乳期）", "id": "6811fe7b000000000d016d28", "likes": 291, "type": "note", "url": "https://www.xiaohongshu.com/explore/6811fe7b000000000d016d28"}, {"keyword": "1型糖尿病", "title": "今天我的一型糖尿病20岁啦！🎂", "author": "自律小包总🐽", "id": "68109dff0000000021003a1e", "likes": 283, "type": "note", "url": "https://www.xiaohongshu.com/explore/68109dff0000000021003a1e"}, {"keyword": "动态血糖监测", "title": "03年戴动态血糖仪被妈说有病", "author": "🧀", "id": "68cc07c2000000000702b4bd", "likes": 254, "type": "note", "url": "https://www.xiaohongshu.com/explore/68cc07c2000000000702b4bd"}, {"keyword": "糖尿病饮食食谱", "title": "控糖不挨饿，三餐吃得香！附十道经典菜做法", "author": "古月养生", "id": "6998485e0000000009039d62", "likes": 229, "type": "note", "url": "https://www.xiaohongshu.com/explore/6998485e0000000009039d62"}, {"keyword": "糖尿病饮食食谱", "title": "糖尿病人一日三餐食谱大全！糖友必看", "author": "内分泌科陆迪菲医生", "id": "6970a139000000002103e596", "likes": 223, "type": "note", "url": "https://www.xiaohongshu.com/explore/6970a139000000002103e596"}, {"keyword": "2型糖尿病控糖", "title": "确诊二糖2年，我终于逆转了", "author": "大吉本吉【糖逆中】", "id": "69a3933d000000001b015fc8", "likes": 202, "type": "note", "url": "https://www.xiaohongshu.com/explore/69a3933d000000001b015fc8"}, {"keyword": "胰岛素泵", "title": "一型糖尿病12年，告诉你选戴泵还是打针。", "author": "噜噜酱(一型糖13年)", "id": "66f277e4000000002a03005e", "likes": 183, "type": "note", "url": "https://www.xiaohongshu.com/explore/66f277e4000000002a03005e"}, {"keyword": "1型糖尿病", "title": "我9岁确诊糖尿病，今年是第18年……", "author": "阿米的慢糖18年", "id": "69b2a8c2000000002202d5e2", "likes": 176, "type": "note", "url": "https://www.xiaohongshu.com/explore/69b2a8c2000000002202d5e2"}, {"keyword": "糖尿病并发症", "title": "糖尿病别不当回事，从头到脚都有危害", "author": "全科医生杨彬", "id": "69b3cedc0000000023027ee8", "likes": 172, "type": "note", "url": "https://www.xiaohongshu.com/explore/69b3cedc0000000023027ee8"}, {"keyword": "糖尿病并发症", "title": "糖尿病拖不得！9 种并发症危害要知道", "author": "🧸🧸", "id": "69cc7537000000001b022631", "likes": 167, "type": "note", "url": "https://www.xiaohongshu.com/explore/69cc7537000000001b022631"}, {"keyword": "妊娠糖尿病", "title": "妊娠糖尿病摆烂了", "author": "kuu", "id": "6850f757000000002001e2ee", "likes": 165, "type": "note", "url": "https://www.xiaohongshu.com/explore/6850f757000000002001e2ee"}, {"keyword": "动态血糖监测", "title": "陪我两周的血糖搭子下岗了，我也悟了", "author": "珍妮花本花🌸", "id": "693ff200000000001e036885", "likes": 158, "type": "note", "url": "https://www.xiaohongshu.com/explore/693ff200000000001e036885"}, {"keyword": "动态血糖监测", "title": "正常人的动态血糖曲线（问题都补充回答了）", "author": "inkling", "id": "699e949a000000001a022d32", "likes": 156, "type": "note", "url": "https://www.xiaohongshu.com/explore/699e949a000000001a022d32"}, {"keyword": "糖尿病并发症", "title": "天塌了，确诊糖尿病周围神经病变了", "author": "小旭崽呀～", "id": "69746c5e000000000c036193", "likes": 155, "type": "note", "url": "https://www.xiaohongshu.com/explore/69746c5e000000000c036193"}, {"keyword": "1型糖尿病", "title": "1型糖尿病=短命？40年研究的最终答案", "author": "Dr.咩🐑", "id": "68613eea000000001202353d", "likes": 151, "type": "note", "url": "https://www.xiaohongshu.com/explore/68613eea000000001202353d"}, {"keyword": "1型糖尿病", "title": "22岁确诊糖尿病，倒计时120天…", "author": "一画解糖🍬", "id": "69c9362d000000002103a1bf", "likes": 149, "type": "note", "url": "https://www.xiaohongshu.com/explore/69c9362d000000002103a1bf"}, {"keyword": "胰岛素泵", "title": "胰岛素泵｜有管路🆚无管路？一条视频讲清楚！", "author": "文雅的甜甜圈", "id": "69429edb000000001e03bb94", "likes": 145, "type": "note", "url": "https://www.xiaohongshu.com/explore/69429edb000000001e03bb94"}, {"keyword": "动态血糖监测", "title": "正常人佩戴动态血糖仪", "author": "一粒橙", "id": "687ce39a000000001202c4fb", "likes": 139, "type": "note", "url": "https://www.xiaohongshu.com/explore/687ce39a000000001202c4fb"}, {"keyword": "糖尿病并发症", "title": "糖尿病并发症给了你三次机会，别错过了😱", "author": "尹德海", "id": "6853c326000000002001b433", "likes": 128, "type": "note", "url": "https://www.xiaohongshu.com/explore/6853c326000000002001b433"}, {"keyword": "糖尿病并发症", "title": "糖尿病的10大并发症，你中招了吗？", "author": "菌菌的肠识日记", "id": "689eeda5000000001c0114cf", "likes": 92, "type": "note", "url": "https://www.xiaohongshu.com/explore/689eeda5000000001c0114cf"}, {"keyword": "1型糖尿病", "title": "被上帝吻过的孩子，一定要坚强微笑下去。", "author": "噜噜酱(一型糖13年)", "id": "66b1ac8a000000000503b1c8", "likes": 70, "type": "note", "url": "https://www.xiaohongshu.com/explore/66b1ac8a000000000503b1c8"}, {"keyword": "胰岛素泵", "title": "1型糖尿病孕10w｜上胰岛素泵啦", "author": "白白", "id": "694008a7000000001e000104", "likes": 66, "type": "note", "url": "https://www.xiaohongshu.com/explore/694008a7000000001e000104"}, {"keyword": "妊娠糖尿病", "title": "孕29周，最终还是妊糖住院了", "author": "贝果🎐", "id": "673554b7000000001b02f08e", "likes": 66, "type": "note", "url": "https://www.xiaohongshu.com/explore/673554b7000000001b02f08e"}, {"keyword": "1型糖尿病", "title": "确诊一型糖尿病十二年后，我想对所有糖友说", "author": "GinFizZ", "id": "69c682c7000000001a02b72b", "likes": 58, "type": "note", "url": "https://www.xiaohongshu.com/explore/69c682c7000000001a02b72b"}, {"keyword": "1型糖尿病", "title": "土豆讲糖|C肽是判断1型糖尿病的唯一指标吗", "author": "土豆🥔讲糖", "id": "69c3ac1c00000000220272b6", "likes": 58, "type": "note", "url": "https://www.xiaohongshu.com/explore/69c3ac1c00000000220272b6"}, {"keyword": "胰岛素泵", "title": "装了胰岛素泵之后", "author": "无糖可乐", "id": "69b817d3000000002301efe1", "likes": 58, "type": "note", "url": "https://www.xiaohongshu.com/explore/69b817d3000000002301efe1"}, {"keyword": "妊娠糖尿病", "title": "这些是妊娠糖尿病症状，孕妈千万别忽视！", "author": "体念", "id": "69ce158a000000002301e657", "likes": 58, "type": "note", "url": "https://www.xiaohongshu.com/explore/69ce158a000000002301e657"}, {"keyword": "妊娠糖尿病", "title": "关于妊娠糖尿病这件事，我有话说～", "author": "乐乐乐之", "id": "686ce19a000000001c030f3e", "likes": 53, "type": "note", "url": "https://www.xiaohongshu.com/explore/686ce19a000000001c030f3e"}, {"keyword": "妊娠糖尿病", "title": "糖耐没过？别慌！18个控糖小窍门帮你过孕期", "author": "是安仔吖(孕晚期）", "id": "69d0946f000000001b023e9b", "likes": 51, "type": "note", "url": "https://www.xiaohongshu.com/explore/69d0946f000000001b023e9b"}, {"keyword": "1型糖尿病", "title": "1型糖尿病是遗传病吗？", "author": "momo", "id": "69c7f63e000000001a026d3f", "likes": 50, "type": "note", "url": "https://www.xiaohongshu.com/explore/69c7f63e000000001a026d3f"}, {"keyword": "1型糖尿病", "title": "什么时候会跟对象讲这件事哇…", "author": "活到30岁（健康版）", "id": "69213668000000001e00c6c7", "likes": 48, "type": "note", "url": "https://www.xiaohongshu.com/explore/69213668000000001e00c6c7"}, {"keyword": "胰岛素泵", "title": "再见了我的胰岛素泵", "author": "仔仔的糖人日记", "id": "687bde07000000001502044b", "likes": 47, "type": "note", "url": "https://www.xiaohongshu.com/explore/687bde07000000001502044b"}, {"keyword": "糖尿病饮食食谱", "title": "✨糖友闭眼抄！211饮食法三餐清单全整理✅", "author": "叶子の糖前期逆转版", "id": "69b404f6000000001f006e18", "likes": 47, "type": "note", "url": "https://www.xiaohongshu.com/explore/69b404f6000000001f006e18"}, {"keyword": "2型糖尿病控糖", "title": "二型糖人，生活化控糖的730天", "author": "大吉本吉【糖逆中】", "id": "69882bb7000000001600b3cc", "likes": 40, "type": "note", "url": "https://www.xiaohongshu.com/explore/69882bb7000000001600b3cc"}, {"keyword": "糖尿病并发症", "title": "大家都怎么避免糖尿病并发症？", "author": "糖糖不吃糖", "id": "68bd21c7000000001d0070e5", "likes": 40, "type": "note", "url": "https://www.xiaohongshu.com/explore/68bd21c7000000001d0070e5"}, {"keyword": "1型糖尿病", "title": "一型糖尿病确诊两年半神经病变了", "author": "花花yyds", "id": "69b4c7a0000000001f0012b4", "likes": 33, "type": "note", "url": "https://www.xiaohongshu.com/explore/69b4c7a0000000001f0012b4"}, {"keyword": "动态血糖监测", "title": "微泰动态0元试戴招募预告！限前100名新客", "author": "微泰0元试戴官柠檬", "id": "69c637ec000000001a02531f", "likes": 33, "type": "note", "url": "https://www.xiaohongshu.com/explore/69c637ec000000001a02531f"}, {"keyword": "2型糖尿病控糖", "title": "控糖六戒、2型糖友", "author": "健康管理师涛哥", "id": "69d72cc4000000001a03605a", "likes": 28, "type": "note", "url": "https://www.xiaohongshu.com/explore/69d72cc4000000001a03605a"}, {"keyword": "胰岛素泵", "title": "刚确诊糖尿病，要不要装胰岛素泵？", "author": "千人千糖", "id": "68fa159b000000000700eda1", "likes": 27, "type": "note", "url": "https://www.xiaohongshu.com/explore/68fa159b000000000700eda1"}, {"keyword": "胰岛素泵", "title": "带胰岛素泵有哪些缺点", "author": "无糖可乐", "id": "69b96b53000000001a034eb2", "likes": 25, "type": "note", "url": "https://www.xiaohongshu.com/explore/69b96b53000000001a034eb2"}, {"keyword": "2型糖尿病控糖", "title": "不同人群二型糖尿病患者控糖指标", "author": "糖友", "id": "698928d9000000001a02fef0", "likes": 25, "type": "note", "url": "https://www.xiaohongshu.com/explore/698928d9000000001a02fef0"}, {"keyword": "胰岛素泵", "title": "戴泵VS打针哪个更省💰", "author": "立风", "id": "6892c676000000002500fec6", "likes": 24, "type": "note", "url": "https://www.xiaohongshu.com/explore/6892c676000000002500fec6"}, {"keyword": "糖尿病并发症", "title": "糖尿病的8大并发症，你中了几个？", "author": "书棋", "id": "68d67b8200000000130360f1", "likes": 23, "type": "note", "url": "https://www.xiaohongshu.com/explore/68d67b8200000000130360f1"}, {"keyword": "妊娠糖尿病", "title": "妊娠糖尿病产后三年，你的血糖怎么样了？", "author": "我说星星呀", "id": "69683959000000002202d562", "likes": 19, "type": "note", "url": "https://www.xiaohongshu.com/explore/69683959000000002202d562"}, {"keyword": "胰岛素泵", "title": "胰岛素泵护理指南，糖友速看！", "author": "糖糖圈APP-1型糖控糖搭子", "id": "69b263260000000006031c01", "likes": 18, "type": "note", "url": "https://www.xiaohongshu.com/explore/69b263260000000006031c01"}, {"keyword": "动态血糖监测", "title": "使用欧态动态血糖仪感受", "author": "宁波宝宝", "id": "69b0d29f000000000c0092e6", "likes": 18, "type": "note", "url": "https://www.xiaohongshu.com/explore/69b0d29f000000000c0092e6"}, {"keyword": "胰岛素泵", "title": "求助求助！", "author": "无敌爆辣美少女", "id": "6968913e000000001a0216fa", "likes": 12, "type": "note", "url": "https://www.xiaohongshu.com/explore/6968913e000000001a0216fa"}, {"keyword": "2型糖尿病控糖", "title": "寻找 90 后2型糖尿病搭子，一起控糖", "author": "控糖小妞", "id": "674d824a0000000007026b6d", "likes": 12, "type": "note", "url": "https://www.xiaohongshu.com/explore/674d824a0000000007026b6d"}, {"keyword": "糖尿病并发症", "title": "糖尿病足泡脚需警惕⚠️", "author": "重度糖足保肢-陈晓主任（骨搬运技术）", "id": "69d4bfd6000000001e00ce47", "likes": 11, "type": "note", "url": "https://www.xiaohongshu.com/explore/69d4bfd6000000001e00ce47"}, {"keyword": "糖尿病运动", "title": "二型糖工位运动控糖，2分钟完整版跟练，加油", "author": "小糖快跑💨", "id": "69d785180000000021039f77", "likes": 11, "type": "note", "url": "https://www.xiaohongshu.com/explore/69d785180000000021039f77"}, {"keyword": "糖尿病并发症", "title": "缓解糖尿病神经病变脚麻痛睡不着的方法（下）", "author": "小红薯684C61BB", "id": "69c134030000000023010d9e", "likes": 10, "type": "note", "url": "https://www.xiaohongshu.com/explore/69c134030000000023010d9e"}, {"keyword": "1型糖尿病", "title": "03年确诊1型糖尿病｜我的一日三餐稳定血糖", "author": "鱼鱼啊鱼（认真控糖版）", "id": "69a78ce5000000000d009643", "likes": 8, "type": "note", "url": "https://www.xiaohongshu.com/explore/69a78ce5000000000d009643"}, {"keyword": "1型糖尿病", "title": "觉得大家对一型糖尿病有认知偏差", "author": "糖blue", "id": "69718a06000000000b0130bd", "likes": 7, "type": "note", "url": "https://www.xiaohongshu.com/explore/69718a06000000000b0130bd"}, {"keyword": "1型糖尿病", "title": "免疫阻断是治疗一型糖尿病的核心方向", "author": "土豆🥔讲糖", "id": "69cb9036000000001f0010ba", "likes": 7, "type": "note", "url": "https://www.xiaohongshu.com/explore/69cb9036000000001f0010ba"}, {"keyword": "2型糖尿病控糖", "title": "99年 二型糖尿病｜日常控糖记录", "author": "小王甜着呢🍓", "id": "69c5179b000000001b0230c0", "likes": 7, "type": "note", "url": "https://www.xiaohongshu.com/explore/69c5179b000000001b0230c0"}, {"keyword": "动态血糖监测", "title": "动态和指尖血糖咋对不上？别慌！", "author": "糖糖圈APP-1型糖控糖搭子", "id": "69a79daa000000001d011310", "likes": 6, "type": "note", "url": "https://www.xiaohongshu.com/explore/69a79daa000000001d011310"}, {"keyword": "1型糖尿病", "title": "拼尽全力也要把一型糖孩子照顾好", "author": "士多啤梨🍓", "id": "69cc8ca7000000001a035fef", "likes": 5, "type": "note", "url": "https://www.xiaohongshu.com/explore/69cc8ca7000000001a035fef"}, {"keyword": "糖尿病并发症", "title": "👀为什么糖尿病最先伤眼睛？", "author": "瞳趣软糖铺", "id": "69cb8ca1000000002301dd9d", "likes": 5, "type": "note", "url": "https://www.xiaohongshu.com/explore/69cb8ca1000000002301dd9d"}, {"keyword": "胰岛素泵", "title": "🤔【胰岛素泵】血糖多高才需要上泵？标准来了", "author": "月月学姐的医学手账", "id": "69d779a2000000001a022326", "likes": 4, "type": "note", "url": "https://www.xiaohongshu.com/explore/69d779a2000000001a022326"}, {"keyword": "胰岛素泵", "title": "微泰胰岛素泵使用快半年了，谈谈感受", "author": "停止月半", "id": "69455a7c000000001d03f094", "likes": 4, "type": "note", "url": "https://www.xiaohongshu.com/explore/69455a7c000000001d03f094"}, {"keyword": "胰岛素泵", "title": "带泵以后不用打长效了？", "author": "控糖人生👩🍬", "id": "6986c06c000000001a02ddcc", "likes": 4, "type": "note", "url": "https://www.xiaohongshu.com/explore/6986c06c000000001a02ddcc"}, {"keyword": "胰岛素泵", "title": "第一次发帖 求推荐泵", "author": "名车汇2988", "id": "692589f1000000001f005e80", "likes": 3, "type": "note", "url": "https://www.xiaohongshu.com/explore/692589f1000000001f005e80"}, {"keyword": "动态血糖监测", "title": "鱼跃动态血糖仪到底准不准", "author": "考拉睡不醒", "id": "6992352e000000000903b619", "likes": 3, "type": "note", "url": "https://www.xiaohongshu.com/explore/6992352e000000000903b619"}, {"keyword": "胰岛素泵", "title": "出售95新胰岛素泵", "author": "万象更新，藏锋敛颖", "id": "69ccf487000000002800a3d6", "likes": 2, "type": "note", "url": "https://www.xiaohongshu.com/explore/69ccf487000000002800a3d6"}, {"keyword": "动态血糖监测", "title": "欧态体验感不好", "author": "田了个甜儿", "id": "69d1af1d0000000022027869", "likes": 2, "type": "note", "url": "https://www.xiaohongshu.com/explore/69d1af1d0000000022027869"}, {"keyword": "动态血糖监测", "title": "到底信谁家？", "author": "黄筱棋本尊", "id": "69ca0ae10000000021012752", "likes": 2, "type": "note", "url": "https://www.xiaohongshu.com/explore/69ca0ae10000000021012752"}, {"keyword": "胰岛素泵", "title": "胰岛素泵有用吗", "author": "我行我素", "id": "69b6b96d000000002103aa13", "likes": 1, "type": "note", "url": "https://www.xiaohongshu.com/explore/69b6b96d000000002103aa13"}, {"keyword": "动态血糖监测", "title": "开始给家里老人使用动态血糖仪监测", "author": "幸运地雪鱼（营养与健康版）", "id": "69d6541d000000001b021aa9", "likes": 1, "type": "note", "url": "https://www.xiaohongshu.com/explore/69d6541d000000001b021aa9"}, {"keyword": "动态血糖监测", "title": "动态简直考验心态。", "author": "大李控糖日记。", "id": "69a63b4d00000000150224b7", "likes": 1, "type": "note", "url": "https://www.xiaohongshu.com/explore/69a63b4d00000000150224b7"}, {"keyword": "动态血糖监测", "title": "没人觉得动态比指尖难用吗", "author": "笨人想吃大包子", "id": "69a0176300000000220336a7", "likes": 1, "type": "note", "url": "https://www.xiaohongshu.com/explore/69a0176300000000220336a7"}, {"keyword": "动态血糖监测", "title": "24小时动态血糖检测仪好不好用", "author": "微胖嘚鱼小姐", "id": "69ba31be000000002202958e", "likes": 1, "type": "note", "url": "https://www.xiaohongshu.com/explore/69ba31be000000002202958e"}, {"keyword": "妊娠糖尿病", "title": "孕期血糖一不稳，妊娠糖尿病悄悄找上门， 控", "author": "小李当妈", "id": "69d784970000000021013ed9", "likes": 1, "type": "note", "url": "https://www.xiaohongshu.com/explore/69d784970000000021013ed9"}, {"keyword": "妊娠糖尿病", "title": "妊娠糖尿病", "author": "昵而敬之", "id": "69d5a3c4000000002101122f", "likes": 1, "type": "note", "url": "https://www.xiaohongshu.com/explore/69d5a3c4000000002101122f"}, {"keyword": "糖尿病并发症", "title": "27岁确诊糖尿病，我的世界被按下了模糊键", "author": "夏初星轨-陆贰", "id": "69d31cf0000000002200db3d", "likes": 1, "type": "note", "url": "https://www.xiaohongshu.com/explore/69d31cf0000000002200db3d"}];
+var KW_COLORS = {"1型糖尿病": "#667eea", "胰岛素泵": "#4facfe", "动态血糖监测": "#fa709a", "2型糖尿病控糖": "#f093fb", "糖尿病饮食食谱": "#43e97b", "妊娠糖尿病": "#ff9f43", "糖尿病并发症": "#ff6b6b", "糖尿病运动": "#a29bfe"};
+
+var currentPage = 1;
+var pageSize = 20;
+var filtered = NOTES.slice();
+
+function esc(s) {
+  if (!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function fmtNum(n) {
+  if (n >= 10000) return (n/10000).toFixed(1) + 'w';
+  if (n >= 1000) return (n/1000).toFixed(1) + 'k';
+  return n.toLocaleString();
+}
+
+function kwTag(kw) {
+  var c = KW_COLORS[kw] || '#667eea';
+  return '<span class="kw-tag" style="background:' + c + '1a;color:' + c + '">' + esc(kw) + '</span>';
+}
+
+function renderPage() {
+  var start = (currentPage - 1) * pageSize;
+  var pageData = filtered.slice(start, start + pageSize);
+  var table = document.getElementById('noteTable');
+  if (pageData.length === 0) {
+    table.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;padding:40px">没有找到匹配的笔记</td></tr>';
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+  var rows = pageData.map(function(n, i) {
+    var rank = start + i + 1;
+    return '<tr>' +
+      '<td class="rank-col">' + rank + '</td>' +
+      '<td class="note-title"><a href="' + esc(n.url) + '" target="_blank">' + esc(n.title) + '</a></td>' +
+      '<td>' + kwTag(n.keyword) + '</td>' +
+      '<td class="author-col">@' + esc(n.author) + '</td>' +
+      '<td class="likes">👍 ' + fmtNum(n.likes) + '</td>' +
+      '</tr>';
+  }).join('');
+  table.innerHTML = rows;
+
+  var totalPages = Math.ceil(filtered.length / pageSize) || 1;
+  var pg = document.getElementById('pagination');
+  var html = '';
+  if (totalPages > 1) {
+    if (currentPage > 1) html += '<button class="page-btn" onclick="changePage(' + (currentPage-1) + ')">上一页</button>';
+    html += '<span class="page-info">第 ' + currentPage + ' / ' + totalPages + ' 页</span>';
+    if (currentPage < totalPages) html += '<button class="page-btn" onclick="changePage(' + (currentPage+1) + ')">下一页</button>';
+  }
+  pg.innerHTML = html;
+}
+
+function changePage(p) {
+  currentPage = p;
+  renderPage();
+  window.scrollTo({top: document.querySelector('.card:last-of-type').offsetTop - 80, behavior:'smooth'});
+}
+
+function applyFilter() {
+  var kw = document.getElementById('kwFilter').value;
+  var search = document.getElementById('searchInput').value.trim().toLowerCase();
+  var sort = document.getElementById('sortBy').value;
+  filtered = NOTES.filter(function(n) {
+    if (kw && n.keyword !== kw) return false;
+    if (search) {
+      return n.title.toLowerCase().includes(search) || n.author.toLowerCase().includes(search);
+    }
+    return true;
+  });
+  if (sort === 'keyword') {
+    filtered.sort(function(a,b) { return a.keyword.localeCompare(b.keyword) || b.likes - a.likes; });
+  } else {
+    filtered.sort(function(a,b) { return b.likes - a.likes; });
+  }
+  document.getElementById('totalCount').textContent = filtered.length;
+  currentPage = 1;
+  renderPage();
+}
+
+document.getElementById('kwFilter').addEventListener('change', applyFilter);
+document.getElementById('sortBy').addEventListener('change', applyFilter);
+document.getElementById('searchInput').addEventListener('input', applyFilter);
+
+renderPage();
+</script>
+</body>
+</html>
