@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>泡泡的30天AI转行计划</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0f0f1a;--card:#1a1a2e;--card2:#16213e;--text:#e0e0e0;--dim:#888;
+  --accent:#667eea;--green:#43e97b;--pink:#f093fb;--blue:#4facfe;
+  --w1:#667eea;--w2:#f093fb;--w3:#4facfe;--w4:#43e97b;
+  --radius:12px;
+}
+body{font-family:'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* Header */
+.header{text-align:center;padding:40px 20px 20px;
+  background:linear-gradient(135deg,rgba(102,126,234,.15),rgba(243,147,251,.1),rgba(67,233,123,.1))}
+.header h1{font-size:2rem;background:linear-gradient(90deg,var(--accent),var(--pink),var(--green));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.header .subtitle{color:var(--dim);font-size:.95rem;margin-bottom:16px}
+.header .tags span{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.8rem;margin:3px;
+  background:rgba(102,126,234,.15);color:var(--accent);border:1px solid rgba(102,126,234,.3)}
+
+/* Stats Bar */
+.stats{display:flex;justify-content:center;gap:20px;padding:20px;flex-wrap:wrap}
+.stat-card{background:var(--card);border-radius:var(--radius);padding:16px 24px;text-align:center;min-width:140px;
+  border:1px solid rgba(255,255,255,.05)}
+.stat-card .num{font-size:1.8rem;font-weight:700}
+.stat-card .label{font-size:.8rem;color:var(--dim);margin-top:4px}
+.stat-card.accent .num{color:var(--accent)}
+.stat-card.green .num{color:var(--green)}
+.stat-card.pink .num{color:var(--pink)}
+.stat-card.blue .num{color:var(--blue)}
+
+/* Charts */
+.charts{display:flex;justify-content:center;gap:30px;padding:20px;flex-wrap:wrap}
+.chart-box{background:var(--card);border-radius:var(--radius);padding:20px;
+  border:1px solid rgba(255,255,255,.05)}
+.chart-box h3{font-size:.9rem;color:var(--dim);margin-bottom:12px;text-align:center}
+
+/* Overall Progress */
+.overall-progress{max-width:600px;margin:10px auto 20px;padding:0 20px}
+.progress-bar-bg{background:var(--card);border-radius:20px;height:24px;overflow:hidden;position:relative}
+.progress-bar-fill{height:100%;border-radius:20px;
+  background:linear-gradient(90deg,var(--accent),var(--pink),var(--green));
+  transition:width .5s ease;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;
+  font-size:.75rem;font-weight:600;color:#fff;min-width:40px}
+
+/* Week Section */
+.week-section{max-width:900px;margin:0 auto 30px;padding:0 20px}
+.week-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:8px;
+  border-bottom:2px solid rgba(255,255,255,.08)}
+.week-badge{padding:6px 16px;border-radius:20px;font-size:.85rem;font-weight:600;color:#fff}
+.week-title{font-size:1.1rem;font-weight:600}
+.week-goal{font-size:.8rem;color:var(--dim)}
+.week-stats{margin-left:auto;font-size:.8rem;color:var(--dim)}
+.week-stats .done-count{color:var(--green);font-weight:600}
+
+/* Day Card */
+.day-card{background:var(--card);border-radius:var(--radius);padding:20px;margin-bottom:12px;
+  border:1px solid rgba(255,255,255,.05);transition:all .2s}
+.day-card:hover{border-color:rgba(102,126,234,.3)}
+.day-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.day-num{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;font-weight:700;color:#fff;flex-shrink:0}
+.day-title{font-size:.95rem;font-weight:600;flex:1}
+.day-date{font-size:.75rem;color:var(--dim)}
+.day-progress{width:80px;height:6px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden;flex-shrink:0}
+.day-progress-fill{height:100%;border-radius:3px;transition:width .3s}
+
+/* Task List */
+.task-list{margin-left:46px}
+.task-item{display:flex;align-items:flex-start;gap:10px;padding:6px 0;font-size:.9rem;cursor:pointer;
+  user-select:none;transition:opacity .2s}
+.task-item:hover{opacity:.8}
+.task-checkbox{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.25);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;transition:all .2s}
+.task-checkbox.checked{border-color:var(--green);background:var(--green)}
+.task-checkbox.checked::after{content:'✓';color:#fff;font-size:.7rem;font-weight:700}
+.task-text{flex:1;line-height:1.5}
+.task-text.done{text-decoration:line-through;color:var(--dim)}
+
+/* Deliverable */
+.deliverable{margin-left:46px;margin-top:8px;padding:8px 12px;background:rgba(102,126,234,.08);
+  border-radius:8px;font-size:.85rem;border-left:3px solid var(--accent)}
+.deliverable .del-label{color:var(--dim);font-size:.75rem}
+.deliverable .del-text{color:var(--accent);font-weight:500}
+.deliverable .del-status{float:right;font-size:.75rem;padding:2px 8px;border-radius:10px}
+.deliverable .del-status.pending{background:rgba(255,193,7,.15);color:#ffc107}
+.deliverable .del-status.submitted{background:rgba(67,233,123,.15);color:var(--green);cursor:pointer}
+.deliverable .del-status.submitted:hover{opacity:.7}
+
+/* Sync Button */
+.sync-area{text-align:center;padding:30px 20px}
+.sync-btn{padding:12px 32px;border-radius:25px;border:none;font-size:1rem;font-weight:600;
+  cursor:pointer;color:#fff;
+  background:linear-gradient(135deg,var(--accent),var(--pink));
+  box-shadow:0 4px 15px rgba(102,126,234,.3);transition:all .2s}
+.sync-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(102,126,234,.4)}
+.sync-btn:active{transform:translateY(0)}
+.sync-status{margin-top:10px;font-size:.85rem;color:var(--dim)}
+
+/* Footer */
+.footer{text-align:center;padding:40px 20px;color:var(--dim);font-size:.8rem;border-top:1px solid rgba(255,255,255,.05)}
+
+/* Responsive */
+@media(max-width:600px){
+  .stats{gap:10px}.stat-card{min-width:100px;padding:12px 16px}
+  .charts{gap:15px}.chart-box{width:100%}
+  .header h1{font-size:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🦐 泡泡的30天AI转行计划</h1>
+  <p class="subtitle">目标：AI应用型内容运营 / AI产品运营助理 | 薪资 15k-20k</p>
+  <div class="tags">
+    <span>📅 2026.04.01 - 04.30</span>
+    <span>⏰ 工作日2-3h / 周末4h</span>
+    <span>🎯 懂运营 + 会AI + 能落地的桥梁型角色</span>
+  </div>
+</div>
+
+<div class="stats" id="statsBar"></div>
+<div class="overall-progress">
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="overallBar" style="width:0%"></div>
+  </div>
+</div>
+
+<div class="charts">
+  <div class="chart-box"><canvas id="weekChart" width="300" height="200"></canvas>
+    <h3>各周完成进度</h3></div>
+  <div class="chart-box"><canvas id="donutChart" width="200" height="200"></canvas>
+    <h3>总体完成率</h3></div>
+  <div class="chart-box"><canvas id="typeChart" width="300" height="200"></canvas>
+    <h3>能力维度覆盖</h3></div>
+</div>
+
+<div id="weekSections"></div>
+
+<div class="sync-area">
+  <button class="sync-btn" onclick="syncToSite()">🚀 同步到个人网站</button>
+  <p class="sync-status" id="syncStatus">进度自动保存在本地，点击按钮同步到 jiangjiehui.top</p>
+</div>
+
+<div class="footer">
+  <p>🦐 虾米宝宝帮泡泡搭建 · 最后更新：<span id="lastUpdate"></span></p>
+  <p>jiangjiehui.top</p>
+</div>
+
+<script>
+const PLAN = {
+  "plan_name": "泡泡30天AI转行计划",
+  "target_role": "AI应用型内容运营 / AI产品运营助理 / AI增长运营",
+  "target_salary": "15k-20k",
+  "start_date": "2026-04-01",
+  "time_commitment": "工作日2-3h/天，周末4h/天",
+  "weeks": [
+    {
+      "week": 1,
+      "title": "AI认知框架建立",
+      "goal": "建立AI应用理解能力，能说清楚AI在运营中的落地场景",
+      "color": "#667eea",
+      "days": [
+        {
+          "day": 1,
+          "date": "2026-04-01",
+          "title": "大模型原理 + AI应用全景",
+          "tasks": [
+            {
+              "id": "1-1",
+              "text": "学习 LLM 基础逻辑（Prompt机制、上下文理解）",
+              "done": false
+            },
+            {
+              "id": "1-2",
+              "text": "了解 AIGC 四大方向：文本/图像/音频/视频",
+              "done": false
+            },
+            {
+              "id": "1-3",
+              "text": "能口述解释什么是 LLM（录音或写下来）",
+              "done": false
+            },
+            {
+              "id": "1-4",
+              "text": "浏览 OpenAI Blog + Hugging Face 了解行业动态",
+              "done": false
+            }
+          ],
+          "deliverable": "学习笔记1篇（LLM原理+AIGC全景）",
+          "submitted": false
+        },
+        {
+          "day": 2,
+          "date": "2026-04-02",
+          "title": "Prompt工程实战",
+          "tasks": [
+            {
+              "id": "2-1",
+              "text": "学习 Prompt 结构化写法（角色+任务+约束+输出格式）",
+              "done": false
+            },
+            {
+              "id": "2-2",
+              "text": "写3种不同结构的 Prompt（分析型/创作型/指令型）",
+              "done": false
+            },
+            {
+              "id": "2-3",
+              "text": "对比不同 Prompt 的输出质量差异",
+              "done": false
+            },
+            {
+              "id": "2-4",
+              "text": "收藏5个高频实用 Prompt 模板",
+              "done": false
+            }
+          ],
+          "deliverable": "10个实用 Prompt 合集文档",
+          "submitted": false
+        },
+        {
+          "day": 3,
+          "date": "2026-04-03",
+          "title": "AI Agent 概念 + WorkBuddy实战",
+          "tasks": [
+            {
+              "id": "3-1",
+              "text": "理解 Agent 和普通 ChatGPT 的区别",
+              "done": false
+            },
+            {
+              "id": "3-2",
+              "text": "体验 WorkBuddy 3个不同场景（写代码/数据分析/内容创作）",
+              "done": false
+            },
+            {
+              "id": "3-3",
+              "text": "理解 Agent 工作流编排概念",
+              "done": false
+            },
+            {
+              "id": "3-4",
+              "text": "用 WorkBuddy 完成一个自动化小任务",
+              "done": false
+            }
+          ],
+          "deliverable": "能解释Agent概念 + WorkBuddy使用记录",
+          "submitted": false
+        },
+        {
+          "day": 4,
+          "date": "2026-04-04",
+          "title": "AIGC运营落地场景梳理",
+          "tasks": [
+            {
+              "id": "4-1",
+              "text": "梳理 AIGC 在内容运营中的场景（选题/创作/分发/复盘）",
+              "done": false
+            },
+            {
+              "id": "4-2",
+              "text": "梳理 AIGC 在用户运营中的场景（客服/社群/画像）",
+              "done": false
+            },
+            {
+              "id": "4-3",
+              "text": "梳理 AIGC 在增长运营中的场景（投放/AB测试/裂变）",
+              "done": false
+            },
+            {
+              "id": "4-4",
+              "text": "选出3个最想深挖的场景",
+              "done": false
+            }
+          ],
+          "deliverable": "AI运营落地场景清单（10+场景）",
+          "submitted": false
+        },
+        {
+          "day": 5,
+          "date": "2026-04-05",
+          "title": "自动化工作流设计 + Coze/扣子入门",
+          "tasks": [
+            {
+              "id": "5-1",
+              "text": "理解运营自动化流程图设计（输入→处理→输出→反馈）",
+              "done": false
+            },
+            {
+              "id": "5-2",
+              "text": "画一个运营自动化流程图（手绘或工具）",
+              "done": false
+            },
+            {
+              "id": "5-3",
+              "text": "注册 Coze/扣子，体验 Bot 创建流程",
+              "done": false
+            },
+            {
+              "id": "5-4",
+              "text": "在 Coze 搭建一个简单的工具类 Bot",
+              "done": false
+            }
+          ],
+          "deliverable": "自动化流程图 + 1个Coze Bot",
+          "submitted": false
+        },
+        {
+          "day": 6,
+          "date": "2026-04-06",
+          "title": "AI产品分析（周末·深度日）",
+          "tasks": [
+            {
+              "id": "6-1",
+              "text": "分析产品1：ChatGPT（功能/用户/商业模式）",
+              "done": false
+            },
+            {
+              "id": "6-2",
+              "text": "分析产品2：Coze/扣子（定位/差异化/使用场景）",
+              "done": false
+            },
+            {
+              "id": "6-3",
+              "text": "分析产品3：任选一个AI产品（推荐：Kimi/通义千问/文心一言）",
+              "done": false
+            },
+            {
+              "id": "6-4",
+              "text": "总结3个产品的共同点和差异化",
+              "done": false
+            }
+          ],
+          "deliverable": "3个AI产品分析报告",
+          "submitted": false
+        },
+        {
+          "day": 7,
+          "date": "2026-04-07",
+          "title": "周复盘 + 公众号文章输出",
+          "tasks": [
+            {
+              "id": "7-1",
+              "text": "复盘本周学习内容，整理笔记",
+              "done": false
+            },
+            {
+              "id": "7-2",
+              "text": "撰写公众号文章：运营人如何转型AI应用岗",
+              "done": false
+            },
+            {
+              "id": "7-3",
+              "text": "文章配图制作（用AI工具辅助）",
+              "done": false
+            },
+            {
+              "id": "7-4",
+              "text": "发布并分享到社交平台",
+              "done": false
+            }
+          ],
+          "deliverable": "公众号文章1篇（已发布）",
+          "submitted": false
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "title": "实战项目一 + AI创作能力",
+      "goal": "完成小红书数据分析项目，掌握AI内容创作工具链",
+      "color": "#f093fb",
+      "days": [
+        {
+          "day": 8,
+          "date": "2026-04-08",
+          "title": "小红书数据分析 - 数据收集",
+          "tasks": [
+            {
+              "id": "8-1",
+              "text": "导出小红书历史笔记数据（标题/封面/互动数据/发布时间）",
+              "done": false
+            },
+            {
+              "id": "8-2",
+              "text": "整理数据字段，建立分析框架",
+              "done": false
+            },
+            {
+              "id": "8-3",
+              "text": "数据清洗：处理缺失值、统一格式",
+              "done": false
+            },
+            {
+              "id": "8-4",
+              "text": "计算基础指标：点赞率/收藏率/评论率",
+              "done": false
+            }
+          ],
+          "deliverable": "清洗后的数据集 + 指标计算表",
+          "submitted": false
+        },
+        {
+          "day": 9,
+          "date": "2026-04-09",
+          "title": "小红书数据分析 - 深度分析",
+          "tasks": [
+            {
+              "id": "9-1",
+              "text": "分析内容类型 vs 互动数据关系",
+              "done": false
+            },
+            {
+              "id": "9-2",
+              "text": "分析发布时间 vs 流量表现",
+              "done": false
+            },
+            {
+              "id": "9-3",
+              "text": "找出 TOP5 爆款笔记的共性",
+              "done": false
+            },
+            {
+              "id": "9-4",
+              "text": "用 AI 辅助分析：哪些内容类型表现最好",
+              "done": false
+            }
+          ],
+          "deliverable": "分析结论 + 3条优化策略",
+          "submitted": false
+        },
+        {
+          "day": 10,
+          "date": "2026-04-10",
+          "title": "小红书数据分析 - 报告输出",
+          "tasks": [
+            {
+              "id": "10-1",
+              "text": "制作数据可视化图表",
+              "done": false
+            },
+            {
+              "id": "10-2",
+              "text": "撰写15页复盘PPT/报告",
+              "done": false
+            },
+            {
+              "id": "10-3",
+              "text": "PPT包含：数据概览/内容分析/时间分析/优化建议",
+              "done": false
+            },
+            {
+              "id": "10-4",
+              "text": "让AI帮忙润色PPT文案",
+              "done": false
+            }
+          ],
+          "deliverable": "15页小红书复盘报告",
+          "submitted": false
+        },
+        {
+          "day": 11,
+          "date": "2026-04-11",
+          "title": "AI优化内容流程 - 选题与脚本",
+          "tasks": [
+            {
+              "id": "11-1",
+              "text": "用 AI 辅助选题：分析热门话题 + 生成选题清单",
+              "done": false
+            },
+            {
+              "id": "11-2",
+              "text": "用 AI 生成内容脚本/大纲",
+              "done": false
+            },
+            {
+              "id": "11-3",
+              "text": "人工优化 AI 生成的内容",
+              "done": false
+            },
+            {
+              "id": "11-4",
+              "text": "记录每个环节的 AI 使用方式和耗时",
+              "done": false
+            }
+          ],
+          "deliverable": "AI辅助选题流程文档",
+          "submitted": false
+        },
+        {
+          "day": 12,
+          "date": "2026-04-12",
+          "title": "AI优化内容流程 - 全链路完成",
+          "tasks": [
+            {
+              "id": "12-1",
+              "text": "用AI辅助制作封面/图片",
+              "done": false
+            },
+            {
+              "id": "12-2",
+              "text": "用AI辅助排版/文案优化",
+              "done": false
+            },
+            {
+              "id": "12-3",
+              "text": "发布一篇完整案例（小红书/公众号）",
+              "done": false
+            },
+            {
+              "id": "12-4",
+              "text": "计算效率提升百分比",
+              "done": false
+            }
+          ],
+          "deliverable": "1篇AI全链路辅助内容 + 效率数据",
+          "submitted": false
+        },
+        {
+          "day": 13,
+          "date": "2026-04-13",
+          "title": "AI绘画入门（周末·深度日）",
+          "tasks": [
+            {
+              "id": "13-1",
+              "text": "学习 Midjourney/即梦/可灵 基础操作",
+              "done": false
+            },
+            {
+              "id": "13-2",
+              "text": "掌握 Prompt 写图技巧（风格/构图/光影/色彩）",
+              "done": false
+            },
+            {
+              "id": "13-3",
+              "text": "制作5张不同风格的AI画作",
+              "done": false
+            },
+            {
+              "id": "13-4",
+              "text": "总结AI绘画在运营中的实用场景",
+              "done": false
+            }
+          ],
+          "deliverable": "5张AI作品 + 绘画场景总结",
+          "submitted": false
+        },
+        {
+          "day": 14,
+          "date": "2026-04-14",
+          "title": "周复盘 + 流程沉淀",
+          "tasks": [
+            {
+              "id": "14-1",
+              "text": "复盘本周两个项目的成果",
+              "done": false
+            },
+            {
+              "id": "14-2",
+              "text": "整理AI内容工作流SOP文档",
+              "done": false
+            },
+            {
+              "id": "14-3",
+              "text": "更新学习笔记",
+              "done": false
+            },
+            {
+              "id": "14-4",
+              "text": "规划下周重点任务",
+              "done": false
+            }
+          ],
+          "deliverable": "AI内容工作流SOP",
+          "submitted": false
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "title": "实战项目二 + 进阶能力",
+      "goal": "完成AI视频项目、简版PRD，构建面试核心作品",
+      "color": "#4facfe",
+      "days": [
+        {
+          "day": 15,
+          "date": "2026-04-15",
+          "title": "AI视频制作基础",
+          "tasks": [
+            {
+              "id": "15-1",
+              "text": "了解 AI 视频工具：Runway/Pika/可灵/Sora",
+              "done": false
+            },
+            {
+              "id": "15-2",
+              "text": "学习 AI 视频生成的 Prompt 写法",
+              "done": false
+            },
+            {
+              "id": "15-3",
+              "text": "用 AI 生成3段短视频素材",
+              "done": false
+            },
+            {
+              "id": "15-4",
+              "text": "用剪映进行后期剪辑",
+              "done": false
+            }
+          ],
+          "deliverable": "3段AI视频素材",
+          "submitted": false
+        },
+        {
+          "day": 16,
+          "date": "2026-04-16",
+          "title": "AI视频项目 - 主题视频",
+          "tasks": [
+            {
+              "id": "16-1",
+              "text": "确定视频主题和脚本",
+              "done": false
+            },
+            {
+              "id": "16-2",
+              "text": "用 AI 生成视频素材 + 配音",
+              "done": false
+            },
+            {
+              "id": "16-3",
+              "text": "剪辑成完整短视频（1-3分钟）",
+              "done": false
+            },
+            {
+              "id": "16-4",
+              "text": "记录全流程AI使用方式和耗时",
+              "done": false
+            }
+          ],
+          "deliverable": "1个AI辅助短视频作品",
+          "submitted": false
+        },
+        {
+          "day": 17,
+          "date": "2026-04-17",
+          "title": "AI视频项目 - 发布与复盘",
+          "tasks": [
+            {
+              "id": "17-1",
+              "text": "发布视频到抖音/小红书",
+              "done": false
+            },
+            {
+              "id": "17-2",
+              "text": "记录发布后数据表现",
+              "done": false
+            },
+            {
+              "id": "17-3",
+              "text": "总结AI视频制作的效率 vs 质量",
+              "done": false
+            },
+            {
+              "id": "17-4",
+              "text": "撰写AI视频制作心得文章",
+              "done": false
+            }
+          ],
+          "deliverable": "已发布视频 + 制作心得",
+          "submitted": false
+        },
+        {
+          "day": 18,
+          "date": "2026-04-18",
+          "title": "AI数据分析工具实战",
+          "tasks": [
+            {
+              "id": "18-1",
+              "text": "学习 ChatExcel/Ajelix 等AI数据分析工具",
+              "done": false
+            },
+            {
+              "id": "18-2",
+              "text": "用AI工具分析一份业务数据",
+              "done": false
+            },
+            {
+              "id": "18-3",
+              "text": "用AI生成数据可视化图表",
+              "done": false
+            },
+            {
+              "id": "18-4",
+              "text": "对比 AI 分析 vs 手动分析的效率差异",
+              "done": false
+            }
+          ],
+          "deliverable": "1个AI数据分析案例",
+          "submitted": false
+        },
+        {
+          "day": 19,
+          "date": "2026-04-19",
+          "title": "AI PPT制作 + 简版PRD（周末·深度日·上）",
+          "tasks": [
+            {
+              "id": "19-1",
+              "text": "学习 Gamma/美图AI PPT 等工具",
+              "done": false
+            },
+            {
+              "id": "19-2",
+              "text": "用AI生成1份项目展示PPT",
+              "done": false
+            },
+            {
+              "id": "19-3",
+              "text": "学习PRD文档结构",
+              "done": false
+            },
+            {
+              "id": "19-4",
+              "text": "开始撰写「AI选题助手」PRD：用户定义 + 痛点分析",
+              "done": false
+            }
+          ],
+          "deliverable": "AI生成PPT + PRD（上半部分）",
+          "submitted": false
+        },
+        {
+          "day": 20,
+          "date": "2026-04-20",
+          "title": "简版PRD完成（周末·深度日·下）",
+          "tasks": [
+            {
+              "id": "20-1",
+              "text": "完成PRD：功能结构 + 使用流程",
+              "done": false
+            },
+            {
+              "id": "20-2",
+              "text": "完成PRD：成功指标 + 竞品分析",
+              "done": false
+            },
+            {
+              "id": "20-3",
+              "text": "让AI帮忙润色PRD文案",
+              "done": false
+            },
+            {
+              "id": "20-4",
+              "text": "PRD最终审核和排版",
+              "done": false
+            }
+          ],
+          "deliverable": "3页AI选题助手PRD文档",
+          "submitted": false
+        },
+        {
+          "day": 21,
+          "date": "2026-04-21",
+          "title": "周复盘 + 作品整理",
+          "tasks": [
+            {
+              "id": "21-1",
+              "text": "盘点目前完成的所有项目和作品",
+              "done": false
+            },
+            {
+              "id": "21-2",
+              "text": "每个项目写一段「STAR故事」（情境-任务-行动-结果）",
+              "done": false
+            },
+            {
+              "id": "21-3",
+              "text": "整理作品到个人网站",
+              "done": false
+            },
+            {
+              "id": "21-4",
+              "text": "规划最后一周冲刺计划",
+              "done": false
+            }
+          ],
+          "deliverable": "作品清单 + STAR故事",
+          "submitted": false
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "title": "综合实战 + 跳槽冲刺",
+      "goal": "完成综合项目、打磨简历、开始投递",
+      "color": "#43e97b",
+      "days": [
+        {
+          "day": 22,
+          "date": "2026-04-22",
+          "title": "综合实战项目 - 策划",
+          "tasks": [
+            {
+              "id": "22-1",
+              "text": "确定综合项目主题（建议：AI+运营自动化方案）",
+              "done": false
+            },
+            {
+              "id": "22-2",
+              "text": "设计项目方案（背景/目标/方案/预期效果）",
+              "done": false
+            },
+            {
+              "id": "22-3",
+              "text": "确定需要用到的AI工具链",
+              "done": false
+            },
+            {
+              "id": "22-4",
+              "text": "制定执行计划和时间表",
+              "done": false
+            }
+          ],
+          "deliverable": "综合项目方案文档",
+          "submitted": false
+        },
+        {
+          "day": 23,
+          "date": "2026-04-23",
+          "title": "综合实战项目 - 执行",
+          "tasks": [
+            {
+              "id": "23-1",
+              "text": "执行项目方案（核心部分）",
+              "done": false
+            },
+            {
+              "id": "23-2",
+              "text": "记录过程中的问题和解决方式",
+              "done": false
+            },
+            {
+              "id": "23-3",
+              "text": "收集项目成果数据",
+              "done": false
+            },
+            {
+              "id": "23-4",
+              "text": "用AI辅助撰写项目说明文档",
+              "done": false
+            }
+          ],
+          "deliverable": "综合项目执行记录",
+          "submitted": false
+        },
+        {
+          "day": 24,
+          "date": "2026-04-24",
+          "title": "综合实战项目 - 收尾",
+          "tasks": [
+            {
+              "id": "24-1",
+              "text": "完成项目所有内容",
+              "done": false
+            },
+            {
+              "id": "24-2",
+              "text": "制作项目展示PPT或视频",
+              "done": false
+            },
+            {
+              "id": "24-3",
+              "text": "发布到个人网站/社交平台",
+              "done": false
+            },
+            {
+              "id": "24-4",
+              "text": "整理项目总结（亮点+数据+学习收获）",
+              "done": false
+            }
+          ],
+          "deliverable": "完整综合项目作品",
+          "submitted": false
+        },
+        {
+          "day": 25,
+          "date": "2026-04-25",
+          "title": "数字人/AI语音体验（加分项）",
+          "tasks": [
+            {
+              "id": "25-1",
+              "text": "体验 HeyGen/D-ID 数字人工具",
+              "done": false
+            },
+            {
+              "id": "25-2",
+              "text": "制作1段数字人口播视频",
+              "done": false
+            },
+            {
+              "id": "25-3",
+              "text": "体验 AI 语音/音乐工具（Suno/剪映）",
+              "done": false
+            },
+            {
+              "id": "25-4",
+              "text": "总结数字人在运营中的应用场景",
+              "done": false
+            }
+          ],
+          "deliverable": "1个数字人视频 + 应用场景总结",
+          "submitted": false
+        },
+        {
+          "day": 26,
+          "date": "2026-04-26",
+          "title": "简历打造（周末·深度日·上）",
+          "tasks": [
+            {
+              "id": "26-1",
+              "text": "梳理工作经历，突出运营+AI结合点",
+              "done": false
+            },
+            {
+              "id": "26-2",
+              "text": "撰写简历核心经历（用STAR法则）",
+              "done": false
+            },
+            {
+              "id": "26-3",
+              "text": "重点描述3个核心项目",
+              "done": false
+            },
+            {
+              "id": "26-4",
+              "text": "用AI优化简历措辞",
+              "done": false
+            }
+          ],
+          "deliverable": "简历一版（初稿）",
+          "submitted": false
+        },
+        {
+          "day": 27,
+          "date": "2026-04-27",
+          "title": "面试准备（周末·深度日·下）",
+          "tasks": [
+            {
+              "id": "27-1",
+              "text": "准备必考题答案稿：AI如何赋能运营？",
+              "done": false
+            },
+            {
+              "id": "27-2",
+              "text": "准备必考题答案稿：如何设计增长实验？",
+              "done": false
+            },
+            {
+              "id": "27-3",
+              "text": "准备必考题答案稿：介绍一个你做的AI项目",
+              "done": false
+            },
+            {
+              "id": "27-4",
+              "text": "模拟面试练习（可让AI当面试官）",
+              "done": false
+            }
+          ],
+          "deliverable": "面试题答案稿 + 模拟练习记录",
+          "submitted": false
+        },
+        {
+          "day": 28,
+          "date": "2026-04-28",
+          "title": "开始投递 + 简历精修",
+          "tasks": [
+            {
+              "id": "28-1",
+              "text": "搜索目标岗位：AI内容运营/AI产品运营/AIGC运营",
+              "done": false
+            },
+            {
+              "id": "28-2",
+              "text": "根据岗位JD微调简历",
+              "done": false
+            },
+            {
+              "id": "28-3",
+              "text": "投递至少5个岗位",
+              "done": false
+            },
+            {
+              "id": "28-4",
+              "text": "记录投递情况和反馈",
+              "done": false
+            }
+          ],
+          "deliverable": "投递记录 + 优化后简历",
+          "submitted": false
+        },
+        {
+          "day": 29,
+          "date": "2026-04-29",
+          "title": "面试复盘 + 作品集优化",
+          "tasks": [
+            {
+              "id": "29-1",
+              "text": "复盘面试反馈（如有）",
+              "done": false
+            },
+            {
+              "id": "29-2",
+              "text": "优化个人作品集网站",
+              "done": false
+            },
+            {
+              "id": "29-3",
+              "text": "补充面试中发现的知识短板",
+              "done": false
+            },
+            {
+              "id": "29-4",
+              "text": "继续投递更多岗位",
+              "done": false
+            }
+          ],
+          "deliverable": "更新后的作品集 + 投递记录",
+          "submitted": false
+        },
+        {
+          "day": 30,
+          "date": "2026-04-30",
+          "title": "最终冲刺 + 计划总结",
+          "tasks": [
+            {
+              "id": "30-1",
+              "text": "最终简历二版（根据所有反馈优化）",
+              "done": false
+            },
+            {
+              "id": "30-2",
+              "text": "整理面试话术卡片（随身可看）",
+              "done": false
+            },
+            {
+              "id": "30-3",
+              "text": "写一份30天学习总结（成长轨迹）",
+              "done": false
+            },
+            {
+              "id": "30-4",
+              "text": "更新个人网站，展示完整学习成果",
+              "done": false
+            }
+          ],
+          "deliverable": "最终简历 + 学习总结报告",
+          "submitted": false
+        }
+      ]
+    }
+  ]
+};
+const STORAGE_KEY = 'bubble_ai_plan_progress';
+
+const WEEK_COLORS = ['#667eea','#f093fb','#4facfe','#43e97b'];
+
+function loadProgress(){
+  try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{}}
+  catch(e){return{}}
+}
+function saveProgress(p){localStorage.setItem(STORAGE_KEY,JSON.stringify(p))}
+
+function getStats(){
+  const progress = loadProgress();
+  let totalTasks=0, doneTasks=0, totalDays=0, doneDays=0;
+  let totalDels=0, submittedDels=0;
+  const weekStats = PLAN.weeks.map(w=>{
+    let wt=0,wd=0,dd=0,sd=0;
+    w.days.forEach(d=>{
+      totalDays++;
+      let dayDone=0, dayTotal=0;
+      d.tasks.forEach(t=>{dayTotal++;wt++;if(progress[t.id]){dayDone++;wd++}});
+      if(dayDone===dayTotal && dayTotal>0) doneDays++;
+      totalDels++; if(progress['del_'+d.day]) submittedDels++;
+      dd++; if(progress['del_'+d.day]) sd++;
+    });
+    return {total:wt,done:wd,dels:dd,submitted:sd};
+  });
+  totalTasks=weekStats.reduce((s,w)=>s+w.total,0);
+  doneTasks=weekStats.reduce((s,w)=>s+w.done,0);
+  totalDels=weekStats.reduce((s,w)=>s+w.dels,0);
+  submittedDels=weekStats.reduce((s,w)=>s+w.submitted,0);
+  return {totalTasks,doneTasks,totalDays,doneDays,totalDels,submittedDels,weekStats};
+}
+
+function toggleTask(taskId){
+  const p=loadProgress();
+  p[taskId]=!p[taskId];
+  saveProgress(p);render();
+}
+
+function toggleDeliverable(day){
+  const p=loadProgress();
+  p['del_'+day]=!p['del_'+day];
+  saveProgress(p);render();
+}
+
+function renderStats(){
+  const s=getStats();
+  const pct=s.totalTasks?Math.round(s.doneTasks/s.totalTasks*100):0;
+  document.getElementById('statsBar').innerHTML=`
+    <div class="stat-card accent"><div class="num">${s.totalTasks}</div><div class="label">总任务数</div></div>
+    <div class="stat-card green"><div class="num">${s.doneTasks}</div><div class="label">已完成</div></div>
+    <div class="stat-card pink"><div class="num">${pct}%</div><div class="label">总进度</div></div>
+    <div class="stat-card blue"><div class="num">${s.submittedDels}/${s.totalDels}</div><div class="label">作品提交</div></div>`;
+  document.getElementById('overallBar').style.width=pct+'%';
+  document.getElementById('overallBar').textContent=pct+'%';
+}
+
+function renderWeeks(){
+  const p=loadProgress();
+  const el=document.getElementById('weekSections');
+  el.innerHTML='';
+  PLAN.weeks.forEach((w,wi)=>{
+    const ws=getStats().weekStats[wi];
+    const wPct=ws.total?Math.round(ws.done/ws.total*100):0;
+    const sec=document.createElement('div');
+    sec.className='week-section';
+    sec.innerHTML=`<div class="week-header">
+      <span class="week-badge" style="background:${WEEK_COLORS[wi]}">第${w.week}周</span>
+      <span class="week-title">${w.title}</span>
+      <span class="week-goal">${w.goal}</span>
+      <span class="week-stats"><span class="done-count">${ws.done}</span>/${ws.total} 任务 · ${wPct}%</span>
+    </div>`;
+    w.days.forEach(d=>{
+      let dDone=0; d.tasks.forEach(t=>{if(p[t.id])dDone++});
+      const dPct=d.tasks.length?Math.round(dDone/d.tasks.length*100):0;
+      const allDone=dDone===d.tasks.length;
+      const delSubmitted=p['del_'+d.day];
+      const card=document.createElement('div');
+      card.className='day-card';
+      card.innerHTML=`<div class="day-header">
+        <div class="day-num" style="background:${allDone?'var(--green)':WEEK_COLORS[wi]}">${d.day}</div>
+        <div class="day-title" style="${allDone?'color:var(--green)':''}">${d.title}</div>
+        <div class="day-date">${d.date}</div>
+        <div class="day-progress"><div class="day-progress-fill" style="width:${dPct}%;background:${WEEK_COLORS[wi]}"></div></div>
+      </div>
+      <div class="task-list">${d.tasks.map(t=>`
+        <div class="task-item" onclick="toggleTask('${t.id}')">
+          <div class="task-checkbox ${p[t.id]?'checked':''}"></div>
+          <div class="task-text ${p[t.id]?'done':''}">${t.text}</div>
+        </div>`).join('')}
+      </div>
+      <div class="deliverable">
+        <span class="del-label">📦 交付物</span>
+        <span class="del-text">${d.deliverable}</span>
+        <span class="del-status ${delSubmitted?'submitted':'pending'}" onclick="event.stopPropagation();toggleDeliverable(${d.day})">
+          ${delSubmitted?'✓ 已提交':'点击提交'}
+        </span>
+      </div>`;
+      sec.appendChild(card);
+    });
+    el.appendChild(sec);
+  });
+}
+
+let weekChartInst, donutChartInst, typeChartInst;
+
+function renderCharts(){
+  const s=getStats();
+  // Week progress bar chart
+  if(weekChartInst) weekChartInst.destroy();
+  weekChartInst=new Chart(document.getElementById('weekChart'),{
+    type:'bar',
+    data:{labels:PLAN.weeks.map(w=>'第'+w.week+'周'),
+      datasets:[{label:'完成',data:s.weekStats.map(w=>w.done),
+        backgroundColor:WEEK_COLORS,borderRadius:6,barPercentage:.5},
+        {label:'总数',data:s.weekStats.map(w=>w.total-w.done),
+        backgroundColor:WEEK_COLORS.map(c=>c+'33'),borderRadius:6,barPercentage:.5}]},
+    options:{responsive:true,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:'#888'},grid:{display:false}},
+        y:{ticks:{color:'#888'},grid:{color:'rgba(255,255,255,.05)'}}}}
+  });
+  // Donut chart
+  const remaining=s.totalTasks-s.doneTasks;
+  if(donutChartInst) donutChartInst.destroy();
+  donutChartInst=new Chart(document.getElementById('donutChart'),{
+    type:'doughnut',
+    data:{labels:['已完成','进行中'],datasets:[{data:[s.doneTasks,remaining],
+      backgroundColor:['#43e97b','rgba(255,255,255,.08)'],borderWidth:0}]},
+    options:{responsive:true,cutout:'70%',plugins:{legend:{position:'bottom',labels:{color:'#888',padding:10}}}}
+  });
+  // Capability radar chart
+  const dims=['AI应用理解','数据分析','产品思维','AI实战案例','自动化能力','内容创作'];
+  const vals=[65,40,30,75,80,55]; // base scores adjusted by completed tasks
+  // Adjust based on actual progress
+  if(s.weekStats[0]) vals[0]=Math.min(100,65+s.weekStats[0].done*5);
+  if(s.weekStats[1]) {vals[1]=Math.min(100,40+s.weekStats[1].done*5);vals[5]=Math.min(100,55+s.weekStats[1].done*4);}
+  if(s.weekStats[2]) {vals[2]=Math.min(100,30+s.weekStats[2].done*5);vals[1]=Math.min(100,vals[1]+s.weekStats[2].done*2);}
+  if(s.weekStats[3]) vals[3]=Math.min(100,75+s.weekStats[3].done*3);
+  vals[4]=Math.min(100,80+s.doneTasks);
+  if(typeChartInst) typeChartInst.destroy();
+  typeChartInst=new Chart(document.getElementById('typeChart'),{
+    type:'radar',
+    data:{labels:dims,datasets:[{label:'能力值',data:vals,
+      backgroundColor:'rgba(102,126,234,.2)',borderColor:'#667eea',pointBackgroundColor:'#667eea',pointRadius:4}]},
+    options:{responsive:true,scales:{r:{beginAtZero:true,max:100,
+      ticks:{display:false},grid:{color:'rgba(255,255,255,.1)'},
+      pointLabels:{color:'#aaa',font:{size:11}}}},
+      plugins:{legend:{display:false}}}
+  });
+}
+
+function render(){
+  renderStats();renderWeeks();renderCharts();
+  document.getElementById('lastUpdate').textContent=new Date().toLocaleString('zh-CN');
+}
+
+function syncToSite(){
+  document.getElementById('syncStatus').textContent='⏳ 正在同步...';
+  // This will be handled by the Python script
+  // In browser context, we save progress and show message
+  const p=loadProgress();
+  const blob=new Blob([JSON.stringify(p,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='progress.json';
+  a.click();
+  document.getElementById('syncStatus').textContent='✅ 进度已导出！请运行 python sync_plan.py 同步到网站';
+}
+
+// Init
+render();
+</script>
+
+</body>
+</html>
