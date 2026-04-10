@@ -3,7 +3,7 @@ name: XHS Diabetes Radar v4 Update
 on:
   schedule:
     - cron: '0 1 * * 1'
-  workflow_dispatch:
+  workflow_dispatch: {}
 
 jobs:
   fetch-and-update:
@@ -67,6 +67,5 @@ EOFDATA
     runs-on: ubuntu-latest
     steps:
       - name: Trigger Vercel Deploy
-        if: secrets.VERCEL_DEPLOY_HOOK != ''
         run: |
           curl -s -X POST '${{ secrets.VERCEL_DEPLOY_HOOK }}'
