@@ -245,17 +245,6 @@
             </div>
         </div>
 
-        <!-- Chart Section -->
-        <div class="chart-section">
-            <div class="section-header">
-                <h2 class="section-title">📈 话题热度对比</h2>
-                <span style="color: var(--text-secondary); font-size: 14px;">点击柱状图筛选笔记</span>
-            </div>
-            <div class="chart-container">
-                <canvas id="topicChart"></canvas>
-            </div>
-        </div>
-
         <!-- Filter Bar -->
         <div class="filter-bar">
             <div class="filter-group">
@@ -375,7 +364,6 @@
                 filteredNotes = [...allNotes];
                 
                 updateStats(data);
-                updateChart(data);
                 updateInsights(data);
                 applyFilters();
                 
@@ -400,68 +388,7 @@
             document.getElementById('maxLikes').textContent = formatNumber(maxLikes);
         }
 
-        function updateChart(data) {
-            const ctx = document.getElementById('topicChart').getContext('2d');
-            const keywordCounts = data.keywordCounts || {};
-            const keywordStats = KEYWORDS.map(keyword => ({
-                keyword,
-                count: keywordCounts[keyword] || 0
-            }));
 
-            if (chart) chart.destroy();
-
-            chart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: keywordStats.map(s => s.keyword),
-                    datasets: [{
-                        label: '笔记数量',
-                        data: keywordStats.map(s => s.count),
-                        backgroundColor: [
-                            'rgba(124, 58, 237, 0.8)',
-                            'rgba(139, 92, 246, 0.8)',
-                            'rgba(167, 139, 250, 0.8)',
-                            'rgba(192, 132, 252, 0.8)',
-                            'rgba(216, 180, 254, 0.8)',
-                            'rgba(233, 213, 255, 0.8)'
-                        ],
-                        borderRadius: 8,
-                        borderSkipped: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    onClick: (e, elements) => {
-                        if (elements.length > 0) {
-                            const index = elements[0].index;
-                            const keyword = keywordStats[index].keyword;
-                            filterByKeyword(keyword);
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: 'rgba(15, 10, 26, 0.9)',
-                            titleColor: '#fff',
-                            bodyColor: '#A78BFA',
-                            borderColor: 'rgba(124, 58, 237, 0.5)',
-                            borderWidth: 1,
-                            padding: 12,
-                            displayColors: false,
-                            callbacks: {
-                                title: (items) => items[0].label + ' 话题',
-                                label: (item) => '笔记数量：' + item.raw + ' 篇'
-                            }
-                        }
-                    },
-                    scales: {
-                        x: { grid: { display: false }, ticks: { color: '#A78BFA' } },
-                        y: { grid: { color: 'rgba(124, 58, 237, 0.1)' }, ticks: { color: '#A78BFA', stepSize: 1 }, beginAtZero: true }
-                    }
-                }
-            });
-        }
 
         function updateInsights(data) {
             const insights = data.insights || generateInsights();
