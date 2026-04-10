@@ -1,0 +1,45 @@
+name: XHS Diabetes Radar v4 Update
+
+on:
+  schedule:
+    - cron: '0 1 * * 1'
+  workflow_dispatch:
+
+jobs:
+  fetch-and-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install axios node-fetch
+      - name: Fetch data
+        env:
+          XHS_MCP_URL: ${{ secrets.XHS_MCP_URL }}
+        run: |
+          mkdir -p public/data
+          node scripts/fetch_xhs_data.js || echo 'Using mock data'
+          if [ ! -f public/data/radar-data-v4.json ]; then
+            echo '{"updatedAt": "'$(date -Iseconds)'", "keywords": ["1型糖","2型糖","胰岛素泵","CGM","美敦力","糖尿病"], "notes": [], "stats": {"totalNotes": 0}}' > public/data/radar-data-v4.json
+          fi
+      - name: Commit and push
+        run: |
+          git config --local user.email 'bot@workbuddy.ai'
+          git config --local user.name 'WorkBuddy Bot'
+          git add public/data/
+          git diff --staged --quiet || git commit -m 'chore: update xhs diabetes radar data'
+          git push
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+  trigger-vercel-deploy:
+    needs: fetch-and-update
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel Deploy
+        run: |
+          curl -X POST '${{ secrets.VERCEL_DEPLOY_HOOK }}'
