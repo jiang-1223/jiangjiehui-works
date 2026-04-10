@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-10T21:15:10.102173",
+  "updatedAt": "2026-04-10T21:23:49.470422",
   "keywords": [
     "1型糖",
     "2型糖",
@@ -8,10 +8,60 @@
     "美敦力",
     "糖尿病"
   ],
-  "notes": [],
+  "notes": [
+    {
+      "title": "1型糖友的日常",
+      "keyword": "1型糖",
+      "likes": 5280,
+      "collects": 1203,
+      "comments": 342,
+      "shares": 89,
+      "url": "#"
+    },
+    {
+      "title": "胰岛素泵使用心得",
+      "keyword": "胰岛素泵",
+      "likes": 8420,
+      "collects": 2156,
+      "comments": 567,
+      "shares": 234,
+      "url": "#"
+    },
+    {
+      "title": "CGM动态血糖监测体验",
+      "keyword": "CGM",
+      "likes": 6320,
+      "collects": 1580,
+      "comments": 423,
+      "shares": 167,
+      "url": "#"
+    },
+    {
+      "title": "美敦力泵使用记录",
+      "keyword": "美敦力",
+      "likes": 4150,
+      "collects": 980,
+      "comments": 256,
+      "shares": 78,
+      "url": "#"
+    },
+    {
+      "title": "糖尿病饮食管理",
+      "keyword": "糖尿病",
+      "likes": 12500,
+      "collects": 3200,
+      "comments": 890,
+      "shares": 456,
+      "url": "#"
+    }
+  ],
   "stats": {
-    "totalNotes": 0,
-    "avgLikes": 0,
-    "topKeyword": "糖尿病"
+    "totalNotes": 5,
+    "avgLikes": 7330,
+    "topKeyword": "糖尿病",
+    "topNote": {
+      "title": "糖尿病饮食管理",
+      "likes": 12500
+    }
   }
 }
