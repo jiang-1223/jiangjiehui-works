@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-10T21:23:49.470422",
+  "updatedAt": "2026-04-10T21:33:29.997963",
   "keywords": [
     "1型糖",
     "2型糖",
@@ -10,58 +10,160 @@
   ],
   "notes": [
     {
-      "title": "1型糖友的日常",
+      "title": "确诊1型糖尿病5年，我的生活是这样的",
       "keyword": "1型糖",
-      "likes": 5280,
-      "collects": 1203,
-      "comments": 342,
-      "shares": 89,
-      "url": "#"
-    },
-    {
-      "title": "胰岛素泵使用心得",
-      "keyword": "胰岛素泵",
-      "likes": 8420,
-      "collects": 2156,
-      "comments": 567,
-      "shares": 234,
-      "url": "#"
-    },
-    {
-      "title": "CGM动态血糖监测体验",
-      "keyword": "CGM",
-      "likes": 6320,
-      "collects": 1580,
-      "comments": 423,
-      "shares": 167,
-      "url": "#"
-    },
-    {
-      "title": "美敦力泵使用记录",
-      "keyword": "美敦力",
-      "likes": 4150,
-      "collects": 980,
-      "comments": 256,
-      "shares": 78,
-      "url": "#"
-    },
-    {
-      "title": "糖尿病饮食管理",
-      "keyword": "糖尿病",
       "likes": 12500,
       "collects": 3200,
       "comments": 890,
       "shares": 456,
-      "url": "#"
+      "url": "https://www.xiaohongshu.com/discovery/item/xxxxx1",
+      "cover": "",
+      "author": "糖小雅",
+      "time": 1744300000,
+      "type": "normal"
+    },
+    {
+      "title": "胰岛素泵入门指南｜这6点一定要知道",
+      "keyword": "胰岛素泵",
+      "likes": 8900,
+      "collects": 2156,
+      "comments": 567,
+      "shares": 234,
+      "url": "https://www.xiaohongshu.com/discovery/item/xxxxx2",
+      "cover": "",
+      "author": "泵友老王",
+      "time": 1744200000,
+      "type": "normal"
+    },
+    {
+      "title": "动态血糖仪CGM真实测评｜戴了3个月说说感受",
+      "keyword": "CGM",
+      "likes": 15200,
+      "collects": 4580,
+      "comments": 1203,
+      "shares": 678,
+      "url": "https://www.xiaohongshu.com/discovery/item/xxxxx3",
+      "cover": "",
+      "author": "控糖达人",
+      "time": 1744100000,
+      "type": "normal"
+    },
+    {
+      "title": "美敦力780G使用一个月体验分享",
+      "keyword": "美敦力",
+      "likes": 6200,
+      "collects": 1580,
+      "comments": 423,
+      "shares": 167,
+      "url": "https://www.xiaohongshu.com/discovery/item/xxxxx4",
+      "cover": "",
+      "author": "泵体验官",
+      "time": 1744000000,
+      "type": "normal"
+    },
+    {
+      "title": "妊娠糖尿病到2型｜我的逆转之路",
+      "keyword": "2型糖",
+      "likes": 9800,
+      "collects": 2890,
+      "comments": 756,
+      "shares": 345,
+      "url": "https://www.xiaohongshu.com/discovery/item/xxxxx5",
+      "cover": "",
+      "author": "孕妈小李",
+      "time": 1743900000,
+      "type": "normal"
+    },
+    {
+      "title": "糖尿病饮食大全｜控糖必吃的20种食物",
+      "keyword": "糖尿病",
+      "likes": 25000,
+      "collects": 8900,
+      "comments": 2100,
+      "shares": 1200,
+      "url": "https://www.xiaohongshu.com/discovery/item/xxxxx6",
+      "cover": "",
+      "author": "营养师阿白",
+      "time": 1743800000,
+      "type": "normal"
+    },
+    {
+      "title": "1型糖友外出就餐怎么吃？实测分享",
+      "keyword": "1型糖",
+      "likes": 7800,
+      "collects": 2100,
+      "comments": 534,
+      "shares": 189,
+      "url": "https://www.xiaohongshu.com/discovery/item/xxxxx7",
+      "cover": "",
+      "author": "吃货糖友",
+      "time": 1743700000,
+      "type": "normal"
+    },
+    {
+      "title": "雅培瞬感VS德康G6｜两大CGM品牌对比",
+      "keyword": "CGM",
+      "likes": 11000,
+      "collects": 3200,
+      "comments": 890,
+      "shares": 456,
+      "url": "https://www.xiaohongshu.com/discovery/item/xxxxx8",
+      "cover": "",
+      "author": "技术流控糖",
+      "time": 1743600000,
+      "type": "normal"
+    },
+    {
+      "title": "胰岛素泵堵管了怎么办？紧急处理指南",
+      "keyword": "胰岛素泵",
+      "likes": 5500,
+      "collects": 1200,
+      "comments": 345,
+      "shares": 123,
+      "url": "https://www.xiaohongshu.com/discovery/item/xxxxx9",
+      "cover": "",
+      "author": "泵师张哥",
+      "time": 1743500000,
+      "type": "normal"
+    },
+    {
+      "title": "2型糖尿病运动处方｜这样运动血糖稳了",
+      "keyword": "2型糖",
+      "likes": 7200,
+      "collects": 1890,
+      "comments": 456,
+      "shares": 234,
+      "url": "https://www.xiaohongshu.com/discovery/item/xxxxx10",
+      "cover": "",
+      "author": "运动控糖",
+      "time": 1743400000,
+      "type": "normal"
     }
   ],
+  "keywordCounts": {
+    "1型糖": 2,
+    "2型糖": 2,
+    "胰岛素泵": 2,
+    "CGM": 2,
+    "美敦力": 1,
+    "糖尿病": 1
+  },
   "stats": {
-    "totalNotes": 5,
-    "avgLikes": 7330,
-    "topKeyword": "糖尿病",
+    "totalNotes": 10,
+    "avgLikes": 10910,
+    "topKeyword": "1型糖",
     "topNote": {
-      "title": "糖尿病饮食管理",
-      "likes": 12500
+      "title": "糖尿病饮食大全｜控糖必吃的20种食物",
+      "keyword": "糖尿病",
+      "likes": 25000,
+      "collects": 8900,
+      "comments": 2100,
+      "shares": 1200,
+      "url": "https://www.xiaohongshu.com/discovery/item/xxxxx6",
+      "cover": "",
+      "author": "营养师阿白",
+      "time": 1743800000,
+      "type": "normal"
     }
   }
 }
