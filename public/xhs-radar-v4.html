@@ -93,28 +93,14 @@
         .section-title { font-size: 18px; font-weight: 600; }
         .chart-container { height: 300px; position: relative; }
 
-        .hot-topics { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
-        .topic-tag {
-            padding: 8px 16px; background: rgba(124, 58, 237, 0.15);
-            border-radius: 20px; font-size: 14px; color: var(--text-secondary);
-            display: flex; align-items: center; gap: 8px; cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .topic-tag:hover { background: rgba(124, 58, 237, 0.3); }
-        .topic-tag.active { background: var(--gradient); color: white; }
-        .topic-tag .count {
-            background: rgba(255,255,255,0.2); padding: 2px 8px;
-            border-radius: 10px; font-size: 12px; color: white;
-        }
-
         /* Filter Bar */
         .filter-bar {
             background: var(--bg-card); border-radius: 16px; padding: 20px;
             margin-bottom: 20px; border: 1px solid rgba(124, 58, 238, 0.2);
-            display: flex; flex-wrap: wrap; gap: 16px; align-items: center;
+            display: flex; flex-wrap: wrap; gap: 20px; align-items: center;
         }
-        .filter-group { display: flex; align-items: center; gap: 8px; }
-        .filter-label { font-size: 14px; color: var(--text-secondary); }
+        .filter-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .filter-label { font-size: 14px; color: var(--text-secondary); white-space: nowrap; }
         .filter-btn {
             padding: 8px 16px; background: rgba(124, 58, 237, 0.1);
             border: 1px solid rgba(124, 58, 237, 0.3); border-radius: 8px;
@@ -122,7 +108,7 @@
         }
         .filter-btn.active { background: var(--gradient); color: white; border-color: transparent; }
         .filter-btn:hover { background: rgba(124, 58, 237, 0.2); }
-        .sort-select {
+        .sort-select, .time-select {
             padding: 8px 16px; background: rgba(124, 58, 237, 0.1);
             border: 1px solid rgba(124, 58, 237, 0.3); border-radius: 8px;
             color: var(--text-primary); font-size: 14px; cursor: pointer;
@@ -133,25 +119,33 @@
             background: var(--bg-card); border-radius: 16px; padding: 24px;
             margin-bottom: 30px; border: 1px solid rgba(124, 58, 238, 0.2);
         }
-        .notes-table { width: 100%; border-collapse: collapse; }
+        .notes-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
         .notes-table th {
-            text-align: left; padding: 12px 16px; font-size: 14px; font-weight: 600;
+            text-align: left; padding: 12px 8px; font-size: 13px; font-weight: 600;
             color: var(--text-secondary); border-bottom: 1px solid rgba(124, 58, 237, 0.2);
-            cursor: pointer;
+            cursor: pointer; white-space: nowrap;
         }
         .notes-table th:hover { color: var(--text-primary); }
         .notes-table th.sorted { color: var(--accent); }
-        .notes-table td { padding: 16px; border-bottom: 1px solid rgba(124, 58, 237, 0.1); vertical-align: middle; }
+        .notes-table td { padding: 12px 8px; border-bottom: 1px solid rgba(124, 58, 237, 0.1); vertical-align: middle; }
         .notes-table tr:hover { background: rgba(124, 58, 237, 0.05); }
+
+        .col-content { width: 45%; }
+        .col-type { width: 8%; }
+        .col-likes { width: 12%; }
+        .col-collects { width: 12%; }
+        .col-comments { width: 12%; }
+        .col-time { width: 11%; }
 
         .note-content { display: flex; gap: 12px; align-items: flex-start; }
         .note-thumb {
             width: 60px; height: 60px; border-radius: 8px; object-fit: cover;
-            background: rgba(124, 58, 237, 0.2);
+            background: rgba(124, 58, 237, 0.2); flex-shrink: 0;
         }
+        .note-info { min-width: 0; flex: 1; }
         .note-info h4 {
             font-size: 14px; font-weight: 500; margin-bottom: 4px;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         .note-info h4 a { color: inherit; text-decoration: none; }
         .note-info h4 a:hover { color: var(--accent); text-decoration: underline; }
@@ -162,11 +156,10 @@
         }
         .note-type.video { background: rgba(239, 68, 68, 0.2); color: #FCA5A5; }
 
-        .stats-cell { display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
-        .stats-cell .stat-item { display: flex; align-items: center; gap: 4px; }
-        .stats-cell .stat-value { font-weight: 500; }
+        .stat-value { font-weight: 500; font-size: 14px; }
+        .time-text { font-size: 13px; color: var(--text-secondary); }
 
-        /* Insights Section - Moved below notes */
+        /* Insights Section */
         .insights-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -210,8 +203,10 @@
             header { flex-direction: column; gap: 16px; text-align: center; }
             .filter-bar { flex-direction: column; align-items: stretch; }
             .notes-table { font-size: 12px; }
-            .notes-table th, .notes-table td { padding: 8px; }
+            .notes-table th, .notes-table td { padding: 8px 4px; }
             .note-thumb { width: 40px; height: 40px; }
+            .col-content { width: 50%; }
+            .col-type, .col-comments { display: none; }
         }
     </style>
 </head>
@@ -254,12 +249,11 @@
         <div class="chart-section">
             <div class="section-header">
                 <h2 class="section-title">📈 话题热度对比</h2>
-                <span id="chartSubtitle" style="color: var(--text-secondary); font-size: 14px;">点击标签筛选笔记</span>
+                <span style="color: var(--text-secondary); font-size: 14px;">点击柱状图筛选笔记</span>
             </div>
             <div class="chart-container">
                 <canvas id="topicChart"></canvas>
             </div>
-            <div class="hot-topics" id="hotTopics"></div>
         </div>
 
         <!-- Filter Bar -->
@@ -273,6 +267,14 @@
                 <button class="filter-btn" data-keyword="CGM" onclick="filterByKeyword('CGM')">CGM</button>
                 <button class="filter-btn" data-keyword="美敦力" onclick="filterByKeyword('美敦力')">美敦力</button>
                 <button class="filter-btn" data-keyword="糖尿病" onclick="filterByKeyword('糖尿病')">糖尿病</button>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">时间：</span>
+                <select class="time-select" id="timeSelect" onchange="filterByTime()">
+                    <option value="all">全部时间</option>
+                    <option value="week">近一周</option>
+                    <option value="month">近一月</option>
+                </select>
             </div>
             <div class="filter-group">
                 <span class="filter-label">排序：</span>
@@ -294,12 +296,12 @@
             <table class="notes-table">
                 <thead>
                     <tr>
-                        <th style="width: 50%">内容</th>
-                        <th>类型</th>
-                        <th onclick="sortNotes('likes')" class="sortable">👍 点赞</th>
-                        <th onclick="sortNotes('collects')" class="sortable">⭐ 收藏</th>
-                        <th onclick="sortNotes('comments')" class="sortable">💬 评论</th>
-                        <th onclick="sortNotes('time')" class="sortable">时间</th>
+                        <th class="col-content">内容</th>
+                        <th class="col-type">类型</th>
+                        <th class="col-likes" onclick="sortNotes('likes')">👍 点赞</th>
+                        <th class="col-collects" onclick="sortNotes('collects')">⭐ 收藏</th>
+                        <th class="col-comments" onclick="sortNotes('comments')">💬 评论</th>
+                        <th class="col-time" onclick="sortNotes('time')">时间</th>
                     </tr>
                 </thead>
                 <tbody id="notesTableBody">
@@ -315,7 +317,7 @@
             </table>
         </div>
 
-        <!-- Insights Section - NOW BELOW Notes -->
+        <!-- Insights Section -->
         <div class="insights-section">
             <div class="insight-card">
                 <h3>💡 核心洞察</h3>
@@ -342,6 +344,7 @@
         let allNotes = [];
         let filteredNotes = [];
         let currentKeyword = '全部';
+        let currentTimeFilter = 'all';
         let currentSort = 'likes';
         let chart = null;
 
@@ -370,9 +373,8 @@
                 
                 updateStats(data);
                 updateChart(data);
-                updateTopics(data);
                 updateInsights(data);
-                renderNotes();
+                applyFilters();
                 
                 document.getElementById('updateTime').textContent = 
                     '最后更新：' + new Date(data.updatedAt).toLocaleString('zh-CN');
@@ -397,8 +399,6 @@
 
         function updateChart(data) {
             const ctx = document.getElementById('topicChart').getContext('2d');
-            
-            // 使用数据中的 keywordCounts
             const keywordCounts = data.keywordCounts || {};
             const keywordStats = KEYWORDS.map(keyword => ({
                 keyword,
@@ -429,6 +429,13 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    onClick: (e, elements) => {
+                        if (elements.length > 0) {
+                            const index = elements[0].index;
+                            const keyword = keywordStats[index].keyword;
+                            filterByKeyword(keyword);
+                        }
+                    },
                     plugins: {
                         legend: { display: false },
                         tooltip: {
@@ -453,20 +460,6 @@
             });
         }
 
-        function updateTopics(data) {
-            const container = document.getElementById('hotTopics');
-            const keywordCounts = data.keywordCounts || {};
-            const keywordStats = KEYWORDS.map(keyword => ({
-                keyword,
-                count: keywordCounts[keyword] || 0
-            })).sort((a, b) => b.count - a.count);
-
-            container.innerHTML = keywordStats.map(s => 
-                '<span class="topic-tag" onclick="filterByKeyword(\'' + s.keyword + '\')">' +
-                s.keyword + '<span class="count">' + s.count + '</span></span>'
-            ).join('');
-        }
-
         function updateInsights(data) {
             const insights = data.insights || generateInsights();
             document.getElementById('insightsList').innerHTML = insights.map(i => '<li><span class="bullet">•</span> ' + i + '</li>').join('');
@@ -481,13 +474,11 @@
             if (topLiked) {
                 insights.push('最高点赞笔记是《' + (topLiked.title || '').substring(0, 15) + '》，获得 ' + formatNumber(topLiked.likes || 0) + ' 赞');
             }
-
             const highCollectRate = [...allNotes].filter(n => n.likes > 100).sort((a, b) => ((b.collects || 0) / (b.likes || 1)) - ((a.collects || 0) / (a.likes || 1)))[0];
             if (highCollectRate) {
                 const rate = ((highCollectRate.collects || 0) / (highCollectRate.likes || 1) * 100).toFixed(1);
                 insights.push('收藏率最高笔记收藏/点赞比达 ' + rate + '%，说明内容实用性强');
             }
-
             return insights.length > 0 ? insights : ['暂无足够数据生成洞察'];
         }
 
@@ -507,16 +498,32 @@
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.keyword === keyword);
             });
-            document.querySelectorAll('.topic-tag').forEach(tag => {
-                tag.classList.toggle('active', tag.textContent.includes(keyword));
-            });
+            applyFilters();
+        }
 
-            if (keyword === '全部') {
-                filteredNotes = [...allNotes];
-            } else {
-                filteredNotes = allNotes.filter(n => n.keyword === keyword);
+        function filterByTime() {
+            currentTimeFilter = document.getElementById('timeSelect').value;
+            applyFilters();
+        }
+
+        function applyFilters() {
+            let result = [...allNotes];
+            
+            // 关键词筛选
+            if (currentKeyword !== '全部') {
+                result = result.filter(n => n.keyword === currentKeyword);
             }
-            renderNotes();
+            
+            // 时间筛选
+            const now = Date.now() / 1000;
+            if (currentTimeFilter === 'week') {
+                result = result.filter(n => n.time > now - 7 * 86400);
+            } else if (currentTimeFilter === 'month') {
+                result = result.filter(n => n.time > now - 30 * 86400);
+            }
+            
+            filteredNotes = result;
+            sortNotes();
         }
 
         function sortNotes(sortBy) {
@@ -545,24 +552,29 @@
                 return;
             }
 
-            tbody.innerHTML = filteredNotes.slice(0, 50).map(note => 
-                '<tr>' +
-                    '<td>' +
+            tbody.innerHTML = filteredNotes.slice(0, 50).map(note => {
+                const hasRealLink = note.url && note.url.startsWith('http');
+                const linkUrl = hasRealLink ? note.url : '#';
+                const linkTarget = hasRealLink ? ' target="_blank" rel="noopener"' : '';
+                const linkOnclick = hasRealLink ? '' : ' onclick="alert(\'暂无真实笔记链接，请先配置小红书MCP接口\'); return false;"';
+                
+                return '<tr>' +
+                    '<td class="col-content">' +
                         '<div class="note-content">' +
                             '<img class="note-thumb" src="' + (note.cover || 'https://via.placeholder.com/60x60/7C3AED/FFFFFF?text=图') + '" alt="封面" onerror="this.src=\'https://via.placeholder.com/60x60/7C3AED/FFFFFF?text=图\'">' +
                             '<div class="note-info">' +
-                                '<h4><a href="' + (note.url || '#') + '" target="_blank" rel="noopener">' + (note.title || '无标题') + '</a></h4>' +
-                                '<div class="meta">👤 ' + (note.author || '匿名') + ' · ' + formatTime(note.time) + '</div>' +
+                                '<h4><a href="' + linkUrl + '"' + linkTarget + linkOnclick + '>' + (note.title || '无标题') + '</a></h4>' +
+                                '<div class="meta">👤 ' + (note.author || '匿名') + '</div>' +
                             '</div>' +
                         '</div>' +
                     '</td>' +
-                    '<td><span class="note-type ' + (note.type === 'video' ? 'video' : '') + '">' + (note.type === 'video' ? '🎬 视频' : '📷 图文') + '</span></td>' +
-                    '<td class="stats-cell"><div class="stat-item">👍 <span class="stat-value">' + formatNumber(note.likes || 0) + '</span></div></td>' +
-                    '<td class="stats-cell"><div class="stat-item">⭐ <span class="stat-value">' + formatNumber(note.collects || 0) + '</span></div></td>' +
-                    '<td class="stats-cell"><div class="stat-item">💬 <span class="stat-value">' + formatNumber(note.comments || 0) + '</span></div></td>' +
-                    '<td>' + formatTime(note.time) + '</td>' +
-                '</tr>'
-            ).join('');
+                    '<td class="col-type"><span class="note-type ' + (note.type === 'video' ? 'video' : '') + '">' + (note.type === 'video' ? '🎬' : '📷') + '</span></td>' +
+                    '<td class="col-likes"><span class="stat-value">' + formatNumber(note.likes || 0) + '</span></td>' +
+                    '<td class="col-collects"><span class="stat-value">' + formatNumber(note.collects || 0) + '</span></td>' +
+                    '<td class="col-comments"><span class="stat-value">' + formatNumber(note.comments || 0) + '</span></td>' +
+                    '<td class="col-time"><span class="time-text">' + formatTime(note.time) + '</span></td>' +
+                '</tr>';
+            }).join('');
         }
 
         function refreshData() {
