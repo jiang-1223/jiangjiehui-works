@@ -36,14 +36,20 @@ def get_cookie_from_env() -> Optional[Dict[str, str]]:
     a1 = os.getenv('XHS_A1')
     web_session = os.getenv('XHS_WEB_SESSION')
     web_id = os.getenv('XHS_WEB_ID')
-    
+
+    print(f"=== Cookie 环境变量检查 ===")
+    print(f"XHS_A1: {'已设置' if a1 else '未设置'} (长度: {len(a1) if a1 else 0})")
+    print(f"XHS_WEB_SESSION: {'已设置' if web_session else '未设置'} (长度: {len(web_session) if web_session else 0})")
+    print(f"XHS_WEB_ID: {'已设置' if web_id else '未设置'} (长度: {len(web_id) if web_id else 0})")
+
     if not all([a1, web_session, web_id]):
         logger.warning("Cookie 环境变量不完整，请设置 XHS_A1, XHS_WEB_SESSION, XHS_WEB_ID")
         return None
-    
+
     # 构建 Cookie 字符串
     cookie_str = f"a1={a1}; web_session={web_session}; webId={web_id}"
-    
+    print(f"Cookie 字符串长度: {len(cookie_str)}")
+
     # 返回 Cookie 字典
     return {
         'a1': a1,
@@ -73,13 +79,20 @@ def search_notes(client: XhsClient, keyword: str, page: int = 1, limit: int = 20
     """搜索小红书笔记"""
     try:
         logger.info(f"搜索关键词: {keyword}, 页码: {page}")
+        print(f"  调用 client.get_note_by_keyword(keyword='{keyword}', page={page}, page_size={limit})")
+
         # 调用正确的方法名：get_note_by_keyword
         result = client.get_note_by_keyword(keyword=keyword, page=page, page_size=limit)
+
+        print(f"  API 返回结果类型: {type(result)}")
+        print(f"  API 返回结果键: {result.keys() if isinstance(result, dict) else 'N/A'}")
 
         notes = []
         # 解析结果
         if result and 'items' in result:
-            for item in result['items'][:limit]:
+            items = result['items']
+            print(f"  找到 {len(items)} 个项目")
+            for item in items[:limit]:
                 note = {
                     'note_id': item.get('note_id', ''),
                     'title': item.get('title', ''),
@@ -93,12 +106,18 @@ def search_notes(client: XhsClient, keyword: str, page: int = 1, limit: int = 20
                     'url': f"https://www.xiaohongshu.com/explore/{item.get('note_id', '')}"
                 }
                 notes.append(note)
+        else:
+            print(f"  警告: result 为空或没有 'items' 键")
+            print(f"  result 内容: {result}")
 
         logger.info(f"搜索到 {len(notes)} 条笔记")
         return notes
     except Exception as e:
+        import traceback
+        print(f"  ✗ 异常: {e}")
+        print(f"  堆栈跟踪:\n{traceback.format_exc()}")
         logger.error(f"搜索失败 {keyword}: {e}")
-        return []
+        raise  # 重新抛出异常，不返回空列表
 
 def get_note_detail(client: XhsClient, note_id: str) -> Optional[Dict[str, Any]]:
     """获取笔记详情"""
@@ -132,20 +151,37 @@ def main():
         raise Exception("Cookie 未配置，无法抓取数据。请设置环境变量 XHS_A1, XHS_WEB_SESSION, XHS_WEB_ID")
     
     # 初始化客户端
+    print("\n=== 初始化 xhs 客户端 ===")
     client = init_xhs_client(cookie_info)
-    
+
     if not client:
         raise Exception("客户端初始化失败，无法抓取数据")
-    
+
+    print(f"客户端初始化成功: {type(client)}")
+
     # 遍历关键词搜索
-    for keyword in KEYWORDS:
-        logger.info(f"处理关键词: {keyword}")
-        notes = search_notes(client, keyword, page=1, limit=10)
-        
-        all_notes.extend(notes)
-        
+    print("\n=== 开始搜索关键词 ===")
+    success_count = 0
+    fail_count = 0
+
+    for i, keyword in enumerate(KEYWORDS, 1):
+        print(f"\n[{i}/{len(KEYWORDS)}] 处理关键词: {keyword}")
+        try:
+            notes = search_notes(client, keyword, page=1, limit=10)
+            print(f"  ✓ 成功获取 {len(notes)} 条笔记")
+            all_notes.extend(notes)
+            success_count += 1
+        except Exception as e:
+            print(f"  ✗ 失败: {e}")
+            fail_count += 1
+
         # 避免请求过快
         time.sleep(2)
+
+    print(f"\n=== 搜索完成 ===")
+    print(f"成功: {success_count}/{len(KEYWORDS)}")
+    print(f"失败: {fail_count}/{len(KEYWORDS)}")
+    print(f"总笔记数: {len(all_notes)}")
     
     # 按点赞数排序
     all_notes.sort(key=lambda x: x.get('likes', 0), reverse=True)
