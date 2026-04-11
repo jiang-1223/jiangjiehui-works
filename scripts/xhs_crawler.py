@@ -48,9 +48,9 @@ def init_sign():
         logger.warning("Playwright 不可用,无法生成签名")
         return None
 
-    def sign(data: str, **kwargs) -> dict:
+    def sign(data: str, a1: str = "", **kwargs) -> dict:
         """签名函数,返回 x-s 和 x-t 参数
-        注意：xhs 库会传入 a1 等参数，需要接受但忽略
+        注意：xhs 库会传入 data 和 a1 两个位置参数，需要接受但忽略 a1
         """
         with sync_playwright() as p:
             # 启动浏览器
