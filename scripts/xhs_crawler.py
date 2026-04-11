@@ -73,12 +73,11 @@ def search_notes(client: XhsClient, keyword: str, page: int = 1, limit: int = 20
     """搜索小红书笔记"""
     try:
         logger.info(f"搜索关键词: {keyword}, 页码: {page}")
-        # 调用搜索方法，具体方法名需要参考 xhs 库文档
-        # 假设方法名为 search_notes
-        result = client.search_notes(keyword=keyword, page=page)
-        
+        # 调用正确的方法名：get_note_by_keyword
+        result = client.get_note_by_keyword(keyword=keyword, page=page, page_size=limit)
+
         notes = []
-        # 解析结果，具体结构需要参考实际返回数据
+        # 解析结果
         if result and 'items' in result:
             for item in result['items'][:limit]:
                 note = {
@@ -94,7 +93,7 @@ def search_notes(client: XhsClient, keyword: str, page: int = 1, limit: int = 20
                     'url': f"https://www.xiaohongshu.com/explore/{item.get('note_id', '')}"
                 }
                 notes.append(note)
-        
+
         logger.info(f"搜索到 {len(notes)} 条笔记")
         return notes
     except Exception as e:
@@ -112,27 +111,9 @@ def get_note_detail(client: XhsClient, note_id: str) -> Optional[Dict[str, Any]]
         return None
 
 def generate_mock_data() -> List[Dict[str, Any]]:
-    """生成模拟数据（用于测试）"""
-    mock_notes = []
-    for i, keyword in enumerate(KEYWORDS[:3]):
-        for j in range(5):
-            note_id = f"mock_{i}_{j}"
-            mock_notes.append({
-                'note_id': note_id,
-                'title': f"{keyword} 相关笔记 {j+1}",
-                'desc': f"这是关于{keyword}的测试笔记内容，用于演示数据抓取功能。",
-                'user': {
-                    'user_id': f"user_{i}_{j}",
-                    'nickname': f"测试用户{i}_{j}"
-                },
-                'likes': (i + j) * 10,
-                'collects': (i + j) * 5,
-                'comments': (i + j) * 3,
-                'time': int(time.time()) - (i * 1000 + j * 100),
-                'keyword': keyword,
-                'url': f"https://www.xiaohongshu.com/explore/{note_id}"
-            })
-    return mock_notes
+    """已删除模拟数据功能"""
+    logger.error("不再使用模拟数据，请确保 Cookie 有效")
+    return []
 
 def main():
     """主函数"""
@@ -142,40 +123,29 @@ def main():
     
     # 检查 xhs 库是否可用
     if not XHS_AVAILABLE:
-        logger.warning("xhs 库未安装，使用模拟数据")
-        all_notes = generate_mock_data()
-    else:
-        # 获取 Cookie
-        cookie_info = get_cookie_from_env()
+        raise Exception("xhs 库未安装，无法抓取数据。请安装: pip install xhs")
+    
+    # 获取 Cookie
+    cookie_info = get_cookie_from_env()
+    
+    if not cookie_info:
+        raise Exception("Cookie 未配置，无法抓取数据。请设置环境变量 XHS_A1, XHS_WEB_SESSION, XHS_WEB_ID")
+    
+    # 初始化客户端
+    client = init_xhs_client(cookie_info)
+    
+    if not client:
+        raise Exception("客户端初始化失败，无法抓取数据")
+    
+    # 遍历关键词搜索
+    for keyword in KEYWORDS:
+        logger.info(f"处理关键词: {keyword}")
+        notes = search_notes(client, keyword, page=1, limit=10)
         
-        if not cookie_info:
-            logger.warning("Cookie 未配置，使用模拟数据")
-            all_notes = generate_mock_data()
-        else:
-            # 初始化客户端
-            client = init_xhs_client(cookie_info)
-            
-            if not client:
-                logger.warning("客户端初始化失败，使用模拟数据")
-                all_notes = generate_mock_data()
-            else:
-                # 遍历关键词搜索
-                for keyword in KEYWORDS:
-                    logger.info(f"处理关键词: {keyword}")
-                    notes = search_notes(client, keyword, page=1, limit=10)
-                    
-                    # 可选：获取每条笔记的详情
-                    for note in notes:
-                        # 可以在这里调用 get_note_detail 获取更多信息
-                        # detail = get_note_detail(client, note['note_id'])
-                        # if detail:
-                        #     note.update(detail)
-                        pass
-                    
-                    all_notes.extend(notes)
-                    
-                    # 避免请求过快
-                    time.sleep(2)
+        all_notes.extend(notes)
+        
+        # 避免请求过快
+        time.sleep(2)
     
     # 按点赞数排序
     all_notes.sort(key=lambda x: x.get('likes', 0), reverse=True)
