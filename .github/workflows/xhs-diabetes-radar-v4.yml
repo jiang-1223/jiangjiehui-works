@@ -40,11 +40,25 @@ jobs:
           # 创建数据目录
           mkdir -p public/data
 
-          # 运行数据抓取脚本
-          python scripts/xhs_crawler.py || echo "Python脚本执行失败，使用备用数据"
+          # 显示 Python 版本和已安装的包
+          echo "=== Python 版本 ==="
+          python --version
+          echo "=== 已安装的包 ==="
+          pip list | grep -E "xhs|playwright|requests"
 
-          # 如果脚本失败，使用模拟数据作为备用
-          if [ ! -f public/data/radar-data-v4.json ]; then
+          # 运行数据抓取脚本（添加详细日志）
+          echo "=== 开始抓取数据 ==="
+          python scripts/xhs_crawler.py 2>&1 || echo "Python脚本执行失败"
+
+          # 检查生成的数据文件
+          echo "=== 检查数据文件 ==="
+          if [ -f public/data/radar-data-v4.json ]; then
+            echo "✅ 数据文件已生成"
+            echo "文件内容："
+            head -20 public/data/radar-data-v4.json
+          else
+            echo "❌ 数据文件未生成"
+            # 创建空数据文件
             echo '{"fetch_time": "'$(date -Iseconds)'", "keywords": ["1型糖","2型糖","胰岛素泵","CGM","美敦力","糖尿病"], "notes": [], "total_notes": 0}' > public/data/radar-data-v4.json
           fi
 
