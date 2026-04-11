@@ -20,6 +20,15 @@ except ImportError:
     print("警告: xhs 库未安装，将使用模拟数据")
     print("安装命令: pip install xhs")
 
+# 尝试导入 playwright 用于签名
+try:
+    from playwright.sync_api import sync_playwright
+    PLAYWRIGHT_AVAILABLE = True
+except ImportError:
+    PLAYWRIGHT_AVAILABLE = False
+    print("警告: playwright 库未安装，签名功能不可用")
+    print("安装命令: pip install playwright && playwright install chromium")
+
 # 配置日志
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -29,6 +38,41 @@ KEYWORDS = [
     "1型糖", "2型糖", "胰岛素泵", "CGM", "美敦力", "糖尿病",
     "1型糖尿病", "2型糖尿病", "血糖监测", "胰岛素", "糖友"
 ]
+
+def init_sign():
+    """
+    使用 Playwright 初始化签名函数
+    返回签名函数,用于XhsClient初始化
+    """
+    if not PLAYWRIGHT_AVAILABLE:
+        logger.warning("Playwright 不可用,无法生成签名")
+        return None
+
+    def sign(data: str) -> dict:
+        """签名函数,返回 x-s 和 x-t 参数"""
+        with sync_playwright() as p:
+            # 启动浏览器
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+
+            try:
+                # 访问小红书网站
+                page.goto("https://www.xiaohongshu.com")
+                time.sleep(2)  # 等待页面加载
+
+                # 调用签名函数
+                result = page.evaluate(f"window._webmsxyw('{data}')")
+
+                # 提取签名参数
+                x_s = result.get('x-s', '')
+                x_t = result.get('x-t', str(int(time.time())))
+
+                return {'x-s': x_s, 'x-t': x_t}
+
+            finally:
+                browser.close()
+
+    return sign
 
 # 从环境变量获取 Cookie
 def get_cookie_from_env() -> Optional[Dict[str, str]]:
@@ -61,18 +105,29 @@ def get_cookie_from_env() -> Optional[Dict[str, str]]:
 def init_xhs_client(cookie_info: Dict[str, str]) -> Optional[XhsClient]:
     """初始化 XhsClient"""
     try:
+        # 初始化签名函数
+        sign_func = init_sign()
+        if sign_func:
+            logger.info("签名函数初始化成功")
+        else:
+            logger.warning("签名函数初始化失败,可能无法正常调用API")
+
         # 根据 xhs 库的文档初始化客户端
-        # 注意：可能需要额外的参数，如签名服务地址
-        # 这里使用最简单的初始化方式
+        # 必须传入签名函数,否则 external_sign 为 None 导致调用失败
         client = XhsClient(
             cookie=cookie_info['cookie_str'],
+            sign=sign_func,  # 传入签名函数
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
             timeout=30
         )
         logger.info("XhsClient 初始化成功")
+        print(f"客户端类型: {type(client)}")
+        print(f"签名函数: {sign_func}")
         return client
     except Exception as e:
         logger.error(f"初始化 XhsClient 失败: {e}")
+        import traceback
+        traceback.print_exc()
         return None
 
 def search_notes(client: XhsClient, keyword: str, page: int = 1, limit: int = 20) -> List[Dict[str, Any]]:
