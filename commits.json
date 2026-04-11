@@ -1,0 +1,292 @@
+[
+  {
+    "sha": "9a607600c1ef5bd2b413d6545284f38bf484fffb",
+    "node_id": "C_kwDORrQEO9oAKDlhNjA3NjAwYzFlZjViZDJiNDEzZDY1NDUyODRmMzhiZjQ4NGZmZmI",
+    "commit": {
+      "author": {
+        "name": "WorkBuddy Bot",
+        "email": "bot@workbuddy.ai",
+        "date": "2026-04-11T05:46:08Z"
+      },
+      "committer": {
+        "name": "WorkBuddy Bot",
+        "email": "bot@workbuddy.ai",
+        "date": "2026-04-11T05:46:08Z"
+      },
+      "message": "chore: update xhs diabetes radar data $(date +\"%Y-%m-%d %H:%M\")",
+      "tree": {
+        "sha": "2cb3353335161ad8e0c640986f36a036c2cae900",
+        "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/git/trees/2cb3353335161ad8e0c640986f36a036c2cae900"
+      },
+      "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/git/commits/9a607600c1ef5bd2b413d6545284f38bf484fffb",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/commits/9a607600c1ef5bd2b413d6545284f38bf484fffb",
+    "html_url": "https://github.com/jiang-1223/jiangjiehui-works/commit/9a607600c1ef5bd2b413d6545284f38bf484fffb",
+    "comments_url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/commits/9a607600c1ef5bd2b413d6545284f38bf484fffb/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "126a2fa695d019b56ce49e8b46f7c54e2d895b08",
+        "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/commits/126a2fa695d019b56ce49e8b46f7c54e2d895b08",
+        "html_url": "https://github.com/jiang-1223/jiangjiehui-works/commit/126a2fa695d019b56ce49e8b46f7c54e2d895b08"
+      }
+    ]
+  },
+  {
+    "sha": "126a2fa695d019b56ce49e8b46f7c54e2d895b08",
+    "node_id": "C_kwDORrQEO9oAKDEyNmEyZmE2OTVkMDE5YjU2Y2U0OWU4YjQ2ZjdjNTRlMmQ4OTViMDg",
+    "commit": {
+      "author": {
+        "name": "xiami宝宝",
+        "email": "xiami@workbuddy.ai",
+        "date": "2026-04-11T05:44:08Z"
+      },
+      "committer": {
+        "name": "xiami宝宝",
+        "email": "xiami@workbuddy.ai",
+        "date": "2026-04-11T05:44:08Z"
+      },
+      "message": "fix: 修复工作流推送权限问题\n\n- 添加 contents: write 权限\n- checkout 时使用 GH_TOKEN\n- 添加 .gitignore 排除大文件",
+      "tree": {
+        "sha": "a5b8cdb34c9909445462fe46938daf3386b157b2",
+        "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/git/trees/a5b8cdb34c9909445462fe46938daf3386b157b2"
+      },
+      "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/git/commits/126a2fa695d019b56ce49e8b46f7c54e2d895b08",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/commits/126a2fa695d019b56ce49e8b46f7c54e2d895b08",
+    "html_url": "https://github.com/jiang-1223/jiangjiehui-works/commit/126a2fa695d019b56ce49e8b46f7c54e2d895b08",
+    "comments_url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/commits/126a2fa695d019b56ce49e8b46f7c54e2d895b08/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "8f530326976e2289f3fb73c90d0d08ac2bb8240c",
+        "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/commits/8f530326976e2289f3fb73c90d0d08ac2bb8240c",
+        "html_url": "https://github.com/jiang-1223/jiangjiehui-works/commit/8f530326976e2289f3fb73c90d0d08ac2bb8240c"
+      }
+    ]
+  },
+  {
+    "sha": "8f530326976e2289f3fb73c90d0d08ac2bb8240c",
+    "node_id": "C_kwDORrQEO9oAKDhmNTMwMzI2OTc2ZTIyODlmM2ZiNzNjOTBkMGQwOGFjMmJiODI0MGM",
+    "commit": {
+      "author": {
+        "name": "xiami宝宝",
+        "email": "xiami@workbuddy.ai",
+        "date": "2026-04-11T05:14:26Z"
+      },
+      "committer": {
+        "name": "xiami宝宝",
+        "email": "xiami@workbuddy.ai",
+        "date": "2026-04-11T05:14:26Z"
+      },
+      "message": "feat: 切换到 Python + xhs 库获取小红书数据\n\n- 添加 scripts/xhs_crawler.py（使用 xhs Python 库）\n- 更新工作流使用 Python 环境替代 Node.js\n- 使用已配置的 Cookie secrets（XHS_A1, XHS_WEB_SESSION, XHS_WEB_ID）\n- 失败时自动回退到模拟数据\n\n优势：\n- xhs 库专为小红书设计，更稳定\n- 免费开源，无需第三方服务\n- Cookie 有效期约 1 个月，易于维护",
+      "tree": {
+        "sha": "4555c68a2c837f5aa1458a9363b541ca2ea6abea",
+        "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/git/trees/4555c68a2c837f5aa1458a9363b541ca2ea6abea"
+      },
+      "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/git/commits/8f530326976e2289f3fb73c90d0d08ac2bb8240c",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/commits/8f530326976e2289f3fb73c90d0d08ac2bb8240c",
+    "html_url": "https://github.com/jiang-1223/jiangjiehui-works/commit/8f530326976e2289f3fb73c90d0d08ac2bb8240c",
+    "comments_url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/commits/8f530326976e2289f3fb73c90d0d08ac2bb8240c/comments",
+    "author": null,
+    "committer": null,
+    "parents": [
+      {
+        "sha": "d70f41fca6bb77a6e334d6512da256d16003d3f7",
+        "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/commits/d70f41fca6bb77a6e334d6512da256d16003d3f7",
+        "html_url": "https://github.com/jiang-1223/jiangjiehui-works/commit/d70f41fca6bb77a6e334d6512da256d16003d3f7"
+      }
+    ]
+  },
+  {
+    "sha": "d70f41fca6bb77a6e334d6512da256d16003d3f7",
+    "node_id": "C_kwDORrQEO9oAKGQ3MGY0MWZjYTZiYjc3YTZlMzM0ZDY1MTJkYTI1NmQxNjAwM2QzZjc",
+    "commit": {
+      "author": {
+        "name": "jiang-1223",
+        "email": "1760893265@qq.com",
+        "date": "2026-04-10T14:21:21Z"
+      },
+      "committer": {
+        "name": "jiang-1223",
+        "email": "1760893265@qq.com",
+        "date": "2026-04-10T14:21:21Z"
+      },
+      "message": "fix: remove chart section completely",
+      "tree": {
+        "sha": "77c7cab0e68919bda72d58d4527e4584aeb65881",
+        "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/git/trees/77c7cab0e68919bda72d58d4527e4584aeb65881"
+      },
+      "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/git/commits/d70f41fca6bb77a6e334d6512da256d16003d3f7",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/commits/d70f41fca6bb77a6e334d6512da256d16003d3f7",
+    "html_url": "https://github.com/jiang-1223/jiangjiehui-works/commit/d70f41fca6bb77a6e334d6512da256d16003d3f7",
+    "comments_url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/commits/d70f41fca6bb77a6e334d6512da256d16003d3f7/comments",
+    "author": {
+      "login": "jiang-1223",
+      "id": 269417587,
+      "node_id": "U_kgDOEA78cw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/269417587?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jiang-1223",
+      "html_url": "https://github.com/jiang-1223",
+      "followers_url": "https://api.github.com/users/jiang-1223/followers",
+      "following_url": "https://api.github.com/users/jiang-1223/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jiang-1223/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jiang-1223/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jiang-1223/subscriptions",
+      "organizations_url": "https://api.github.com/users/jiang-1223/orgs",
+      "repos_url": "https://api.github.com/users/jiang-1223/repos",
+      "events_url": "https://api.github.com/users/jiang-1223/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jiang-1223/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jiang-1223",
+      "id": 269417587,
+      "node_id": "U_kgDOEA78cw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/269417587?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jiang-1223",
+      "html_url": "https://github.com/jiang-1223",
+      "followers_url": "https://api.github.com/users/jiang-1223/followers",
+      "following_url": "https://api.github.com/users/jiang-1223/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jiang-1223/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jiang-1223/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jiang-1223/subscriptions",
+      "organizations_url": "https://api.github.com/users/jiang-1223/orgs",
+      "repos_url": "https://api.github.com/users/jiang-1223/repos",
+      "events_url": "https://api.github.com/users/jiang-1223/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jiang-1223/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "fbecc0a283af29a3c7088730b67f1365f59d9b9f",
+        "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/commits/fbecc0a283af29a3c7088730b67f1365f59d9b9f",
+        "html_url": "https://github.com/jiang-1223/jiangjiehui-works/commit/fbecc0a283af29a3c7088730b67f1365f59d9b9f"
+      }
+    ]
+  },
+  {
+    "sha": "fbecc0a283af29a3c7088730b67f1365f59d9b9f",
+    "node_id": "C_kwDORrQEO9oAKGZiZWNjMGEyODNhZjI5YTNjNzA4ODczMGI2N2YxMzY1ZjU5ZDliOWY",
+    "commit": {
+      "author": {
+        "name": "jiang-1223",
+        "email": "1760893265@qq.com",
+        "date": "2026-04-10T13:45:43Z"
+      },
+      "committer": {
+        "name": "jiang-1223",
+        "email": "1760893265@qq.com",
+        "date": "2026-04-10T13:45:43Z"
+      },
+      "message": "fix: update table headers and add data source notice",
+      "tree": {
+        "sha": "68049ed4778ddb64e0ec169f393fee89667b2f62",
+        "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/git/trees/68049ed4778ddb64e0ec169f393fee89667b2f62"
+      },
+      "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/git/commits/fbecc0a283af29a3c7088730b67f1365f59d9b9f",
+      "comment_count": 0,
+      "verification": {
+        "verified": false,
+        "reason": "unsigned",
+        "signature": null,
+        "payload": null,
+        "verified_at": null
+      }
+    },
+    "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/commits/fbecc0a283af29a3c7088730b67f1365f59d9b9f",
+    "html_url": "https://github.com/jiang-1223/jiangjiehui-works/commit/fbecc0a283af29a3c7088730b67f1365f59d9b9f",
+    "comments_url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/commits/fbecc0a283af29a3c7088730b67f1365f59d9b9f/comments",
+    "author": {
+      "login": "jiang-1223",
+      "id": 269417587,
+      "node_id": "U_kgDOEA78cw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/269417587?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jiang-1223",
+      "html_url": "https://github.com/jiang-1223",
+      "followers_url": "https://api.github.com/users/jiang-1223/followers",
+      "following_url": "https://api.github.com/users/jiang-1223/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jiang-1223/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jiang-1223/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jiang-1223/subscriptions",
+      "organizations_url": "https://api.github.com/users/jiang-1223/orgs",
+      "repos_url": "https://api.github.com/users/jiang-1223/repos",
+      "events_url": "https://api.github.com/users/jiang-1223/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jiang-1223/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "committer": {
+      "login": "jiang-1223",
+      "id": 269417587,
+      "node_id": "U_kgDOEA78cw",
+      "avatar_url": "https://avatars.githubusercontent.com/u/269417587?v=4",
+      "gravatar_id": "",
+      "url": "https://api.github.com/users/jiang-1223",
+      "html_url": "https://github.com/jiang-1223",
+      "followers_url": "https://api.github.com/users/jiang-1223/followers",
+      "following_url": "https://api.github.com/users/jiang-1223/following{/other_user}",
+      "gists_url": "https://api.github.com/users/jiang-1223/gists{/gist_id}",
+      "starred_url": "https://api.github.com/users/jiang-1223/starred{/owner}{/repo}",
+      "subscriptions_url": "https://api.github.com/users/jiang-1223/subscriptions",
+      "organizations_url": "https://api.github.com/users/jiang-1223/orgs",
+      "repos_url": "https://api.github.com/users/jiang-1223/repos",
+      "events_url": "https://api.github.com/users/jiang-1223/events{/privacy}",
+      "received_events_url": "https://api.github.com/users/jiang-1223/received_events",
+      "type": "User",
+      "user_view_type": "public",
+      "site_admin": false
+    },
+    "parents": [
+      {
+        "sha": "5bdb915f3041c371972ab9f2e79f03e1843007e8",
+        "url": "https://api.github.com/repos/jiang-1223/jiangjiehui-works/commits/5bdb915f3041c371972ab9f2e79f03e1843007e8",
+        "html_url": "https://github.com/jiang-1223/jiangjiehui-works/commit/5bdb915f3041c371972ab9f2e79f03e1843007e8"
+      }
+    ]
+  }
+]
