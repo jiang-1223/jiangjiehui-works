@@ -48,10 +48,13 @@ def init_sign():
         logger.warning("Playwright 不可用,无法生成签名")
         return None
 
-    def sign(data: str, a1: str = "", **kwargs) -> dict:
+    def sign(*args, **kwargs) -> dict:
         """签名函数,返回 x-s 和 x-t 参数
-        注意：xhs 库会传入 data 和 a1 两个位置参数，需要接受但忽略 a1
+        注意：xhs 库调用时会传入多个参数，我们只需要第一个参数 data
         """
+        # 提取第一个参数作为 data
+        data = args[0] if args else ""
+        
         with sync_playwright() as p:
             # 启动浏览器
             browser = p.chromium.launch(headless=True)
