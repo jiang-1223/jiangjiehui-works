@@ -1,0 +1,19 @@
+# Node modules
+node_modules/
+lobster-worker-video/node_modules/
+
+# Cache
+.cache/
+*.pack
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+temp_*.py
+temp_*.html
+test_*.py
+check_*.py
