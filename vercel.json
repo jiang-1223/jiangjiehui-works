@@ -3,7 +3,8 @@
   "public": true,
   "rewrites": [
     { "source": "/api/radar-data", "destination": "/api/radar-data.js" },
-    { "source": "/api/refresh-data", "destination": "/api/refresh-data.js" }
+    { "source": "/api/refresh-data", "destination": "/api/refresh-data.js" },
+    { "source": "/api/coze-proxy", "destination": "/api/coze-proxy.js" }
   ],
   "crons": [
     {
