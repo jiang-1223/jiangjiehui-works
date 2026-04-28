@@ -1,5374 +1,710 @@
 <!DOCTYPE html>
-
-
-
-
-
-
-
 <html lang="zh-CN">
-
-
-
-
-
-
-
 <head>
-
-
-
-
-
-
-
     <meta charset="UTF-8">
-
-
-
-
-
-
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-
-
-
-
-
-    <title>泡泡的AI作品集 | 30天零代码拿下AI</title>
-
-
-
-
-
-
-
-    <meta name="description" content="春日泡泡的个人主页，探索AI工具与效率提升">
-
-
-
-
-
-
-
+    <title>AI内容创作者 · 作品集</title>
+    <meta name="description" content="蒋洁慧 - AI内容创作者，用AI把内容生产效率提升3倍">
     <style>
-
-
-
-
-
-
-
+        /* ========== 基础重置 & CSS变量 ========== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         :root {
-
-
-
-
-
-
-
             --primary: #6C63FF;
-
-
-
-
-
-
-
             --primary-light: #8B83FF;
-
-
-
-
-
-
-
+            --primary-bg: #F0EEFF;
             --secondary: #FF6584;
-
-
-
-
-
-
-
-            --bg-dark: #0f0f1a;
-
-
-
-
-
-
-
-            --bg-card: #1a1a2e;
-
-
-
-
-
-
-
-            --bg-card-hover: #222240;
-
-
-
-
-
-
-
-            --text: #e0e0e0;
-
-
-
-
-
-
-
-            --text-muted: #8888aa;
-
-
-
-
-
-
-
-            --gradient-1: linear-gradient(135deg, #6C63FF 0%, #FF6584 100%);
-
-
-
-
-
-
-
-            --gradient-2: linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%);
-
-
-
-
-
-
-
-            --gradient-3: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-
-
-
-
-
-
-
+            --bg: #FAFAFA;
+            --bg-white: #FFFFFF;
+            --text: #1a1a2e;
+            --text-secondary: #555;
+            --text-muted: #888;
+            --border: #E8E8EE;
+            --shadow: 0 4px 24px rgba(0,0,0,0.06);
+            --shadow-hover: 0 12px 40px rgba(108,99,255,0.12);
+            --radius: 16px;
+            --gradient: linear-gradient(135deg, #6C63FF 0%, #8B83FF 100%);
+            --gradient-warm: linear-gradient(135deg, #6C63FF 0%, #FF6584 100%);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        html { scroll-behavior: smooth; }
         body {
-
-
-
-
-
-
-
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-
-
-
-
-
-
-
-            background: var(--bg-dark);
-
-
-
-
-
-
-
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--bg);
             color: var(--text);
-
-
-
-
-
-
-
-            min-height: 100vh;
-
-
-
-
-
-
-
+            line-height: 1.7;
             overflow-x: hidden;
-
-
-
-
-
-
-
-            line-height: 1.8;
-
-
-
-
-
-
-
         }
+        a { text-decoration: none; color: inherit; }
 
+        /* ========== 容器 ========== */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* 背景粒子效果 */
-
-
-
-
-
-
-
-        .bg-particles {
-
-
-
-
-
-
-
-            position: fixed;
-
-
-
-
-
-
-
-            top: 0; left: 0;
-
-
-
-
-
-
-
-            width: 100%; height: 100%;
-
-
-
-
-
-
-
-            z-index: 0;
-
-
-
-
-
-
-
-            pointer-events: none;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .particle {
-
-
-
-
-
-
-
-            position: absolute;
-
-
-
-
-
-
-
-            border-radius: 50%;
-
-
-
-
-
-
-
-            opacity: 0.3;
-
-
-
-
-
-
-
-            animation: float linear infinite;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        @keyframes float {
-
-
-
-
-
-
-
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-
-
-
-
-
-
-
-            10% { opacity: 0.3; }
-
-
-
-
-
-
-
-            90% { opacity: 0.3; }
-
-
-
-
-
-
-
-            100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* 主容器 */
-
-
-
-
-
-
-
-        .container {
-
-
-
-
-
-
-
-            max-width: 1100px;
-
-
-
-
-
-
-
-            margin: 0 auto;
-
-
-
-
-
-
-
-            padding: 0 24px;
-
-
-
-
-
-
-
-            position: relative;
-
-
-
-
-
-
-
-            z-index: 1;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* 导航栏 */
-
-
-
-
-
-
-
+        /* ========== 导航栏 ========== */
         nav {
-
-
-
-
-
-
-
-            display: flex;
-
-
-
-
-
-
-
-            justify-content: space-between;
-
-
-
-
-
-
-
-            align-items: center;
-
-
-
-
-
-
-
-            padding: 24px 0;
-
-
-
-
-
-
-
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 0; position: fixed; top: 0; left: 0; right: 0;
+            background: rgba(250,250,250,0.85); backdrop-filter: blur(12px);
+            z-index: 100; border-bottom: 1px solid var(--border);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .logo {
-
-
-
-
-
-
-
-            font-size: 22px;
-
-
-
-
-
-
-
-            font-weight: 700;
-
-
-
-
-
-
-
-            background: var(--gradient-1);
-
-
-
-
-
-
-
-            -webkit-background-clip: text;
-
-
-
-
-
-
-
-            -webkit-text-fill-color: transparent;
-
-
-
-
-
-
-
-            background-clip: text;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .nav-links {
-
-
-
-
-
-
-
-            display: flex;
-
-
-
-
-
-
-
-            gap: 28px;
-
-
-
-
-
-
-
-            list-style: none;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .nav-links a {
-
-
-
-
-
-
-
-            color: var(--text-muted);
-
-
-
-
-
-
-
-            text-decoration: none;
-
-
-
-
-
-
-
-            font-size: 15px;
-
-
-
-
-
-
-
-            transition: color 0.3s;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .nav-links a:hover {
-
-
-
-
-
-
-
-            color: var(--text);
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* Hero区域 */
-
-
-
-
-
-
-
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 20px; font-weight: 700; color: var(--primary); }
+        .nav-links { display: flex; gap: 28px; list-style: none; }
+        .nav-links a { color: var(--text-muted); font-size: 14px; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* ========== Hero区 ========== */
         .hero {
-
-
-
-
-
-
-
-            padding: 80px 0 60px;
-
-
-
-
-
-
-
+            padding: 140px 0 80px;
             text-align: center;
-
-
-
-
-
-
-
+            background: linear-gradient(180deg, #FFFFFF 0%, var(--bg) 100%);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         .hero-badge {
-
-
-
-
-
-
-
-            display: inline-block;
-
-
-
-
-
-
-
-            background: rgba(108, 99, 255, 0.15);
-
-
-
-
-
-
-
-            border: 1px solid rgba(108, 99, 255, 0.3);
-
-
-
-
-
-
-
-            padding: 6px 16px;
-
-
-
-
-
-
-
-            border-radius: 20px;
-
-
-
-
-
-
-
-            font-size: 13px;
-
-
-
-
-
-
-
-            color: var(--primary-light);
-
-
-
-
-
-
-
-            margin-bottom: 24px;
-
-
-
-
-
-
-
+            display: inline-block; background: var(--primary-bg); color: var(--primary);
+            padding: 6px 18px; border-radius: 20px; font-size: 13px; font-weight: 600;
+            margin-bottom: 20px;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         .hero h1 {
-
-
-
-
-
-
-
-            font-size: 52px;
-
-
-
-
-
-
-
-            font-weight: 800;
-
-
-
-
-
-
-
-            margin-bottom: 16px;
-
-
-
-
-
-
-
-            line-height: 1.2;
-
-
-
-
-
-
-
+            font-size: 48px; font-weight: 800; line-height: 1.25; margin-bottom: 16px;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .hero h1 span {
-
-
-
-
-
-
-
-            background: var(--gradient-1);
-
-
-
-
-
-
-
-            -webkit-background-clip: text;
-
-
-
-
-
-
-
-            -webkit-text-fill-color: transparent;
-
-
-
-
-
-
-
+        .hero h1 .highlight {
+            background: var(--gradient-warm);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text;
-
-
-
-
-
-
-
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .hero-subtitle {
-
-
-
-
-
-
-
-            font-size: 20px;
-
-
-
-
-
-
-
-            color: var(--text-muted);
-
-
-
-
-
-
-
-            margin-bottom: 24px;
-
-
-
-
-
-
-
+        .hero-sub {
+            font-size: 20px; color: var(--text-secondary); margin-bottom: 36px; max-width: 520px; margin-left: auto; margin-right: auto;
         }
+        .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .hero-desc {
-
-
-
-
-
-
-
-            font-size: 16px;
-
-
-
-
-
-
-
-            color: var(--text-muted);
-
-
-
-
-
-
-
-            max-width: 600px;
-
-
-
-
-
-
-
-            margin: 0 auto 32px;
-
-
-
-
-
-
-
-            line-height: 1.8;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .hero-btns {
-
-
-
-
-
-
-
-            display: flex;
-
-
-
-
-
-
-
-            gap: 16px;
-
-
-
-
-
-
-
-            justify-content: center;
-
-
-
-
-
-
-
-            flex-wrap: wrap;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        /* ========== 按钮 ========== */
         .btn {
-
-
-
-
-
-
-
-            display: inline-flex;
-
-
-
-
-
-
-
-            align-items: center;
-
-
-
-
-
-
-
-            gap: 8px;
-
-
-
-
-
-
-
-            padding: 14px 28px;
-
-
-
-
-
-
-
-            border-radius: 12px;
-
-
-
-
-
-
-
-            font-size: 15px;
-
-
-
-
-
-
-
-            font-weight: 600;
-
-
-
-
-
-
-
-            text-decoration: none;
-
-
-
-
-
-
-
-            transition: all 0.3s;
-
-
-
-
-
-
-
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 14px 30px; border-radius: 12px; font-size: 15px; font-weight: 600;
+            transition: all 0.3s; border: none; cursor: pointer;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         .btn-primary {
+            background: var(--gradient); color: #fff;
+            box-shadow: 0 6px 20px rgba(108,99,255,0.3);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(108,99,255,0.4); }
+        .btn-outline {
+            background: var(--bg-white); color: var(--text);
+            border: 1.5px solid var(--border);
+        }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
+        .btn-sm { padding: 10px 20px; font-size: 13px; border-radius: 10px; }
 
+        /* ========== 统计数据条 ========== */
+        .stats-bar {
+            display: flex; justify-content: center; gap: 48px; padding: 32px;
+            background: var(--bg-white); border-radius: var(--radius);
+            box-shadow: var(--shadow); max-width: 700px; margin: 0 auto;
+        }
+        .stat-item { text-align: center; }
+        .stat-num { font-size: 32px; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
 
+        /* ========== 区块通用 ========== */
+        .section { padding: 80px 0; }
+        .section-header { text-align: center; margin-bottom: 48px; }
+        .section-tag {
+            display: inline-block; background: var(--primary-bg); color: var(--primary);
+            padding: 4px 14px; border-radius: 16px; font-size: 12px; font-weight: 600;
+            margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .section-title { font-size: 30px; font-weight: 700; margin-bottom: 8px; }
+        .section-desc { color: var(--text-muted); font-size: 15px; }
 
+        /* ========== 作品卡片网格 ========== */
+        .card-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+        }
+        .card {
+            background: var(--bg-white); border-radius: var(--radius);
+            overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s;
+            border: 1px solid var(--border);
+        }
+        .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+        .card-cover {
+            width: 100%; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center;
+            font-size: 48px; position: relative;
+        }
+        /* 图片作品封面颜色 */
+        .cover-portrait { background: linear-gradient(135deg, #E8E0FF 0%, #D4C5FF 100%); }
+        .cover-poster { background: linear-gradient(135deg, #FFE0E8 0%, #FFC5D5 100%); }
+        .cover-wallpaper { background: linear-gradient(135deg, #C5E8FF 0%, #A8D8FF 100%); }
+        /* 视频作品封面 */
+        .cover-video { background: linear-gradient(135deg, #1a1a2e 0%, #2a2a4e 100%); position: relative; }
+        .cover-video .play-icon {
+            width: 56px; height: 56px; background: rgba(255,255,255,0.2); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(8px); transition: all 0.3s;
+        }
+        .card:hover .play-icon { background: rgba(108,99,255,0.6); transform: scale(1.1); }
+        .play-icon::after {
+            content: ''; display: block; width: 0; height: 0;
+            border-style: solid; border-width: 10px 0 10px 18px;
+            border-color: transparent transparent transparent #fff; margin-left: 3px;
+        }
+        .card-duration {
+            position: absolute; bottom: 10px; right: 10px;
+            background: rgba(0,0,0,0.7); color: #fff; padding: 3px 10px;
+            border-radius: 6px; font-size: 12px; font-weight: 500;
+        }
+        .card-body { padding: 20px; }
+        .card-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+        .card-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; line-height: 1.6; }
+        .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+        .tag {
+            display: inline-block; background: var(--primary-bg); color: var(--primary);
+            padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 500;
+        }
+        .tag-warm { background: #FFF0F0; color: var(--secondary); }
+        .card-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            margin-top: 14px; font-size: 13px; color: var(--primary); font-weight: 600;
+            transition: gap 0.3s;
+        }
+        .card-link:hover { gap: 10px; }
 
+        /* ========== 技能区块 ========== */
+        .skills-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;
+        }
+        .skill-card {
+            background: var(--bg-white); padding: 28px; border-radius: var(--radius);
+            box-shadow: var(--shadow); border: 1px solid var(--border);
+        }
+        .skill-category {
+            font-size: 15px; font-weight: 700; margin-bottom: 18px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .skill-category-icon {
+            width: 36px; height: 36px; border-radius: 10px; display: flex;
+            align-items: center; justify-content: center; font-size: 18px;
+        }
+        .skill-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 0; border-bottom: 1px solid #F5F5F8;
+        }
+        .skill-item:last-child { border-bottom: none; }
+        .skill-name { font-size: 14px; font-weight: 500; }
+        .skill-bar-wrap {
+            flex: 1; max-width: 140px; height: 6px; background: #F0F0F5;
+            border-radius: 3px; margin: 0 16px; overflow: hidden;
+        }
+        .skill-bar {
+            height: 100%; border-radius: 3px;
+            background: var(--gradient); transition: width 1s ease;
+        }
+        .skill-level { font-size: 12px; color: var(--text-muted); font-weight: 500; min-width: 28px; text-align: right; }
 
-
-
-            background: var(--gradient-1);
-
-
-
-
-
-
-
-            color: #fff;
-
-
-
-
-
-
-
-            box-shadow: 0 8px 24px rgba(108, 99, 255, 0.3);
-
-
-
-
-
-
-
+        /* ========== 项目区块 ========== */
+        .project-list { display: flex; flex-direction: column; gap: 24px; max-width: 800px; margin: 0 auto; }
+        .project-card {
+            background: var(--bg-white); padding: 28px; border-radius: var(--radius);
+            box-shadow: var(--shadow); border: 1px solid var(--border);
+            display: flex; gap: 24px; align-items: flex-start;
+        }
+        .project-icon {
+            width: 52px; height: 52px; border-radius: 14px; display: flex;
+            align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0;
+        }
+        .project-icon-1 { background: #EDE9FF; }
+        .project-icon-2 { background: #FFE0E8; }
+        .project-icon-3 { background: #E0F4FF; }
+        .project-info { flex: 1; }
+        .project-title { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+        .project-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+        .project-highlight {
+            display: inline-block; margin-top: 10px; background: #F0FFF4; color: #16a34a;
+            padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .btn-primary:hover {
-
-
-
-
-
-
-
-            transform: translateY(-2px);
-
-
-
-
-
-
-
-            box-shadow: 0 12px 32px rgba(108, 99, 255, 0.4);
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .btn-secondary {
-
-
-
-
-
-
-
-            background: var(--bg-card);
-
-
-
-
-
-
-
-            color: var(--text);
-
-
-
-
-
-
-
-            border: 1px solid rgba(255,255,255,0.1);
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .btn-secondary:hover {
-
-
-
-
-
-
-
-            background: var(--bg-card-hover);
-
-
-
-
-
-
-
-            transform: translateY(-2px);
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* 统计数据 */
-
-
-
-
-
-
-
-        .stats {
-
-
-
-
-
-
-
-            display: flex;
-
-
-
-
-
-
-
-            justify-content: center;
-
-
-
-
-
-
-
-            gap: 48px;
-
-
-
-
-
-
-
-            margin-top: 60px;
-
-
-
-
-
-
-
-            padding: 32px;
-
-
-
-
-
-
-
-            background: var(--bg-card);
-
-
-
-
-
-
-
-            border-radius: 20px;
-
-
-
-
-
-
-
-            border: 1px solid rgba(255,255,255,0.05);
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .stat-item {
-
-
-
-
-
-
-
-            text-align: center;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .stat-num {
-
-
-
-
-
-
-
-            font-size: 36px;
-
-
-
-
-
-
-
-            font-weight: 800;
-
-
-
-
-
-
-
-            background: var(--gradient-1);
-
-
-
-
-
-
-
-            -webkit-background-clip: text;
-
-
-
-
-
-
-
-            -webkit-text-fill-color: transparent;
-
-
-
-
-
-
-
-            background-clip: text;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .stat-label {
-
-
-
-
-
-
-
-            font-size: 14px;
-
-
-
-
-
-
-
-            color: var(--text-muted);
-
-
-
-
-
-
-
-            margin-top: 4px;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* 区块标题 */
-
-
-
-
-
-
-
-        .section {
-
-
-
-
-
-
-
-            padding: 80px 0;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .section-title {
-
-
-
-
-
-
-
-            font-size: 32px;
-
-
-
-
-
-
-
-            font-weight: 700;
-
-
-
-
-
-
-
-            margin-bottom: 12px;
-
-
-
-
-
-
-
-            text-align: center;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .section-desc {
-
-
-
-
-
-
-
-            color: var(--text-muted);
-
-
-
-
-
-
-
-            text-align: center;
-
-
-
-
-
-
-
-            margin-bottom: 48px;
-
-
-
-
-
-
-
-            font-size: 16px;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* 作品卡片 */
-
-
-
-
-
-
-
-        .work-card {
-
-
-
-
-
-
-
-            background: var(--bg-card);
-
-
-
-
-
-
-
-            border-radius: 20px;
-
-
-
-
-
-
-
-            padding: 32px;
-
-
-
-
-
-
-
-            margin-bottom: 32px;
-
-
-
-
-
-
-
-            border: 1px solid rgba(255,255,255,0.05);
-
-
-
-
-
-
-
-            transition: all 0.3s;
-
-
-
-
-
-
-
-            text-decoration: none;
-
-
-
-
-
-
-
-            display: block;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .work-card:hover {
-
-
-
-
-
-
-
-            transform: translateY(-4px);
-
-
-
-
-
-
-
-            border-color: rgba(108, 99, 255, 0.3);
-
-
-
-
-
-
-
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .work-card-header {
-
-
-
-
-
-
-
-            display: flex;
-
-
-
-
-
-
-
-            align-items: center;
-
-
-
-
-
-
-
-            gap: 16px;
-
-
-
-
-
-
-
-            margin-bottom: 16px;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .work-card-icon {
-
-
-
-
-
-
-
-            width: 56px;
-
-
-
-
-
-
-
-            height: 56px;
-
-
-
-
-
-
-
-            border-radius: 14px;
-
-
-
-
-
-
-
-            display: flex;
-
-
-
-
-
-
-
-            align-items: center;
-
-
-
-
-
-
-
-            justify-content: center;
-
-
-
-
-
-
-
-            font-size: 24px;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .work-card-title {
-
-
-
-
-
-
-
-            font-size: 22px;
-
-
-
-
-
-
-
-            font-weight: 700;
-
-
-
-
-
-
-
-            color: var(--text);
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .work-card-desc {
-
-
-
-
-
-
-
-            color: var(--text-muted);
-
-
-
-
-
-
-
-            font-size: 15px;
-
-
-
-
-
-
-
-            margin-bottom: 20px;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .work-card-tag {
-
-
-
-
-
-
-
-            display: inline-block;
-
-
-
-
-
-
-
-            background: rgba(108, 99, 255, 0.15);
-
-
-
-
-
-
-
-            padding: 4px 12px;
-
-
-
-
-
-
-
-            border-radius: 8px;
-
-
-
-
-
-
-
-            font-size: 13px;
-
-
-
-
-
-
-
-            color: var(--primary-light);
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* 网格布局 */
-
-
-
-
-
-
-
-        .grid-3 {
-
-
-
-
-
-
-
-            display: grid;
-
-
-
-
-
-
-
-            grid-template-columns: repeat(3, 1fr);
-
-
-
-
-
-
-
-            gap: 24px;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .grid-2 {
-
-
-
-
-
-
-
-            display: grid;
-
-
-
-
-
-
-
-            grid-template-columns: repeat(2, 1fr);
-
-
-
-
-
-
-
-            gap: 24px;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        @media (max-width: 768px) {
-
-
-
-
-
-
-
-            .grid-3, .grid-2 {
-
-
-
-
-
-
-
-                grid-template-columns: 1fr;
-
-
-
-
-
-
-
-            }
-
-
-
-
-
-
-
-            .hero h1 { font-size: 36px; }
-
-
-
-
-
-
-
-            .stats { flex-wrap: wrap; gap: 24px; }
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* 关于我 */
-
-
-
-
-
-
-
-        .about-card {
-
-
-
-
-
-
-
-            background: var(--bg-card);
-
-
-
-
-
-
-
-            border-radius: 20px;
-
-
-
-
-
-
-
-            padding: 48px;
-
-
-
-
-
-
-
-            border: 1px solid rgba(255,255,255,0.05);
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        /* ========== 关于我 ========== */
+        .about-section { background: var(--bg-white); }
         .about-grid {
-
-
-
-
-
-
-
-            display: grid;
-
-
-
-
-
-
-
-            grid-template-columns: 1fr 1fr;
-
-
-
-
-
-
-
-            gap: 48px;
-
-
-
-
-
-
-
-            align-items: center;
-
-
-
-
-
-
-
+            display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+        }
+        .about-text h3 { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+        .about-text p { color: var(--text-secondary); font-size: 15px; margin-bottom: 12px; line-height: 1.8; }
+        .contact-list { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; }
+        .contact-item {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 14px; color: var(--text-secondary);
+        }
+        .contact-icon {
+            width: 36px; height: 36px; border-radius: 10px; background: var(--primary-bg);
+            display: flex; align-items: center; justify-content: center; font-size: 16px;
+        }
+        /* 头像区域 */
+        .about-visual { text-align: center; }
+        .avatar-circle {
+            width: 200px; height: 200px; border-radius: 50%; margin: 0 auto 24px;
+            background: var(--gradient-warm); display: flex; align-items: center;
+            justify-content: center; font-size: 72px; box-shadow: 0 12px 40px rgba(108,99,255,0.2);
+        }
+        .about-quote {
+            font-size: 15px; color: var(--text-muted); font-style: italic;
+            padding: 16px 24px; background: var(--bg); border-radius: 12px;
+            border-left: 3px solid var(--primary);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .about-text p {
-
-
-
-
-
-
-
-            margin-bottom: 16px;
-
-
-
-
-
-
-
-            color: var(--text-muted);
-
-
-
-
-
-
-
-            font-size: 15px;
-
-
-
-
-
-
-
+        /* ========== 学习计划链接 ========== */
+        .learning-cta {
+            text-align: center; padding: 60px 40px;
+            background: var(--bg-white); border-radius: var(--radius);
+            box-shadow: var(--shadow); border: 1px solid var(--border);
         }
+        .learning-cta h3 { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
+        .learning-cta p { color: var(--text-muted); font-size: 15px; margin-bottom: 24px; }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .about-text strong {
-
-
-
-
-
-
-
-            color: var(--text);
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .skill-tags {
-
-
-
-
-
-
-
-            display: flex;
-
-
-
-
-
-
-
-            flex-wrap: wrap;
-
-
-
-
-
-
-
-            gap: 10px;
-
-
-
-
-
-
-
-            margin-top: 24px;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .skill-tag {
-
-
-
-
-
-
-
-            background: rgba(108, 99, 255, 0.15);
-
-
-
-
-
-
-
-            padding: 8px 16px;
-
-
-
-
-
-
-
-            border-radius: 10px;
-
-
-
-
-
-
-
-            font-size: 14px;
-
-
-
-
-
-
-
-            color: var(--primary-light);
-
-
-
-
-
-
-
-            border: 1px solid rgba(108, 99, 255, 0.2);
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* 简历区 */
-
-
-
-
-
-
-
-        .resume-box {
-
-
-
-
-
-
-
-            background: var(--bg-card);
-
-
-
-
-
-
-
-            border-radius: 20px;
-
-
-
-
-
-
-
-            padding: 48px;
-
-
-
-
-
-
-
-            text-align: center;
-
-
-
-
-
-
-
-            border: 1px solid rgba(255,255,255,0.05);
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .resume-box p {
-
-
-
-
-
-
-
-            color: var(--text-muted);
-
-
-
-
-
-
-
-            margin-bottom: 24px;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* 页脚 */
-
-
-
-
-
-
-
+        /* ========== 页脚 ========== */
         footer {
-
-
-
-
-
-
-
-            text-align: center;
-
-
-
-
-
-
-
-            padding: 48px 0;
-
-
-
-
-
-
-
-            color: var(--text-muted);
-
-
-
-
-
-
-
-            font-size: 14px;
-
-
-
-
-
-
-
+            text-align: center; padding: 40px 0; margin-top: 40px;
+            color: var(--text-muted); font-size: 13px;
+            border-top: 1px solid var(--border);
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        footer a {
-
-
-
-
-
-
-
-            color: var(--primary-light);
-
-
-
-
-
-
-
-            text-decoration: none;
-
-
-
-
-
-
-
+        /* ========== 响应式 ========== */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .hero-sub { font-size: 17px; }
+            .card-grid { grid-template-columns: 1fr; }
+            .stats-bar { flex-direction: column; gap: 20px; padding: 24px; }
+            .about-grid { grid-template-columns: 1fr; gap: 32px; }
+            .project-card { flex-direction: column; }
+            .nav-links { display: none; }
+            .section { padding: 60px 0; }
+            .avatar-circle { width: 150px; height: 150px; font-size: 56px; }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        footer a:hover {
-
-
-
-
-
-
-
-            text-decoration: underline;
-
-
-
-
-
-
-
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .card-grid { grid-template-columns: repeat(2, 1fr); }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        /* 视频卡片 */
-
-
-
-
-
-
-
-        .video-grid {
-
-
-
-
-
-
-
-            display: grid;
-
-
-
-
-
-
-
-            grid-template-columns: repeat(3, 1fr);
-
-
-
-
-
-
-
-            gap: 20px;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .video-card {
-
-
-
-
-
-
-
-            background: var(--bg-card);
-
-
-
-
-
-
-
-            border-radius: 16px;
-
-
-
-
-
-
-
-            overflow: hidden;
-
-
-
-
-
-
-
-            text-decoration: none;
-
-
-
-
-
-
-
-            transition: all 0.3s;
-
-
-
-
-
-
-
-            border: 1px solid rgba(255,255,255,0.05);
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .video-card:hover {
-
-
-
-
-
-
-
-            transform: translateY(-4px);
-
-
-
-
-
-
-
-            border-color: rgba(108, 99, 255, 0.3);
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .video-cover {
-
-
-
-
-
-
-
-            height: 140px;
-
-
-
-
-
-
-
-            display: flex;
-
-
-
-
-
-
-
-            align-items: center;
-
-
-
-
-
-
-
-            justify-content: center;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .play-icon {
-
-
-
-
-
-
-
-            width: 48px;
-
-
-
-
-
-
-
-            height: 48px;
-
-
-
-
-
-
-
-            background: rgba(255,255,255,0.2);
-
-
-
-
-
-
-
-            border-radius: 50%;
-
-
-
-
-
-
-
-            display: flex;
-
-
-
-
-
-
-
-            align-items: center;
-
-
-
-
-
-
-
-            justify-content: center;
-
-
-
-
-
-
-
-            font-size: 18px;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .video-info {
-
-
-
-
-
-
-
-            padding: 16px;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .video-info h4 {
-
-
-
-
-
-
-
-            color: var(--text);
-
-
-
-
-
-
-
-            font-size: 15px;
-
-
-
-
-
-
-
-            margin-bottom: 6px;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .video-info p {
-
-
-
-
-
-
-
-            color: var(--text-muted);
-
-
-
-
-
-
-
-            font-size: 13px;
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-        /* 二维码模态弹窗 */
-
-
-
-        .qr-modal {
-
-
-
-            display: none;
-
-
-
-            position: fixed;
-
-
-
-            top: 0;
-
-
-
-            left: 0;
-
-
-
-            width: 100%;
-
-
-
-            height: 100%;
-
-
-
-            background: rgba(0,0,0,0.85);
-
-
-
-            z-index: 1000;
-
-
-
-            justify-content: center;
-
-
-
-            align-items: center;
-
-
-
-            flex-direction: column;
-
-
-
-        }
-
-
-
-        .qr-modal.show { display: flex; }
-
-
-
-        .qr-modal-content {
-
-
-
-            background: #fff;
-
-
-
-            border-radius: 16px;
-
-
-
-            padding: 40px;
-
-
-
-            text-align: center;
-
-
-
-            max-width: 400px;
-
-
-
-            position: relative;
-
-
-
-        }
-
-
-
-        .qr-modal-content img {
-
-
-
-            width: 280px;
-
-
-
-            height: 280px;
-
-
-
-            object-fit: contain;
-
-
-
-        }
-
-
-
-        .qr-modal-title {
-
-
-
-            color: #333;
-
-
-
-            font-size: 20px;
-
-
-
-            font-weight: 600;
-
-
-
-            margin: 20px 0 8px;
-
-
-
-        }
-
-
-
-        .qr-modal-desc {
-
-
-
-            color: #666;
-
-
-
-            font-size: 14px;
-
-
-
-            margin-bottom: 20px;
-
-
-
-        }
-
-
-
-        .qr-modal-close {
-
-
-
-            position: absolute;
-
-
-
-            top: 12px;
-
-
-
-            right: 16px;
-
-
-
-            font-size: 28px;
-
-
-
-            color: #999;
-
-
-
-            cursor: pointer;
-
-
-
-            line-height: 1;
-
-
-
-        }
-
-
-
-        .qr-modal-close:hover { color: #333; }
-
-
-
     </style>
-
-
-
-
-
-
-
 </head>
-
-
-
-
-
-
-
 <body>
 
-
-
-
-
-
-
-    <!-- 背景粒子 -->
-
-
-
-
-
-
-
-    <div class="bg-particles" id="particles"></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <div class="container">
-
-
-
-
-
-
-
-        <!-- 导航 -->
-
-
-
-
-
-
-
-        <nav>
-
-
-
-
-
-
-
-            <div class="logo">春日泡泡</div>
-
-
-
-
-
-
-
+    <!-- ==================== 导航栏 ==================== -->
+    <nav>
+        <div class="container">
+            <div class="logo">J.JH</div>
             <ul class="nav-links">
-
-
-
-
-
-
-
-                <li><a href="#works">作品展示</a></li>
-
-
-
-
-
-
-
+                <li><a href="#image-works">图片作品</a></li>
+                <li><a href="#video-works">视频作品</a></li>
+                <li><a href="#skills">核心能力</a></li>
+                <li><a href="#projects">实战项目</a></li>
                 <li><a href="#about">关于我</a></li>
-
-
-
-
-
-
-
-                <li><a href="#resume">简历</a></li>
-
-
-
-
-
-
-
             </ul>
-
-
-
-
-
-
-
-        </nav>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-- Hero区域 -->
-
-
-
-
-
-
-
-        <section class="hero">
-
-
-
-
-
-
-
-            <div class="hero-badge">🚀 30天零代码拿下AI</div>
-
-
-
-
-
-
-
-            <h1>一个不会写代码的女生，<br><span>用AI打开了新世界的大门</span></h1>
-
-
-
-
-
-
-
-            <p class="hero-subtitle">从AI生图到AI视频，从自动化工作流到智能Agent</p>
-
-
-
-
-
-
-
-            <p class="hero-desc">用30天时间证明：没有技术背景，一样可以玩转AI！这里记录了我每一步的成长和作品，希望你也能被点燃 ✨</p>
-
-
-
-
-
-
-
+        </div>
+    </nav>
+
+    <!-- ==================== 区块1: Hero ==================== -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">AIGC 内容创作者</div>
+            <h1>AI <span class="highlight">内容创作者</span></h1>
+            <p class="hero-sub">用 AI 把内容生产效率提升 3 倍，让创意落地更简单</p>
             <div class="hero-btns">
-
-
-
-
-
-
-
-                <a href="javascript:void(0)" onclick="showQRCode()" class="btn btn-primary" style="cursor:pointer">公众号：春日泡泡</a>
-
-
-
-
-
-
-
-                <a href="#works" class="btn btn-secondary">查看我的作品</a>
-
-
-
-
-
-
-
+                <!-- 锚点跳转到作品区 -->
+                <a href="#image-works" class="btn btn-primary">查看作品</a>
+                <!-- 简历下载链接，待填充 -->
+                <a href="#" class="btn btn-outline" onclick="alert('简历PDF链接待上传')">下载简历</a>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            
-
-
-
-
-
-
-
-        
-
-
-
-            <a href="ai_learning_plan.html" class="work-card" target="_blank">
-
-
-
-
-
-
-
-                <div class="work-card-header">
-
-
-
-
-
-
-
-                    <div class="work-card-icon" style="background: var(--gradient-1);">🎯</div>
-
-
-
-
-
-
-
-                    <div class="work-card-title">30天AI学习之旅</div>
-
-
-
-
-
-
-
+            <div class="stats-bar" style="margin-top: 56px;">
+                <div class="stat-item">
+                    <div class="stat-num">3+</div>
+                    <div class="stat-label">AI视频作品</div>
                 </div>
-
-
-
-
-
-
-
-                <p class="work-card-desc">每天进步一点点，记录我的AI探索与成长。从零开始，每天解锁新技能，用行动证明：没有技术背景，一样可以玩转AI！</p>
-
-
-
-
-
-
-
-                <span class="work-card-tag">📚 学习记录</span>
-
-
-
-
-
-
-
-            </a>
-
-
-
-        </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-- 作品展示 -->
-
-
-
-
-
-
-
-        <section id="works" class="section">
-
-
-
-
-
-
-
-            <h2 class="section-title">作品展示</h2>
-
-
-
-
-
-
-
-            <p class="section-desc">从数据分析到视频创作，从工作流自动化到AI Agent探索</p>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <!-- 30天AI学习计划 -->
-
-
-
-
-
-
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <!-- AI数据分析 -->
-
-
-
-
-
-
-
-            <a href="assets/reports/xhs_radar_v2.html" class="work-card" target="_blank">
-
-
-
-
-
-
-
-                <div class="work-card-header">
-
-
-
-
-
-
-
-                    <div class="work-card-icon" style="background: var(--gradient-2);">📊</div>
-
-
-
-
-
-
-
-                    <div class="work-card-title">小红书糖尿病热点雷达</div>
-
-
-
-
-
-
-
+                <div class="stat-item">
+                    <div class="stat-num">3+</div>
+                    <div class="stat-label">AI图片作品</div>
                 </div>
-
-
-
-
-
-
-
-                <p class="work-card-desc">使用WorkBuddy AI + 小红书Skill，自动采集分析爆款笔记规律，找出流量密码！</p>
-
-
-
-
-
-
-
-                <span class="work-card-tag">📈 数据分析</span>
-
-
-
-
-
-
-
-            </a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <!-- AI视频作品 -->
-
-
-
-
-
-
-
-            <h3 style="color: var(--text); margin: 40px 0 24px; font-size: 20px;">🎬 AI视频作品</h3>
-
-
-
-
-
-
-
-            <p style="color: var(--text-muted); margin-bottom: 24px;">Week 2 学习成果：独立完成30秒-2分钟AI视频创作</p>
-
-
-
-
-
-
-
-            <div class="video-grid">
-
-
-
-
-
-
-
-                <a href="assets/videos/diabetes_type1_vs_type2_v4.mp4" class="video-card" target="_blank">
-
-
-
-
-
-
-
-                    <div class="video-cover" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
-
-
-
-
-
-
-
-                        <div class="play-icon">▶</div>
-
-
-
-
-
-
-
-                    </div>
-
-
-
-
-
-
-
-                    <div class="video-info">
-
-
-
-
-
-
-
-                        <h4>糖尿病科普：1型vs2型</h4>
-
-
-
-
-
-
-
-                        <p>工具：WorkBuddy + 视频生成AI</p>
-
-
-
-
-
-
-
-                    </div>
-
-
-
-
-
-
-
-                </a>
-
-
-
-
-
-
-
-                <a href="assets/videos/openclaw_dynamic.mp4" class="video-card" target="_blank">
-
-
-
-
-
-
-
-                    <div class="video-cover" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
-
-
-
-
-
-
-
-                        <div class="play-icon">▶</div>
-
-
-
-
-
-
-
-                    </div>
-
-
-
-
-
-
-
-                    <div class="video-info">
-
-
-
-
-
-
-
-                        <h4>OpenClaw小龙虾介绍</h4>
-
-
-
-
-
-
-
-                        <p>工具：AI视频生成</p>
-
-
-
-
-
-
-
-                    </div>
-
-
-
-
-
-
-
-                </a>
-
-
-
-
-
-
-
-                <a href="assets/videos/openclaw_with_bg_music.mp4" class="video-card" target="_blank">
-
-
-
-
-
-
-
-                    <div class="video-cover" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
-
-
-
-
-
-
-
-                        <div class="play-icon">▶</div>
-
-
-
-
-
-
-
-                    </div>
-
-
-
-
-
-
-
-                    <div class="video-info">
-
-
-
-
-
-
-
-                        <h4>OpenClaw配乐演示</h4>
-
-
-
-
-
-
-
-                        <p>工具：AI视频 + 背景音乐</p>
-
-
-
-
-
-
-
-                    </div>
-
-
-
-
-
-
-
-                </a>
-
-
-
-
-
-
-
+                <div class="stat-item">
+                    <div class="stat-num">73%</div>
+                    <div class="stat-label">效率提升</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">3月</div>
+                    <div class="stat-label">AI实战经验</div>
+                </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <!-- AI工作流 -->
-
-
-
-
-
-
-
-            <h3 style="color: var(--text); margin: 48px 0 24px; font-size: 20px;">⚙️ AI工作流 & 自动化</h3>
-
-
-
-
-
-
-
-            <p style="color: var(--text-muted); margin-bottom: 24px;">Week 3 学习成果：搭建内容自动化生产流程</p>
-
-
-
-
-
-
-
-            <div class="grid-3">
-
-
-
-
-
-
-
-                <a href="https://www.coze.cn/store/agent/7624352186398490667?bot_id=true" class="work-card" target="_blank" style="margin-bottom: 0;">
-
-
-
-                    <svg width="100%" viewBox="0 0 280 140" style="border-radius: 14px; margin-bottom: 12px; overflow: hidden;">
-
-                        <defs>
-
-                            <linearGradient id="cozeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-
-                                <stop offset="0%" style="stop-color:#6C63FF;stop-opacity:1" />
-
-                                <stop offset="100%" style="stop-color:#a78bfa;stop-opacity:1" />
-
-                            </linearGradient>
-
-                        </defs>
-
-                        <rect width="280" height="140" rx="14" fill="url(#cozeGrad)"/>
-
-                        <circle cx="140" cy="58" r="30" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
-
-                        <circle cx="140" cy="50" r="12" fill="#fff"/>
-
-                        <rect x="124" y="64" width="32" height="4" rx="2" fill="#fff"/>
-
-                        <circle cx="135" cy="48" r="2.5" fill="#6C63FF"/>
-
-                        <circle cx="145" cy="48" r="2.5" fill="#6C63FF"/>
-
-                        <rect x="100" y="80" width="12" height="16" rx="3" fill="rgba(255,255,255,0.6)"/>
-
-                        <rect x="168" y="80" width="12" height="16" rx="3" fill="rgba(255,255,255,0.6)"/>
-
-                        <circle cx="140" cy="100" r="6" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-
-                        <line x1="140" y1="94" x2="140" y2="100" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-
-                        <line x1="140" y1="100" x2="145" y2="104" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-
-                        <text x="140" y="132" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="sans-serif" font-size="11" font-weight="600">COZE AGENT</text>
-
-                        <circle cx="60" cy="40" r="4" fill="rgba(255,255,255,0.1)"/>
-
-                        <circle cx="230" cy="90" r="6" fill="rgba(255,255,255,0.08)"/>
-
-                        <circle cx="220" cy="30" r="3" fill="rgba(255,255,255,0.12)"/>
-
-                    </svg>
-
-
-
-                    <div class="work-card-title" style="font-size: 17px;">扣子智能体搭建</div>
-
-
-
-                    <p class="work-card-desc" style="margin-top: 8px;">Coze Bot定制 · 多场景智能体</p>
-
-
-
-                </a>
-
-
-
-
-
-
-
-                <a href="coze-workflow.html" class="work-card" target="_blank" style="margin-bottom: 0;">
-
-
-
-                    <svg width="100%" viewBox="0 0 280 140" style="border-radius: 14px; margin-bottom: 12px; overflow: hidden;">
-
-                        <defs>
-
-                            <linearGradient id="xhsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-
-                                <stop offset="0%" style="stop-color:#FF4757;stop-opacity:1" />
-
-                                <stop offset="100%" style="stop-color:#ff6b9d;stop-opacity:1" />
-
-                            </linearGradient>
-
-                        </defs>
-
-                        <rect width="280" height="140" rx="14" fill="url(#xhsGrad)"/>
-
-                        <rect x="110" y="35" width="60" height="8" rx="4" fill="rgba(255,255,255,0.3)"/>
-
-                        <rect x="95" y="48" width="90" height="5" rx="2.5" fill="rgba(255,255,255,0.2)"/>
-
-                        <rect x="100" y="58" width="80" height="5" rx="2.5" fill="rgba(255,255,255,0.2)"/>
-
-                        <rect x="108" y="68" width="64" height="5" rx="2.5" fill="rgba(255,255,255,0.15)"/>
-
-                        <circle cx="140" cy="30" r="18" fill="rgba(255,255,255,0.2)"/>
-
-                        <text x="140" y="35" text-anchor="middle" fill="#fff" font-family="sans-serif" font-size="14" font-weight="700">xhs</text>
-
-                        <rect x="88" y="90" width="16" height="22" rx="3" fill="rgba(255,255,255,0.5)" transform="rotate(-15 96 101)"/>
-
-                        <rect x="176" y="90" width="16" height="22" rx="3" fill="rgba(255,255,255,0.5)" transform="rotate(15 184 101)"/>
-
-                        <rect x="125" y="85" width="30" height="30" rx="6" fill="rgba(255,255,255,0.25)"/>
-
-                        <text x="140" y="105" text-anchor="middle" fill="#fff" font-family="sans-serif" font-size="14">AI</text>
-
-                        <text x="140" y="132" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="sans-serif" font-size="11" font-weight="600">XIAOHONGSHU</text>
-
-                        <circle cx="50" cy="35" r="5" fill="rgba(255,255,255,0.08)"/>
-
-                        <circle cx="240" cy="100" r="7" fill="rgba(255,255,255,0.06)"/>
-
-                    </svg>
-
-
-
-                    <div class="work-card-title" style="font-size: 17px;">个性化小红书宣传文案生成</div>
-
-
-
-                    <p class="work-card-desc" style="margin-top: 8px;">AI创作工作流 · 多图上传生成</p>
-
-
-
-                </a>
-
-
-
-
-
-
-
-                <a href="https://www.workbuddy.cn" class="work-card" target="_blank" style="margin-bottom: 0;">
-
-
-
-
-
-
-
-                    <div style="font-size: 32px; margin-bottom: 12px;">⚡</div>
-
-
-
-
-
-
-
-                    <div class="work-card-title" style="font-size: 17px;">WorkBuddy AI</div>
-
-
-
-
-
-
-
-                    <p class="work-card-desc" style="margin-top: 8px;">AI编程助手 · 自动化脚本</p>
-
-
-
-
-
-
-
-                </a>
-
-
-
-
-
-
-
+        </div>
+    </section>
+
+    <!-- ==================== 区块2: AI图片作品集 ==================== -->
+    <section class="section" id="image-works">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">Image Works</div>
+                <h2 class="section-title">AI 图片作品集</h2>
+                <p class="section-desc">从人物传记到商业海报，用 AI 实现高效视觉创作</p>
             </div>
-
-
-
-
-
-
-
-        </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-- 关于我 -->
-
-
-
-
-
-
-
-        <section id="about" class="section">
-
-
-
-
-
-
-
-            <h2 class="section-title">关于我</h2>
-
-
-
-
-
-
-
-            <p class="section-desc">一个热爱AI工具和效率提升的探索者</p>
-
-
-
-
-
-
-
-            
-
-
-
-
-
-
-
-            <div class="about-card">
-
-
-
-
-
-
-
-                <div class="about-grid">
-
-
-
-
-
-
-
-                    <div class="about-text">
-
-
-
-
-
-
-
-                        <p><strong>核心定位：</strong>我不是一个会用AI工具的新人，我是一个懂内容的人，用AI把内容生产效率提升10倍。</p>
-
-
-
-
-
-
-
-                        <p><strong>背景：</strong>运营微信公众号「春日泡泡」，关注AI工具和效率工具评测，特别是WorkBuddy（腾讯版小龙虾）等AI Agent类工具。</p>
-
-
-
-
-
-
-
-                        <p><strong>目标岗位：</strong>AIGC创作专家 / AI创作运营（视频方向）</p>
-
-
-
-
-
-
-
-                        <div class="skill-tags">
-
-
-
-
-
-
-
-                            <span class="skill-tag">Midjourney</span>
-
-
-
-
-
-
-
-                            <span class="skill-tag">即梦</span>
-
-
-
-
-
-
-
-                            <span class="skill-tag">可灵</span>
-
-
-
-
-
-
-
-                            <span class="skill-tag">Runway</span>
-
-
-
-
-
-
-
-                            <span class="skill-tag">剪映</span>
-
-
-
-
-
-
-
-                            <span class="skill-tag">扣子Coze</span>
-
-
-
-
-
-
-
-                            <span class="skill-tag">OpenClaw</span>
-
-
-
-
-
-
-
-                            <span class="skill-tag">ComfyUI</span>
-
-
-
-
-
-
-
-                            <span class="skill-tag">WorkBuddy AI</span>
-
-
-
-
-
-
-
+            <div class="card-grid">
+                <!-- 图片作品1: 人物传记 -->
+                <div class="card">
+                    <div class="card-cover cover-portrait">
+                        <span>👩‍💼</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">人物传记 · 精美插图</div>
+                        <div class="card-desc">为传记类文章生成高质量配图，风格统一、细节丰富</div>
+                        <div class="card-tags">
+                            <span class="tag">Midjourney</span>
+                            <span class="tag">即梦</span>
+                            <span class="tag">ComfyUI</span>
                         </div>
-
-
-
-
-
-
-
+                        <a href="#" class="card-link">查看详情 →</a>
                     </div>
-
-
-
-
-
-
-
-                    <div style="text-align: center;">
-
-
-
-
-
-
-
-                        <div style="width: 160px; height: 160px; border-radius: 50%; background: var(--gradient-1); display: flex; align-items: center; justify-content: center; font-size: 64px; margin: 0 auto;">🌸</div>
-
-
-
-
-
-
-
-                        <p style="margin-top: 16px; color: var(--text-muted);">春日泡泡</p>
-
-
-
-
-
-
-
-                    </div>
-
-
-
-
-
-
-
                 </div>
-
-
-
-
-
-
-
+                <!-- 图片作品2: 活动海报 -->
+                <div class="card">
+                    <div class="card-cover cover-poster">
+                        <span>🎨</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">活动海报 · 商业设计</div>
+                        <div class="card-desc">品牌活动推广海报，融合现代设计美学与AI创意</div>
+                        <div class="card-tags">
+                            <span class="tag">即梦</span>
+                            <span class="tag">可灵</span>
+                            <span class="tag-warm tag">PS辅助</span>
+                        </div>
+                        <a href="#" class="card-link">查看详情 →</a>
+                    </div>
+                </div>
+                <!-- 图片作品3: 高清壁纸 -->
+                <div class="card">
+                    <div class="card-cover cover-wallpaper">
+                        <span>🏔️</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">高清壁纸 · 风景摄影</div>
+                        <div class="card-desc">模拟专业摄影质感的AI壁纸，8K超清，光影通透</div>
+                        <div class="card-tags">
+                            <span class="tag">Midjourney</span>
+                            <span class="tag">SDXL</span>
+                            <span class="tag">Lightroom</span>
+                        </div>
+                        <a href="#" class="card-link">查看详情 →</a>
+                    </div>
+                </div>
             </div>
-
-
-
-
-
-
-
-        </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-- 简历 -->
-
-
-
-
-
-
-
-        <section id="resume" class="section">
-
-
-
-
-
-
-
-            <div class="resume-box">
-
-
-
-
-
-
-
-                <h2 style="margin-bottom: 16px;">获取简历</h2>
-
-
-
-
-
-
-
-                <p>查看完整简历，了解我的详细经历和项目经验</p>
-
-
-
-
-
-
-
-                <a href="mailto:1760893265@qq.com" class="btn btn-primary">📧 联系我获取简历</a>
-
-
-
-
-
-
-
+        </div>
+    </section>
+
+    <!-- ==================== 区块3: AI视频作品集 ==================== -->
+    <section class="section" id="video-works" style="background: var(--bg-white);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">Video Works</div>
+                <h2 class="section-title">AI 视频作品集</h2>
+                <p class="section-desc">从产品宣传到创意短片，AI全链路视频创作</p>
             </div>
-
-
-
-
-
-
-
-        </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-- 页脚 -->
-
-
-
-
-
-
-
-        <footer>
-
-
-
-
-
-
-
-            <p>© 2026 春日泡泡 | 用 💖 和 AI 制作</p>
-
-
-
-
-
-
-
-            <p style="margin-top: 8px;">
-
-
-
-
-
-
-
-                <a href="https://github.com/jiang-1223/jiangjiehui-works" target="_blank">GitHub</a> ·
-
-
-
-
-
-
-
-                <a href="https://jiangjiehui.top" target="_blank">jiangjiehui.top</a>
-
-
-
-
-
-
-
-            </p>
-
-
-
-
-
-
-
-        </footer>
-
-
-
-
-
-
-
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            <div class="card-grid">
+                <!-- 视频作品1: 艾草养生锤 -->
+                <div class="card">
+                    <div class="card-cover cover-video">
+                        <div class="play-icon"></div>
+                        <span class="card-duration">0:17</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">艾草养生锤 · 产品宣传片</div>
+                        <div class="card-desc">人物与产品高度一致性的电商宣传片，视觉质感堪比实拍</div>
+                        <div class="card-tags">
+                            <span class="tag">即梦</span>
+                            <span class="tag">可灵</span>
+                            <span class="tag">剪映</span>
+                        </div>
+                        <a href="#" class="card-link">观看视频 →</a>
+                    </div>
+                </div>
+                <!-- 视频作品2: 未来科技概念片 -->
+                <div class="card">
+                    <div class="card-cover cover-video" style="background: linear-gradient(135deg, #0a1628 0%, #1a2744 100%);">
+                        <div class="play-icon"></div>
+                        <span class="card-duration">0:45</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">未来科技概念片</div>
+                        <div class="card-desc">赛博朋克风格科幻短片，炫酷转场特效与沉浸式画面</div>
+                        <div class="card-tags">
+                            <span class="tag">Midjourney</span>
+                            <span class="tag">Runway</span>
+                        </div>
+                        <a href="#" class="card-link">观看视频 →</a>
+                    </div>
+                </div>
+                <!-- 视频作品3: AI短剧 -->
+                <div class="card">
+                    <div class="card-cover cover-video" style="background: linear-gradient(135deg, #1a0a28 0%, #2d1a44 100%);">
+                        <div class="play-icon"></div>
+                        <span class="card-duration">1:00</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">AI 短剧《机器人小花》</div>
+                        <div class="card-desc">图生视频保持角色一致性，完整叙事的AI微短剧</div>
+                        <div class="card-tags">
+                            <span class="tag">可灵</span>
+                            <span class="tag">剪映配音</span>
+                        </div>
+                        <a href="#" class="card-link">观看视频 →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 区块4: AIGC核心能力 ==================== -->
+    <section class="section" id="skills">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">Skills</div>
+                <h2 class="section-title">AIGC 核心能力</h2>
+                <p class="section-desc">覆盖内容创作全流程的AI工具链</p>
+            </div>
+            <div class="skills-grid">
+                <!-- 图像生成 -->
+                <div class="skill-card">
+                    <div class="skill-category">
+                        <div class="skill-category-icon" style="background: #EDE9FF;">🖼️</div>
+                        图像生成
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Midjourney</span>
+                        <div class="skill-bar-wrap"><div class="skill-bar" style="width: 90%;"></div></div>
+                        <span class="skill-level">精通</span>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">即梦</span>
+                        <div class="skill-bar-wrap"><div class="skill-bar" style="width: 85%;"></div></div>
+                        <span class="skill-level">熟练</span>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">可灵</span>
+                        <div class="skill-bar-wrap"><div class="skill-bar" style="width: 80%;"></div></div>
+                        <span class="skill-level">熟练</span>
+                    </div>
+                </div>
+                <!-- 视频生成 -->
+                <div class="skill-card">
+                    <div class="skill-category">
+                        <div class="skill-category-icon" style="background: #FFE0E8;">🎬</div>
+                        视频生成
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">可灵</span>
+                        <div class="skill-bar-wrap"><div class="skill-bar" style="width: 85%;"></div></div>
+                        <span class="skill-level">熟练</span>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Runway</span>
+                        <div class="skill-bar-wrap"><div class="skill-bar" style="width: 75%;"></div></div>
+                        <span class="skill-level">掌握</span>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Pika</span>
+                        <div class="skill-bar-wrap"><div class="skill-bar" style="width: 70%;"></div></div>
+                        <span class="skill-level">掌握</span>
+                    </div>
+                </div>
+                <!-- 文案脚本 -->
+                <div class="skill-card">
+                    <div class="skill-category">
+                        <div class="skill-category-icon" style="background: #E0F4FF;">✍️</div>
+                        文案脚本
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">ChatGPT</span>
+                        <div class="skill-bar-wrap"><div class="skill-bar" style="width: 90%;"></div></div>
+                        <span class="skill-level">精通</span>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Kimi</span>
+                        <div class="skill-bar-wrap"><div class="skill-bar" style="width: 85%;"></div></div>
+                        <span class="skill-level">熟练</span>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Claude</span>
+                        <div class="skill-bar-wrap"><div class="skill-bar" style="width: 80%;"></div></div>
+                        <span class="skill-level">熟练</span>
+                    </div>
+                </div>
+                <!-- 剪辑后期 & 工作流 -->
+                <div class="skill-card">
+                    <div class="skill-category">
+                        <div class="skill-category-icon" style="background: #FFF3E0;">🔧</div>
+                        剪辑后期 & 工作流
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">剪映</span>
+                        <div class="skill-bar-wrap"><div class="skill-bar" style="width: 88%;"></div></div>
+                        <span class="skill-level">精通</span>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">Premiere</span>
+                        <div class="skill-bar-wrap"><div class="skill-bar" style="width: 50%;"></div></div>
+                        <span class="skill-level">基础</span>
+                    </div>
+                    <div class="skill-item">
+                        <span class="skill-name">扣子Coze</span>
+                        <div class="skill-bar-wrap"><div class="skill-bar" style="width: 75%;"></div></div>
+                        <span class="skill-level">掌握</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 区块5: 实战项目 ==================== -->
+    <section class="section" id="projects" style="background: var(--bg-white);">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-tag">Projects</div>
+                <h2 class="section-title">学习与实战项目</h2>
+                <p class="section-desc">将AI能力落地到真实业务场景</p>
+            </div>
+            <div class="project-list">
+                <!-- 项目1 -->
+                <div class="project-card">
+                    <div class="project-icon project-icon-1">📊</div>
+                    <div class="project-info">
+                        <div class="project-title">小红书数据分析复盘</div>
+                        <div class="project-desc">
+                            清洗30天小红书运营数据，输出15页分析PPT，提炼出高赞笔记的3条共性规律，为后续内容策略提供数据支撑。
+                        </div>
+                        <span class="project-highlight">15页分析报告 · 3条优化建议</span>
+                    </div>
+                </div>
+                <!-- 项目2 -->
+                <div class="project-card">
+                    <div class="project-icon project-icon-2">⚡</div>
+                    <div class="project-info">
+                        <div class="project-title">AI 全链路辅助创作</div>
+                        <div class="project-desc">
+                            从选题策划、图文生成、文案撰写到后期剪辑，搭建完整的AI辅助创作工作流，将单条内容生产耗时大幅压缩。
+                        </div>
+                        <span class="project-highlight">效率提升 73% · 150min → 40min</span>
+                    </div>
+                </div>
+                <!-- 项目3 -->
+                <div class="project-card">
+                    <div class="project-icon project-icon-3">🤖</div>
+                    <div class="project-info">
+                        <div class="project-title">扣子自动化工作流</div>
+                        <div class="project-desc">
+                            在扣子Coze平台搭建爆款文案仿写智能体，集成多平台数据分析与内容生成能力，实现一键产出优质文案。
+                        </div>
+                        <span class="project-highlight">Coze智能体 · 一键仿写</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 区块6: 关于我 ==================== -->
+    <section class="section about-section" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-visual">
+                    <div class="avatar-circle">🦐</div>
+                    <div class="about-quote">
+                        "用AI赋能创作，让每一个好想法都不被辜负。"
+                    </div>
+                </div>
+                <div class="about-text">
+                    <h3>关于我</h3>
+                    <p>
+                        我是蒋洁慧，前新媒体运营人，熟悉各大平台的内容生态与用户心理。2025年起全职投入AI内容创作领域，3个月内从零掌握AI视频/图文全流程。
+                    </p>
+                    <p>
+                        擅长将AI工具与运营思维结合，不仅会用工具，更知道怎么用工具产出真正有商业价值的内容。
+                    </p>
+                    <div class="contact-list">
+                        <div class="contact-item">
+                            <div class="contact-icon">📧</div>
+                            <!-- 邮箱待填充 -->
+                            <span>jiangjiehui@example.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📱</div>
+                            <!-- 公众号待填充 -->
+                            <span>公众号：春日泡泡</span>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📕</div>
+                            <!-- 小红书待填充 -->
+                            <span>小红书：待填写</span>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">🎬</div>
+                            <!-- B站待填充 -->
+                            <span>B站：待填写</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 24px;">
+                        <!-- 简历下载，待填充PDF链接 -->
+                        <a href="#" class="btn btn-primary btn-sm" onclick="alert('简历PDF链接待上传')">📄 下载完整简历</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 区块7: 30天学习计划 ==================== -->
+    <section class="section" style="padding-top: 40px;">
+        <div class="container">
+            <div class="learning-cta">
+                <h3>📖 我的 AI 学习之路</h3>
+                <p>从零开始，30天系统掌握AI内容创作全流程，记录每一步成长</p>
+                <!-- 跳转到原有的30天学习计划页面 -->
+                <a href="/ai_learning_plan.html" class="btn btn-outline">查看 30 天学习计划 →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 页脚 ==================== -->
+    <footer>
+        <div class="container">
+            © 2026 蒋洁慧 ｜ 设计用于面试展示
+        </div>
+    </footer>
+
+    <!-- ========== 滚动动画脚本 ========== -->
     <script>
-
-
-
-
-
-
-
-        // 生成背景粒子
-
-
-
-
-
-
-
-        const particlesContainer = document.getElementById('particles');
-
-
-
-
-
-
-
-        const colors = ['#6C63FF', '#FF6584', '#00d2ff', '#f093fb', '#ffd93d'];
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        for (let i = 0; i < 20; i++) {
-
-
-
-
-
-
-
-            const particle = document.createElement('div');
-
-
-
-
-
-
-
-            particle.className = 'particle';
-
-
-
-
-
-
-
-            const size = Math.random() * 6 + 2;
-
-
-
-
-
-
-
-            particle.style.width = size + 'px';
-
-
-
-
-
-
-
-            particle.style.height = size + 'px';
-
-
-
-
-
-
-
-            particle.style.left = Math.random() * 100 + '%';
-
-
-
-
-
-
-
-            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-
-
-
-
-
-
-
-            particle.style.animationDuration = (Math.random() * 20 + 15) + 's';
-
-
-
-
-
-
-
-            particle.style.animationDelay = (Math.random() * 20) + 's';
-
-
-
-
-
-
-
-            particlesContainer.appendChild(particle);
-
-
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // 平滑滚动
-
-
-
-
-
-
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-
-
-
-
-
-
-
-            anchor.addEventListener('click', function(e) {
-
-
-
-
-
-
-
-                e.preventDefault();
-
-
-
-
-
-
-
-                const target = document.querySelector(this.getAttribute('href'));
-
-
-
-
-
-
-
-                if (target) {
-
-
-
-
-
-
-
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-
-
-
-
-
-
-                }
-
-
-
-
-
-
-
+        // 简单的滚动渐入动画
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            // 为所有卡片和区块添加动画
+            document.querySelectorAll('.card, .skill-card, .project-card, .stats-bar').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(24px)';
+                el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(el);
             });
 
+            // 技能条动画：进入视口后展开
+            const skillObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.querySelectorAll('.skill-bar').forEach(bar => {
+                            const width = bar.style.width;
+                            bar.style.width = '0%';
+                            setTimeout(() => { bar.style.width = width; }, 100);
+                        });
+                    }
+                });
+            }, { threshold: 0.3 });
 
-
-
-
-
-
+            document.querySelectorAll('.skill-card').forEach(card => skillObserver.observe(card));
         });
-
-
-
-
-
-
-
     </script>
-
-
-
-
-
-
-
-    <!-- 微信公众号二维码弹窗 -->
-
-
-
-    <div class="qr-modal" id="qrModal">
-
-
-
-        <div class="qr-modal-content">
-
-
-
-            <span class="qr-modal-close" onclick="closeQRCode()">&times;</span>
-
-
-
-            <img src="images/weixin-qrcode.jpg" alt="微信公众号二维码">
-
-
-
-            <div class="qr-modal-title">微信公众号「春日泡泡」</div>
-
-
-
-            <div class="qr-modal-desc">扫码关注，获取AI工具和效率提升干货</div>
-
-
-
-        </div>
-
-
-
-    </div>
-
-
-
-    <script>
-
-
-
-        function showQRCode() {
-
-
-
-            document.getElementById('qrModal').classList.add('show');
-
-
-
-        }
-
-
-
-        function closeQRCode() {
-
-
-
-            document.getElementById('qrModal').classList.remove('show');
-
-
-
-        }
-
-
-
-        document.getElementById('qrModal').addEventListener('click', function(e) {
-
-
-
-            if (e.target === this) closeQRCode();
-
-
-
-        });
-
-
-
-    </script>
-
-
-
-
-
-
-
 </body>
-
-
-
-
-
-
-
 </html>
-
-
-
-
-
-
-
