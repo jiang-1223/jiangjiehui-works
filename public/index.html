@@ -116,18 +116,7 @@
         }
         .btn-ghost:hover { background: rgba(124,58,237,0.1); border-color: var(--border-hover); color: var(--primary-light); }
 
-        /* ========== 统计数据条 ========== */
-        .stats-bar {
-            display: flex; justify-content: center; gap: 48px; padding: 32px;
-            background: var(--bg-card); border-radius: var(--radius);
-            border: 1px solid var(--border);
-            max-width: 700px; margin: 0 auto;
-        }
-        .stat-item { text-align: center; }
-        .stat-num { font-size: 32px; font-weight: 800; color: var(--primary-light); }
-        .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
-
-        /* ========== 区块通用 ========== */
+        /* ========== 页脚 ========== */
         .section { padding: 80px 0; }
         .section-header { text-align: center; margin-bottom: 48px; }
         .section-tag {
@@ -308,12 +297,42 @@
             border-top: 1px solid var(--border);
         }
 
+        /* ========== 二维码弹窗 ========== */
+        .qr-modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+            z-index: 200; align-items: center; justify-content: center;
+        }
+        .qr-modal-overlay.active { display: flex; }
+        .qr-modal {
+            background: var(--bg-card); border-radius: 20px; padding: 40px;
+            text-align: center; border: 1px solid var(--border);
+            box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+            max-width: 320px; width: 90%;
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .qr-modal h4 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+        .qr-modal p { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+        .qr-modal img {
+            width: 200px; height: 200px; border-radius: 12px; margin-bottom: 20px;
+            background: #fff; padding: 12px;
+        }
+        .qr-modal .qr-close {
+            background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+            color: var(--text-secondary); padding: 8px 24px; border-radius: 10px;
+            font-size: 14px; cursor: pointer; transition: all 0.3s;
+        }
+        .qr-modal .qr-close:hover { background: rgba(124,58,237,0.15); border-color: var(--border-hover); color: var(--primary-light); }
+
         /* ========== 响应式 ========== */
         @media (max-width: 768px) {
             .hero h1 { font-size: 32px; }
             .hero-sub { font-size: 17px; }
             .card-grid { grid-template-columns: 1fr; }
-            .stats-bar { flex-direction: column; gap: 20px; padding: 24px; }
             .about-grid { grid-template-columns: 1fr; gap: 32px; }
             .project-card { flex-direction: column; }
             .nav-links { display: none; }
@@ -350,24 +369,6 @@
             <div class="hero-btns">
                 <a href="#image-works" class="btn btn-primary">查看作品</a>
                 <a href="#" class="btn btn-outline" onclick="alert('简历PDF链接待上传')">下载简历</a>
-            </div>
-            <div class="stats-bar" style="margin-top: 56px;">
-                <div class="stat-item">
-                    <div class="stat-num">3+</div>
-                    <div class="stat-label">AI视频作品</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-num">3+</div>
-                    <div class="stat-label">AI图片作品</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-num">73%</div>
-                    <div class="stat-label">效率提升</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-num">3月</div>
-                    <div class="stat-label">AI实战经验</div>
-                </div>
             </div>
         </div>
     </section>
@@ -605,19 +606,7 @@
                 <p class="section-desc">将AI能力落地到真实业务场景</p>
             </div>
             <div class="project-list">
-                <!-- 项目1: 小红书数据复盘 -->
-                <div class="project-card">
-                    <div class="project-icon project-icon-1">📊</div>
-                    <div class="project-info">
-                        <div class="project-title">小红书数据分析复盘</div>
-                        <div class="project-desc">
-                            清洗30天小红书运营数据（69篇笔记），输出15页分析PPT，提炼出高赞笔记的3条共性规律，为后续内容策略提供数据支撑。
-                        </div>
-                        <span class="project-highlight">15页分析报告 · 3条优化建议</span>
-                        <a href="/布艺手工小红书复盘报告.pptx" target="_blank" class="project-link">查看报告 →</a>
-                    </div>
-                </div>
-                <!-- 项目2: AI全链路创作 -->
+                <!-- 项目1: AI全链路创作 -->
                 <div class="project-card">
                     <div class="project-icon project-icon-2">⚡</div>
                     <div class="project-info">
@@ -669,30 +658,16 @@
                 <div class="about-text">
                     <h3>关于我</h3>
                     <p>
-                        我是蒋洁慧，前新媒体运营人，熟悉各大平台的内容生态与用户心理。2025年起全职投入AI内容创作领域，3个月内从零掌握AI视频/图文全流程。
-                    </p>
-                    <p>
-                        擅长将AI工具与运营思维结合，不仅会用工具，更知道怎么用工具产出真正有商业价值的内容。
+                        我是蒋洁慧，前新媒体运营人，熟悉各大平台的内容生态与用户心理。擅长将AI工具与运营思维结合，不仅会用工具，更知道怎么用工具产出真正有商业价值的内容。
                     </p>
                     <div class="contact-list">
                         <div class="contact-item">
                             <div class="contact-icon">📧</div>
-                            <!-- 邮箱待填充 -->
-                            <span>jiangjiehui@example.com</span>
+                            <span>1760893265@qq.com</span>
                         </div>
-                        <div class="contact-item">
+                        <div class="contact-item" style="cursor: pointer;" onclick="openQRModal()">
                             <div class="contact-icon">📱</div>
-                            <span>公众号：春日泡泡</span>
-                        </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">📕</div>
-                            <!-- 小红书待填充 -->
-                            <span>小红书：待填写</span>
-                        </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">🎬</div>
-                            <!-- B站待填充 -->
-                            <span>B站：待填写</span>
+                            <span>公众号：春日泡泡（点击扫码关注）</span>
                         </div>
                     </div>
                     <div style="margin-top: 24px;">
@@ -720,6 +695,18 @@
             © 2026 蒋洁慧 ｜ 设计用于面试展示
         </div>
     </footer>
+
+    <!-- ==================== 公众号二维码弹窗 ==================== -->
+    <div class="qr-modal-overlay" id="qrModal" onclick="closeQRModal(event)">
+        <div class="qr-modal">
+            <h4>公众号：春日泡泡</h4>
+            <p>微信扫码关注，获取 AI 工具与效率技巧</p>
+            <!-- 替换为实际二维码图片路径 -->
+            <img src="/wechat-qrcode.png" alt="春日泡泡公众号二维码" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <p style="display:none; color: var(--text-muted); font-size: 13px;">二维码图片待上传</p>
+            <button class="qr-close" onclick="closeQRModal()">关闭</button>
+        </div>
+    </div>
 
     <!-- ========== 滚动动画脚本 ========== -->
     <script>
@@ -755,6 +742,16 @@
 
             document.querySelectorAll('.skill-card').forEach(card => skillObserver.observe(card));
         });
+
+        // 公众号二维码弹窗
+        function openQRModal() {
+            document.getElementById('qrModal').classList.add('active');
+        }
+        function closeQRModal(e) {
+            if (!e || e.target === e.currentTarget || e.target.classList.contains('qr-close')) {
+                document.getElementById('qrModal').classList.remove('active');
+            }
+        }
     </script>
 </body>
 </html>
