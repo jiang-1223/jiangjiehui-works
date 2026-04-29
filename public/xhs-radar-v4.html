@@ -42,6 +42,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .fbtn{padding:7px 15px;border-radius:20px;border:1.5px solid #ddd;background:#fff;cursor:pointer;font-size:13px;color:#555;transition:all .18s;font-family:inherit}
 .fbtn:hover,.fbtn.on{background:#ff2442;color:#fff;border-color:#ff2442;font-weight:600}
 .fbtn.topic-btn.on{color:#fff}
+.fbtn.time-btn.on{background:#1E90FF;border-color:#1E90FF}
+.fbtn.time-btn:hover{background:#1E90FF;color:#fff;border-color:#1E90FF}
 .divider{width:1px;height:20px;background:#e0e0e0;margin:0 4px}
 
 /* ─── 卡片网格 ─── */
@@ -160,6 +162,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
   <button class="fbtn topic-btn" data-topic="2型糖尿病" onclick="setTopic('2型糖尿病',this)">🩺 2型糖尿病</button>
   <button class="fbtn topic-btn" data-topic="胰岛素泵" onclick="setTopic('胰岛素泵',this)">⚙️ 胰岛素泵</button>
   <button class="fbtn topic-btn" data-topic="血糖管理" onclick="setTopic('血糖管理',this)">📊 血糖管理</button>
+  <span class="divider"></span>
+  <span class="filter-label">时间：</span>
+  <button class="fbtn time-btn on" data-range="all" onclick="setTimeRange('all',this)">📅 全部时间</button>
+  <button class="fbtn time-btn" data-range="week" onclick="setTimeRange('week',this)">🕐 最近一周</button>
+  <button class="fbtn time-btn" data-range="month" onclick="setTimeRange('month',this)">📆 最近一月</button>
 </div>
 
 <div id="cardCount" style="font-size:13px;color:#aaa;margin-bottom:14px;"></div>
@@ -251,10 +258,29 @@ const PAT_COLORS = {"数字吸引":"#FF4757","亲身经历":"#2ED573","疑问引
 
 let curTopic = '全部';
 let curSort = 'total_engage';
+let curTimeRange = 'all';
 
 function fmt(n) {
   if (!n) return '0';
   return n >= 10000 ? (n/10000).toFixed(1) + '万' : String(n);
+}
+
+// 从小红书笔记ID提取发布时间（毫秒）
+function idToMs(id) {
+  if (!id || id.length < 8) return 0;
+  return parseInt(id.substring(0, 8), 16) * 1000;
+}
+
+function getTimeLabel(note) {
+  const ms = idToMs(note.id);
+  if (!ms) return '';
+  const diff = Date.now() - ms;
+  const days = Math.floor(diff / 86400000);
+  if (days < 1) return '今天';
+  if (days < 7) return days + '天前';
+  if (days < 30) return Math.floor(days / 7) + '周前';
+  if (days < 365) return Math.floor(days / 30) + '月前';
+  return Math.floor(days / 365) + '年前';
 }
 
 function escHtml(s) {
@@ -263,7 +289,16 @@ function escHtml(s) {
 
 function getList() {
   let list = NOTES.slice();
+  // 主题筛选
   if (curTopic !== '全部') list = list.filter(f => f.topic === curTopic);
+  // 时间筛选
+  if (curTimeRange === 'week') {
+    const cutoff = Date.now() - 7 * 86400000;
+    list = list.filter(f => idToMs(f.id) >= cutoff);
+  } else if (curTimeRange === 'month') {
+    const cutoff = Date.now() - 30 * 86400000;
+    list = list.filter(f => idToMs(f.id) >= cutoff);
+  }
   list.sort((a, b) => (b[curSort] || 0) - (a[curSort] || 0));
   return list;
 }
@@ -297,6 +332,8 @@ function renderCards() {
     const avatarSrc = f.author_avatar || '';
     const searchUrl = 'https://www.xiaohongshu.com/search_result?keyword=' + encodeURIComponent(f.title);
     const noteId = f.id || '';
+    const timeLabel = getTimeLabel(f);
+    const timeBadge = timeLabel ? '<span style="padding:2px 7px;border-radius:8px;font-size:10px;background:#f0f0f0;color:#888">🕐 ' + timeLabel + '</span>' : '';
 
     html += '<div class="card" onclick="window.open(\'' + searchUrl + '\',\'_blank\')" title="在小红书搜索此笔记">' +
   '<div class="card-stripe" style="background:' + color + '"></div>' +
@@ -313,7 +350,7 @@ function renderCards() {
       '<div class="st">💬 <b>' + fmt(f.comments) + '</b>评</div>' +
       '<div class="st">🔗 <b>' + fmt(f.shares) + '</b>转</div>' +
     '</div>' +
-    '<div class="tags-row">' + pats + topicBadge + typeBadge + '</div>' +
+    '<div class="tags-row">' + timeBadge + pats + topicBadge + typeBadge + '</div>' +
     '<div style="margin-top:8px;font-size:10px;color:#bbb;text-align:right;cursor:pointer" onclick="event.stopPropagation();copyNoteId(\'' + noteId + '\')" title="点击复制笔记ID">📎 ID: ' + noteId.slice(-8) + '</div>' +
   '</div>' +
 '</div>';
@@ -323,6 +360,7 @@ function renderCards() {
 
 function renderTopicStats() {
   const container = document.getElementById('topicStats');
+  const filteredList = getList(); // 使用筛选后的列表
   const topicConfigs = [
     { name: '1型糖尿病', icon: '💉', color: '#FF4757' },
     { name: '2型糖尿病', icon: '🩺', color: '#FF6B81' },
@@ -331,7 +369,7 @@ function renderTopicStats() {
   ];
   let html = '';
   topicConfigs.forEach(tc => {
-    const items = NOTES.filter(n => n.topic === tc.name);
+    const items = filteredList.filter(n => n.topic === tc.name);
     const topNote = items.sort((a, b) => b.total_engage - a.total_engage)[0];
     html += '<div class="topic-stat" style="border-left:4px solid ' + tc.color + '">' +
   '<div class="ts-head"><span class="ts-icon">' + tc.icon + '</span><span class="ts-name">' + tc.name + '</span></div>' +
@@ -345,13 +383,14 @@ function renderTopicStats() {
 
 function renderPatternBars() {
   const container = document.getElementById('patternBars');
+  const filteredList = getList(); // 使用筛选后的列表
   const patCounts = {};
-  NOTES.forEach(n => {
+  filteredList.forEach(n => {
     (n.boom_patterns || []).forEach(p => { patCounts[p] = (patCounts[p] || 0) + 1; });
   });
   const sorted = Object.entries(patCounts).sort((a, b) => b[1] - a[1]);
   const maxCnt = sorted[0] ? sorted[0][1] : 1;
-  const total = NOTES.length;
+  const total = filteredList.length;
 
   let html = '';
   sorted.forEach(([pat, cnt]) => {
@@ -379,6 +418,21 @@ function setTopic(t, btn) {
   document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   renderCards();
+  renderTopicStats();
+  renderPatternBars();
+}
+
+function setTimeRange(range, btn) {
+  curTimeRange = range;
+  document.querySelectorAll('.time-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderCards();
+  renderTopicStats();
+  renderPatternBars();
+  // 更新卡片计数
+  const list = getList();
+  document.getElementById('cardCount').textContent = '共 ' + list.length + ' 篇笔记' +
+    (range === 'week' ? '（最近一周）' : range === 'month' ? '（最近一月）' : '');
 }
 
 // Init
