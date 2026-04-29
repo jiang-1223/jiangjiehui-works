@@ -354,6 +354,7 @@ function renderCards() {
       : '<span class="type-badge">📷 图文</span>';
     const topicBadge = '<span class="topic-tag" style="background:' + color + '">' + f.topic + '</span>';
     const avatarSrc = f.author_avatar || '';
+    const noteId = f.id || '';
     const noteUrl = f.link || f.url || 'https://www.xiaohongshu.com/explore/' + noteId;
     const appScheme = 'xhsdiscover://item/' + noteId;
     const timeLabel = getTimeLabel(f);
