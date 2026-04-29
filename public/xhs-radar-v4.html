@@ -15,6 +15,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .hd-title{font-size:26px;font-weight:800;letter-spacing:.5px}
 .hd-sub{font-size:13px;opacity:.85;margin-top:5px}
 .hd-time{font-size:11px;opacity:.65;margin-top:8px}
+.refresh-btn{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:8px 22px;border-radius:24px;border:2px solid rgba(255,255,255,.6);background:rgba(255,255,255,.15);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;backdrop-filter:blur(4px);font-family:inherit}
+.refresh-btn:hover{background:rgba(255,255,255,.3);border-color:#fff;transform:translateY(-1px)}
+.refresh-btn:active{transform:translateY(0)}
+.refresh-btn.spinning svg{animation:spin .8s linear infinite}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.refresh-btn .btn-text-done{color:#7BED9F}
 
 /* ─── 统计条 ─── */
 .stats-bar{display:flex;flex-wrap:wrap;gap:12px;padding:20px 20px 0;max-width:1300px;margin:0 auto}
@@ -126,6 +132,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
   <div class="hd-title">小红书糖尿病爆款雷达</div>
   <div class="hd-sub">实时追踪糖尿病领域热门笔记 · 发现爆款规律</div>
   <div class="hd-time" id="hdTime">加载中...</div>
+  <button class="refresh-btn" id="refreshBtn" onclick="handleRefresh()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+    <span id="refreshText">刷新数据</span>
+  </button>
 </div>
 
 <!-- 统计摘要 -->
@@ -207,7 +217,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 
 <div class="footer">
   数据来源：小红书公开笔记 · AI 自动采集分析 · 更新于 2026/04/29 22:19<br>
-  点击任意卡片即可跳转原笔记 · 仅供学习参考 · <a href="https://jiangjiehui.top/" style="color:#ff6b81;text-decoration:none">返回首页</a>
+  点击任意卡片搜索原笔记 · 仅供学习参考 · <a href="https://jiangjiehui.top/" style="color:#ff6b81;text-decoration:none">返回首页</a>
 </div>
 
 <!-- ── 爆款定义悬浮按钮 ── -->
@@ -285,9 +295,10 @@ function renderCards() {
       : '<span class="type-badge">📷 图文</span>';
     const topicBadge = '<span class="topic-tag" style="background:' + color + '">' + f.topic + '</span>';
     const avatarSrc = f.author_avatar || '';
-    const safeLink = escHtml(f.link || '');
+    const searchUrl = 'https://www.xiaohongshu.com/search_result?keyword=' + encodeURIComponent(f.title);
+    const noteId = f.id || '';
 
-    html += '<div class="card" onclick="window.open(\'' + safeLink + '\',\'_blank\')">' +
+    html += '<div class="card" onclick="window.open(\'' + searchUrl + '\',\'_blank\')" title="在小红书搜索此笔记">' +
   '<div class="card-stripe" style="background:' + color + '"></div>' +
   '<div class="card-body">' +
     '<div class="card-rank ' + rankClass + '">' + rankLabel + '</div>' +
@@ -303,6 +314,7 @@ function renderCards() {
       '<div class="st">🔗 <b>' + fmt(f.shares) + '</b>转</div>' +
     '</div>' +
     '<div class="tags-row">' + pats + topicBadge + typeBadge + '</div>' +
+    '<div style="margin-top:8px;font-size:10px;color:#bbb;text-align:right;cursor:pointer" onclick="event.stopPropagation();copyNoteId(\'' + noteId + '\')" title="点击复制笔记ID">📎 ID: ' + noteId.slice(-8) + '</div>' +
   '</div>' +
 '</div>';
   });
@@ -383,6 +395,96 @@ setTimeout(() => {
     setTimeout(() => { el.style.width = w; }, 100);
   });
 }, 300);
+
+// ── 复制笔记ID ──
+function copyNoteId(id) {
+  navigator.clipboard.writeText(id).then(() => {
+    showToast('已复制笔记ID: ' + id);
+  }).catch(() => {
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = id;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('已复制笔记ID: ' + id);
+  });
+}
+
+// ── Toast提示 ──
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.75);color:#fff;padding:10px 24px;border-radius:22px;font-size:13px;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(() => { t.style.opacity = '0'; }, 2000);
+}
+
+// ── 刷新数据 ──
+function handleRefresh() {
+  const btn = document.getElementById('refreshBtn');
+  const text = document.getElementById('refreshText');
+  if (btn.classList.contains('spinning')) return;
+  btn.classList.add('spinning');
+  text.textContent = '正在抓取最新数据...';
+  text.classList.remove('btn-text-done');
+
+  fetch('/api/refresh-radar', { method: 'POST' })
+    .then(r => r.json())
+    .then(data => {
+      btn.classList.remove('spinning');
+      if (data.ok && data.notes && data.notes.length > 0) {
+        // 用新数据替换当前数据
+        NOTES.length = 0;
+        data.notes.forEach(n => NOTES.push(n));
+        curTopic = '全部';
+        curSort = 'total_engage';
+        // 重置筛选按钮状态
+        document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('on'));
+        document.querySelector('.topic-btn[data-topic="全部"]').classList.add('on');
+        document.querySelectorAll('.sbtn').forEach(b => b.classList.remove('on'));
+        document.querySelector('.sbtn[data-sort="total_engage"]').classList.add('on');
+
+        // 更新统计
+        const s = data.stats;
+        document.querySelector('.stats-bar').innerHTML =
+          '<div class="sc"><div class="sc-icon">📚</div><div><div class="sc-val">' + s.total + '</div><div class="sc-lbl">笔记总量</div></div></div>' +
+          '<div class="sc"><div class="sc-icon">🔥</div><div><div class="sc-val">' + fmt(s.max_engage) + '</div><div class="sc-lbl">最高热度</div></div></div>' +
+          '<div class="sc"><div class="sc-icon">❤️</div><div><div class="sc-val">' + s.avg_likes + '</div><div class="sc-lbl">平均点赞</div></div></div>' +
+          '<div class="sc"><div class="sc-icon">⭐</div><div><div class="sc-val">' + s.avg_collects + '</div><div class="sc-lbl">平均收藏</div></div></div>' +
+          '<div class="sc"><div class="sc-icon">🗂️</div><div><div class="sc-val">' + s.topic_count + '</div><div class="sc-lbl">覆盖主题</div></div></div>';
+
+        // 更新时间和footer
+        document.getElementById('hdTime').textContent = '数据更新：' + s.updated_at + ' · 共 ' + s.total + ' 篇笔记';
+        document.querySelector('.footer').innerHTML =
+          '数据来源：小红书公开笔记 · AI 自动采集分析 · 更新于 ' + s.updated_at + '<br>' +
+          '点击任意卡片搜索原笔记 · 仅供学习参考 · <a href="https://jiangjiehui.top/" style="color:#ff6b81;text-decoration:none">返回首页</a>';
+
+        // 重新渲染
+        renderCards();
+        renderTopicStats();
+        renderPatternBars();
+
+        text.textContent = '✓ 刷新成功！';
+        text.classList.add('btn-text-done');
+        showToast('已获取 ' + s.total + ' 篇最新笔记！');
+      } else {
+        text.textContent = '刷新数据';
+        showToast(data.msg || '未获取到新数据，请稍后再试');
+      }
+    })
+    .catch(err => {
+      btn.classList.remove('spinning');
+      text.textContent = '刷新数据';
+      showToast('网络错误，请稍后再试');
+    });
+}
 </script>
 </body>
 </html>
