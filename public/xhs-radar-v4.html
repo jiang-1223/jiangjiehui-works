@@ -224,7 +224,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 
 <div class="footer">
   数据来源：小红书公开笔记 · AI 自动采集分析 · 更新于 2026/04/29 22:19<br>
-  点击任意卡片搜索原笔记 · 仅供学习参考 · <a href="https://jiangjiehui.top/" style="color:#ff6b81;text-decoration:none">返回首页</a>
+  点击卡片打开对应笔记 · 手机端自动拉起小红书App · 仅供学习参考 · <a href="https://jiangjiehui.top/" style="color:#ff6b81;text-decoration:none">返回首页</a>
 </div>
 
 <!-- ── 爆款定义悬浮按钮 ── -->
@@ -303,6 +303,30 @@ function getList() {
   return list;
 }
 
+// 打开笔记：优先尝试 App Scheme（手机端直接打开），否则用网页链接
+function openNote(webUrl, appScheme) {
+  // 检测是否为移动端
+  const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  if (isMobile) {
+    // 移动端：先尝试 App Scheme
+    const start = Date.now();
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = appScheme;
+    document.body.appendChild(iframe);
+    // 2秒后如果 App 没打开，则用网页链接
+    setTimeout(function() {
+      document.body.removeChild(iframe);
+      if (Date.now() - start < 2500) {
+        window.open(webUrl, '_blank');
+      }
+    }, 2000);
+  } else {
+    // PC端：直接打开网页链接
+    window.open(webUrl, '_blank');
+  }
+}
+
 function renderCards() {
   const list = getList();
   const grid = document.getElementById('cardsGrid');
@@ -330,12 +354,12 @@ function renderCards() {
       : '<span class="type-badge">📷 图文</span>';
     const topicBadge = '<span class="topic-tag" style="background:' + color + '">' + f.topic + '</span>';
     const avatarSrc = f.author_avatar || '';
-    const searchUrl = 'https://www.xiaohongshu.com/search_result?keyword=' + encodeURIComponent(f.title);
-    const noteId = f.id || '';
+    const noteUrl = f.link || f.url || 'https://www.xiaohongshu.com/explore/' + noteId;
+    const appScheme = 'xhsdiscover://item/' + noteId;
     const timeLabel = getTimeLabel(f);
     const timeBadge = timeLabel ? '<span style="padding:2px 7px;border-radius:8px;font-size:10px;background:#f0f0f0;color:#888">🕐 ' + timeLabel + '</span>' : '';
 
-    html += '<div class="card" onclick="window.open(\'' + searchUrl + '\',\'_blank\')" title="在小红书搜索此笔记">' +
+    html += '<div class="card" onclick="openNote(\'' + noteUrl + '\',\'' + appScheme + '\')" title="点击打开对应笔记（手机端将打开小红书App）">' +
   '<div class="card-stripe" style="background:' + color + '"></div>' +
   '<div class="card-body">' +
     '<div class="card-rank ' + rankClass + '">' + rankLabel + '</div>' +
