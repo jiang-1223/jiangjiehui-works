@@ -476,7 +476,8 @@ function handleRefresh() {
         showToast('已获取 ' + s.total + ' 篇最新笔记！');
       } else {
         text.textContent = '刷新数据';
-        showToast(data.msg || '未获取到新数据，请稍后再试');
+        // 服务端刷新失败时，提示用户通过本地方式刷新
+        showToast(data.msg || '服务端抓取失败，请在 WorkBuddy 中说"刷新糖尿病雷达"来更新数据');
       }
     })
     .catch(err => {
