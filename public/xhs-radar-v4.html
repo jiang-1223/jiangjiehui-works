@@ -18,8 +18,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .refresh-btn{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:8px 22px;border-radius:24px;border:2px solid rgba(255,255,255,.6);background:rgba(255,255,255,.15);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;backdrop-filter:blur(4px);font-family:inherit}
 .refresh-btn:hover{background:rgba(255,255,255,.3);border-color:#fff;transform:translateY(-1px)}
 .refresh-btn:active{transform:translateY(0)}
-.refresh-btn.spinning svg{animation:spin .8s linear infinite}
-@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 .refresh-btn .btn-text-done{color:#7BED9F}
 
 /* ─── 统计条 ─── */
@@ -134,9 +132,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
   <div class="hd-title">小红书糖尿病爆款雷达</div>
   <div class="hd-sub">实时追踪糖尿病领域热门笔记 · 发现爆款规律</div>
   <div class="hd-time" id="hdTime">加载中...</div>
-  <button class="refresh-btn" id="refreshBtn" onclick="handleRefresh()">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-    <span id="refreshText">刷新数据</span>
+  <button class="refresh-btn" style="cursor:default;opacity:0.85" disabled>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    <span id="refreshText">自动更新 · 每周一</span>
   </button>
 </div>
 
@@ -505,66 +503,6 @@ function showToast(msg) {
   setTimeout(() => { t.style.opacity = '0'; }, 2000);
 }
 
-// ── 刷新数据 ──
-function handleRefresh() {
-  const btn = document.getElementById('refreshBtn');
-  const text = document.getElementById('refreshText');
-  if (btn.classList.contains('spinning')) return;
-  btn.classList.add('spinning');
-  text.textContent = '正在抓取最新数据...';
-  text.classList.remove('btn-text-done');
-
-  fetch('/api/refresh-radar', { method: 'POST' })
-    .then(r => r.json())
-    .then(data => {
-      btn.classList.remove('spinning');
-      if (data.ok && data.notes && data.notes.length > 0) {
-        // 用新数据替换当前数据
-        NOTES.length = 0;
-        data.notes.forEach(n => NOTES.push(n));
-        curTopic = '全部';
-        curSort = 'total_engage';
-        // 重置筛选按钮状态
-        document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('on'));
-        document.querySelector('.topic-btn[data-topic="全部"]').classList.add('on');
-        document.querySelectorAll('.sbtn').forEach(b => b.classList.remove('on'));
-        document.querySelector('.sbtn[data-sort="total_engage"]').classList.add('on');
-
-        // 更新统计
-        const s = data.stats;
-        document.querySelector('.stats-bar').innerHTML =
-          '<div class="sc"><div class="sc-icon">📚</div><div><div class="sc-val">' + s.total + '</div><div class="sc-lbl">笔记总量</div></div></div>' +
-          '<div class="sc"><div class="sc-icon">🔥</div><div><div class="sc-val">' + fmt(s.max_engage) + '</div><div class="sc-lbl">最高热度</div></div></div>' +
-          '<div class="sc"><div class="sc-icon">❤️</div><div><div class="sc-val">' + s.avg_likes + '</div><div class="sc-lbl">平均点赞</div></div></div>' +
-          '<div class="sc"><div class="sc-icon">⭐</div><div><div class="sc-val">' + s.avg_collects + '</div><div class="sc-lbl">平均收藏</div></div></div>' +
-          '<div class="sc"><div class="sc-icon">🗂️</div><div><div class="sc-val">' + s.topic_count + '</div><div class="sc-lbl">覆盖主题</div></div></div>';
-
-        // 更新时间和footer
-        document.getElementById('hdTime').textContent = '数据更新：' + s.updated_at + ' · 共 ' + s.total + ' 篇笔记';
-        document.querySelector('.footer').innerHTML =
-          '数据来源：小红书公开笔记 · AI 自动采集分析 · 更新于 ' + s.updated_at + '<br>' +
-          '点击任意卡片搜索原笔记 · 仅供学习参考 · <a href="https://jiangjiehui.top/" style="color:#ff6b81;text-decoration:none">返回首页</a>';
-
-        // 重新渲染
-        renderCards();
-        renderTopicStats();
-        renderPatternBars();
-
-        text.textContent = '✓ 刷新成功！';
-        text.classList.add('btn-text-done');
-        showToast('已获取 ' + s.total + ' 篇最新笔记！');
-      } else {
-        text.textContent = '刷新数据';
-        // 服务端刷新失败时，提示用户通过本地方式刷新
-        showToast(data.msg || '服务端抓取失败，请在 WorkBuddy 中说"刷新糖尿病雷达"来更新数据');
-      }
-    })
-    .catch(err => {
-      btn.classList.remove('spinning');
-      text.textContent = '刷新数据';
-      showToast('网络错误，请稍后再试');
-    });
-}
 </script>
 </body>
 </html>
