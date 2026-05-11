@@ -108,8 +108,8 @@
         .skill-divider { width: 4px; height: 4px; border-radius: 50%; background: var(--primary-light); opacity: 0.5; }
 
         /* ===== Image Gallery ===== */
-        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-        .gallery-item { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); transition: var(--transition); cursor: zoom-in; position: relative; aspect-ratio: 3/4; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; }
+        .gallery-item { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); transition: var(--transition); cursor: zoom-in; position: relative; aspect-ratio: 3/4; }
         .gallery-item:hover { transform: translateY(-6px); border-color: var(--primary-light); box-shadow: var(--shadow-glow); }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
         .gallery-item:hover img { transform: scale(1.05); }
@@ -230,7 +230,8 @@
 
         /* ===== Responsive ===== */
         @media (max-width: 900px) {
-            .gallery-grid, .video-grid, .projects-grid { grid-template-columns: repeat(2, 1fr); }
+            .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+            .video-grid, .projects-grid { grid-template-columns: repeat(2, 1fr); }
             .about-content { grid-template-columns: 1fr; text-align: center; }
             .about-info { align-items: center; }
         }
@@ -257,10 +258,8 @@
         <div class="nav-inner">
             <a href="#" class="nav-logo">J.JH</a>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#skills">核心能力</a></li>
                 <li><a href="#works">作品展示</a></li>
                 <li><a href="#projects">实战项目</a></li>
-                <li><a href="#about">关于我</a></li>
             </ul>
             <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -277,25 +276,10 @@
         <div class="hero-inner reveal">
             <h1 class="hero-title">蒋洁慧 · AI 作品集</h1>
             <p class="hero-desc">
-                用 AI 放大洞察力，让创作更快、更准、更有价值。<br>
-                我热爱 AI 带来的效率革命，也看好它释放人类创造力的长期潜力。
+                期待 AI 带来的效率革命，看好它释放人类创造力的长期潜力。
             </p>
-            <button class="hero-btn" onclick="openQRModal()">
-                📱 关注公众号
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
-        </div>
-    </section>
-
-    <!-- ==================== 核心能力 ==================== -->
-    <section class="section" id="skills">
-        <div class="section-inner">
-            <div class="section-header reveal">
-                <span class="section-label">Skills</span>
-                <h2 class="section-title">AIGC 核心能力</h2>
-                <p class="section-desc">覆盖内容创作全流程的 AI 工具链</p>
-            </div>
-            <div class="skill-tree reveal">
+            <!-- 技能栈 -->
+            <div class="skill-tree" style="margin: 1.5rem auto 0;">
                 <div class="skill-row">
                     <div class="skill-item"><span class="skill-icon">🖼️</span><span class="skill-name">即梦</span></div>
                     <div class="skill-divider"></div>
@@ -308,10 +292,13 @@
                     <div class="skill-item"><span class="skill-icon">📊</span><span class="skill-name">飞书多维表格</span></div>
                 </div>
             </div>
+            <button class="hero-btn" style="margin-top:1.5rem;" onclick="openQRModal()">
+                📱 关注公众号
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
         </div>
     </section>
 
-    <!-- ==================== 作品展示 ==================== -->
     <section class="section" id="works">
         <div class="section-inner">
             <div class="section-header reveal">
@@ -417,29 +404,6 @@
         </div>
     </section>
 
-    <!-- ==================== 关于我 ==================== -->
-    <section class="section about-section" id="about">
-        <div class="about-inner">
-            <div class="about-content reveal">
-                <div class="about-text">
-                    <h3 style="font-size: 1.3rem; margin-bottom: 1.2rem;">关于我</h3>
-                    <p>我是蒋洁慧。</p>
-                    <p>我热爱 AI 带来的效率革命，也看好它释放人类创造力的长期潜力。</p>
-                    <p>以前我做用户运营，懂用户心理；</p>
-                    <p>现在我把 AI 当作杠杆，让工作创作更快、更准、更有商业价值。</p>
-                    <p>这是我的作品集，欢迎交流。</p>
-                </div>
-                <div class="about-info">
-                    <div class="about-name">春日泡泡</div>
-                    <div style="background: white; border-radius: 12px; padding: 6px; width: 120px; height: 120px;">
-                        <img src="/wechat-qrcode.jpg" alt="公众号二维码" style="width:100%; height:100%; border-radius:8px;">
-                    </div>
-                    <div style="font-size: 0.8rem; color: var(--text-muted);">欢迎扫码观看我的AI学习公众号</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- QR Modal -->
     <div class="qr-modal" id="qrModal" onclick="closeQRModal(event)">
         <div class="qr-modal-box">
@@ -457,7 +421,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>© 2026 蒋洁慧 ｜ 最后更新：2026-05-10</p>
+        <p>© 2026 蒋洁慧 ｜ 最后更新：2026-05-11</p>
     </footer>
 
     <script>
