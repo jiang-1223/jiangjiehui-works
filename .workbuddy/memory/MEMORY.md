@@ -26,8 +26,16 @@
 
 ### 自动化任务
 - **小红书糖尿病雷达v4周更新**：每周一 09:00 自动运行
-  - 工作区：d:\腾讯小龙虾任务
-  - 触发 Vercel 部署
+  - 工作流：`.github/workflows/xhs-diabetes-radar-v4.yml`
+  - 脚本：`scripts/xhs_radar_v4_auto.py`（使用 xhs 库，直接更新 HTML 内嵌数据）
+  - 数据也备份到 `public/data/radar-data-v4.json`
+  - ⚠️ 工作流文件更新需要带 `workflow` scope 的 GitHub Token
+
+### 小红书 API 变更
+- ❌ 旧域名 `edith.xiaohongshu.com` 已废弃（404）
+- ✅ 新域名 `www.xiaohongshu.com` 需要 Cookie + 签名
+- 雷达页面已改为纯静态展示，不再调用 /api/refresh-radar
+- Cookie 有效期约 30 天，到期需扫码获取新值并更新 GitHub Secrets
 
 ## 技术栈
 
