@@ -89,6 +89,8 @@
             border: none; transition: var(--transition);
         }
         .hero-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(108,92,231,0.4); }
+        .hero-block + .hero-block { margin-top: 2rem; }
+        .hero-skill-label { font-size: 0.85rem; font-weight: 600; color: var(--accent); margin-bottom: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
 
         /* ===== Sections ===== */
         .section { padding: 2.5rem 2rem; position: relative; z-index: 1; }
@@ -108,7 +110,7 @@
         .skill-divider { width: 4px; height: 4px; border-radius: 50%; background: var(--primary-light); opacity: 0.5; }
 
         /* ===== Image Gallery ===== */
-        .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
         .gallery-item { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); transition: var(--transition); cursor: zoom-in; position: relative; aspect-ratio: 3/4; }
         .gallery-item:hover { transform: translateY(-6px); border-color: var(--primary-light); box-shadow: var(--shadow-glow); }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
@@ -274,28 +276,37 @@
     <!-- ==================== HERO ==================== -->
     <section class="hero" id="hero">
         <div class="hero-inner reveal">
-            <h1 class="hero-title">蒋洁慧 · AI 作品集</h1>
-            <p class="hero-desc">
-                期待 AI 带来的效率革命，看好它释放人类创造力的长期潜力。
-            </p>
-            <!-- 技能栈 -->
-            <div class="skill-tree" style="margin: 1.5rem auto 0;">
-                <div class="skill-row">
-                    <div class="skill-item"><span class="skill-icon">🖼️</span><span class="skill-name">即梦</span></div>
-                    <div class="skill-divider"></div>
-                    <div class="skill-item"><span class="skill-icon">💬</span><span class="skill-name">ChatGPT</span></div>
-                    <div class="skill-divider"></div>
-                    <div class="skill-item"><span class="skill-icon">🎬</span><span class="skill-name">剪映</span></div>
-                    <div class="skill-divider"></div>
-                    <div class="skill-item"><span class="skill-icon">🤖</span><span class="skill-name">扣子 Coze</span></div>
-                    <div class="skill-divider"></div>
-                    <div class="skill-item"><span class="skill-icon">📊</span><span class="skill-name">飞书多维表格</span></div>
+            <!-- 板块1：标题与描述 -->
+            <div class="hero-block">
+                <h1 class="hero-title">蒋洁慧 · AI 作品集</h1>
+                <p class="hero-desc">用AI放大洞察力，让创作更快、更好、更具价值。期待AI带来的效率革命，人与AI合作共赢。</p>
+            </div>
+            <!-- 板块2：技术栈 -->
+            <div class="hero-block">
+                <div class="hero-skill-label">技术栈</div>
+                <div class="skill-tree">
+                    <div class="skill-row">
+                        <div class="skill-item"><span class="skill-icon">🖼️</span><span class="skill-name">即梦</span></div>
+                        <div class="skill-divider"></div>
+                        <div class="skill-item"><span class="skill-icon">💬</span><span class="skill-name">ChatGPT</span></div>
+                        <div class="skill-divider"></div>
+                        <div class="skill-item"><span class="skill-icon">🎬</span><span class="skill-name">剪映</span></div>
+                        <div class="skill-divider"></div>
+                        <div class="skill-item"><span class="skill-icon">🤖</span><span class="skill-name">扣子 Coze</span></div>
+                        <div class="skill-divider"></div>
+                        <div class="skill-item"><span class="skill-icon">📊</span><span class="skill-name">飞书多维表格</span></div>
+                        <div class="skill-divider"></div>
+                        <div class="skill-item"><span class="skill-icon">🦞</span><span class="skill-name">WorkBuddy</span></div>
+                    </div>
                 </div>
             </div>
-            <button class="hero-btn" style="margin-top:1.5rem;" onclick="openQRModal()">
-                📱 关注公众号
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
+            <!-- 板块3：公众号 -->
+            <div class="hero-block">
+                <button class="hero-btn" onclick="openQRModal()">
+                    📱 欢迎关注我的AI学习公众号
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+            </div>
         </div>
     </section>
 
