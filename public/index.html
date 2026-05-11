@@ -93,12 +93,14 @@
         .hero-skill-label { font-size: 0.85rem; font-weight: 600; color: var(--accent); margin-bottom: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
 
         /* ===== Sections ===== */
-        .section { padding: 2.5rem 2rem; position: relative; z-index: 1; }
+        .section { padding: 4rem 2rem 3rem; position: relative; z-index: 1; }
         .section-inner { max-width: 1200px; margin: 0 auto; }
-        .section-header { text-align: center; margin-bottom: 1.5rem; }
+        .section-header { text-align: center; margin-bottom: 2.5rem; }
         .section-label { display: inline-block; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--accent); margin-bottom: 0.8rem; }
-        .section-title { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700; margin-bottom: 0.6rem; }
-        .section-desc { font-size: 0.95rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+        .section-title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; margin-bottom: 0.8rem; letter-spacing: -0.02em; }
+        .section-desc { font-size: 1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto; line-height: 1.8; }
+        .sub-section { text-align: center; margin: 2.5rem 0 1.2rem; }
+        .sub-section-label { display: inline-block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 4px; color: var(--primary-light); background: rgba(108,92,231,0.1); border: 1px solid rgba(108,92,231,0.2); border-radius: 50px; padding: 0.4rem 1.2rem; }
 
         /* ===== Skills ===== */
         .skill-tree { max-width: 900px; margin: 0 auto; }
@@ -119,8 +121,7 @@
         .gallery-item:hover::after { opacity: 1; }
 
         /* ===== Video ===== */
-        .video-section-label { color: var(--text-primary); margin: 1.5rem 0 0.5rem; font-size: 1.1rem; font-weight: 600; text-align: center; }
-        .video-subtitle { color: var(--text-muted); text-align: center; margin-bottom: 1rem; font-size: 0.9rem; }
+        .video-subtitle { color: var(--text-muted); text-align: center; margin-bottom: 1.5rem; font-size: 0.9rem; }
         .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; align-items: start; }
         .video-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: var(--transition); }
         .video-card:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: 0 0 30px rgba(0,206,201,0.15); }
@@ -318,6 +319,11 @@
                 <p class="section-desc">AI 多风格商业图片创作，适用于电商直播、社群预热、朋友圈海报等场景。</p>
             </div>
 
+            <!-- 子板块1：海报作品 -->
+            <div class="sub-section reveal">
+                <span class="sub-section-label">🖼️ 海报作品</span>
+            </div>
+
             <!-- 6张图片 -->
             <div class="gallery-grid reveal">
                 <div class="gallery-item"><img src="/images/海报1.png" alt="AI 创作海报 1" loading="lazy"></div>
@@ -328,9 +334,11 @@
                 <div class="gallery-item"><img src="/images/海报6.png" alt="AI 创作海报 6" loading="lazy"></div>
             </div>
 
-            <!-- 3个视频 -->
-            <h3 class="video-section-label reveal">🎬 AI 视频作品</h3>
-            <p class="video-subtitle reveal">点击即可播放，支持全屏观看</p>
+            <!-- 子板块2：AI视频作品 -->
+            <div class="sub-section reveal">
+                <span class="sub-section-label">🎬 AI 视频作品</span>
+            </div>
+            <p class="video-subtitle">点击即可播放，支持全屏观看</p>
             <div class="video-grid">
                 <!-- 视频1：竖屏 9:16 -->
                 <div class="video-card reveal">
