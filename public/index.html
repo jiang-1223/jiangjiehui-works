@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J.JH | AI 创作者作品集</title>
+    <title>蒋洁慧 · AI 作品集</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -18,28 +18,21 @@
             --accent-light: #81ECEC;
             --bg-dark: #0A0A1A;
             --bg-card: #12122A;
-            --bg-card-hover: #1A1A3E;
             --text-primary: #FFFFFF;
             --text-secondary: #B2B2CC;
             --text-muted: #6C6C8A;
             --border: #2A2A4A;
             --gradient-1: linear-gradient(135deg, #6C5CE7, #00CEC9);
-            --gradient-2: linear-gradient(135deg, #A29BFE, #81ECEC);
             --shadow-glow: 0 0 30px rgba(108, 92, 231, 0.2);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         html { scroll-behavior: smooth; font-size: 16px; }
-
         body {
             font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+            background: var(--bg-dark); color: var(--text-primary);
+            line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
         }
-
         a { text-decoration: none; color: inherit; transition: var(--transition); }
         img { max-width: 100%; display: block; }
 
@@ -75,13 +68,44 @@
         .nav-links a:hover::after { width: 100%; }
         .nav-mobile-toggle { display: none; background: none; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; }
 
+        /* ===== Hero ===== */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            text-align: center; position: relative; z-index: 1;
+            padding: 6rem 2rem 4rem;
+        }
+        .hero-inner { max-width: 700px; }
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700;
+            line-height: 1.3; margin-bottom: 1.2rem;
+        }
+        .hero-title span { background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-desc { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 2rem; }
+        .hero-btn {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            background: var(--gradient-1); color: white;
+            padding: 0.8rem 1.8rem; border-radius: 50px;
+            font-size: 0.95rem; font-weight: 500; cursor: pointer;
+            border: none; transition: var(--transition);
+        }
+        .hero-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(108,92,231,0.4); }
+
         /* ===== Sections ===== */
         .section { padding: 2.5rem 2rem; position: relative; z-index: 1; }
         .section-inner { max-width: 1200px; margin: 0 auto; }
-        .section-header { text-align: center; margin-bottom: 1rem; }
-        .section-label { display: inline-block; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--accent); margin-bottom: 1rem; }
-        .section-title { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 700; margin-bottom: 0.8rem; }
-        .section-desc { font-size: 1rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 1.5rem; }
+        .section-label { display: inline-block; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: var(--accent); margin-bottom: 0.8rem; }
+        .section-title { font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700; margin-bottom: 0.6rem; }
+        .section-desc { font-size: 0.95rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+
+        /* ===== Skills ===== */
+        .skill-tree { max-width: 900px; margin: 0 auto; }
+        .skill-row { display: flex; justify-content: center; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+        .skill-item { display: flex; align-items: center; gap: 0.5rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 50px; padding: 0.6rem 1.2rem; transition: var(--transition); cursor: default; }
+        .skill-item:hover { border-color: var(--primary-light); box-shadow: var(--shadow-glow); transform: translateY(-2px); }
+        .skill-icon { font-size: 1.2rem; }
+        .skill-name { font-size: 0.9rem; font-weight: 500; color: var(--text-primary); }
+        .skill-divider { width: 4px; height: 4px; border-radius: 50%; background: var(--primary-light); opacity: 0.5; }
 
         /* ===== Image Gallery ===== */
         .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
@@ -92,14 +116,16 @@
         .gallery-item::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 50%); pointer-events: none; opacity: 0; transition: opacity 0.3s; }
         .gallery-item:hover::after { opacity: 1; }
 
-        /* ===== Video Section ===== */
-        .video-section-label { color: var(--text); margin: 1.5rem 0 0.5rem; font-size: 1.1rem; font-weight: 600; text-align: center; }
+        /* ===== Video ===== */
+        .video-section-label { color: var(--text-primary); margin: 1.5rem 0 0.5rem; font-size: 1.1rem; font-weight: 600; text-align: center; }
         .video-subtitle { color: var(--text-muted); text-align: center; margin-bottom: 1rem; font-size: 0.9rem; }
-        .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .video-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; align-items: start; }
         .video-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; transition: var(--transition); }
         .video-card:hover { transform: translateY(-6px); border-color: var(--accent); box-shadow: 0 0 30px rgba(0,206,201,0.15); }
-        .video-wrapper { position: relative; aspect-ratio: 16/9; background: #000; cursor: pointer; }
-        .video-wrapper video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .video-wrapper { position: relative; background: #000; cursor: pointer; }
+        .video-wrapper.video-vertical { aspect-ratio: 9/16; max-height: 420px; margin: 0 auto; }
+        .video-wrapper.video-horizontal { aspect-ratio: 16/9; }
+        .video-wrapper video { width: 100%; height: 100%; object-fit: contain; display: block; }
         .video-play-overlay {
             position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
             background: rgba(0,0,0,0.35); transition: opacity 0.3s; z-index: 2;
@@ -109,49 +135,23 @@
             width: 64px; height: 64px; border-radius: 50%;
             background: rgba(255,255,255,0.2); backdrop-filter: blur(8px);
             border: 2px solid rgba(255,255,255,0.4);
-            display: flex; align-items: center; justify-content: center;
-            transition: var(--transition);
+            display: flex; align-items: center; justify-content: center; transition: var(--transition);
         }
         .play-btn:hover { background: rgba(255,255,255,0.35); transform: scale(1.1); }
         .play-btn svg { width: 26px; height: 26px; fill: white; margin-left: 3px; }
-        .video-card-body { padding: 1.2rem 1.5rem; }
-        .video-card-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
-        .video-card-desc { font-size: 0.85rem; color: var(--text-secondary); }
-
-        /* ===== Skill Tree ===== */
-        .skill-tree { max-width: 900px; margin: 0 auto; }
-        .skill-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.8rem;
-            flex-wrap: wrap;
+        .video-card-body { padding: 1rem 1.2rem; }
+        .video-card-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.2rem; }
+        .video-card-subtitle { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
+        .video-fullscreen-btn {
+            position: absolute; bottom: 0.8rem; right: 0.8rem;
+            width: 36px; height: 36px; border-radius: 8px;
+            background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2);
+            color: white; cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: var(--transition); z-index: 3; opacity: 0;
         }
-        .skill-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 50px;
-            padding: 0.6rem 1.2rem;
-            transition: var(--transition);
-            cursor: default;
-        }
-        .skill-item:hover {
-            border-color: var(--primary-light);
-            box-shadow: var(--shadow-glow);
-            transform: translateY(-2px);
-        }
-        .skill-icon { font-size: 1.2rem; }
-        .skill-name { font-size: 0.9rem; font-weight: 500; color: var(--text-primary); }
-        .skill-divider {
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: var(--primary-light);
-            opacity: 0.5;
-        }
+        .video-card:hover .video-fullscreen-btn { opacity: 1; }
+        .video-fullscreen-btn:hover { background: rgba(0,0,0,0.8); }
+        .video-fullscreen-btn svg { width: 18px; height: 18px; fill: white; }
 
         /* ===== Projects ===== */
         .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
@@ -174,61 +174,57 @@
         .about-inner { max-width: 900px; margin: 0 auto; }
         .about-content { display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: start; }
         .about-text p { font-size: 1rem; color: var(--text-secondary); line-height: 2; margin-bottom: 0.8rem; }
-        .about-text p strong { color: var(--text-primary); }
-        .about-info { display: flex; flex-direction: column; gap: 1rem; align-items: center; }
+        .about-info { display: flex; flex-direction: column; gap: 0.8rem; align-items: center; }
         .about-name { color: var(--text-muted); font-size: 0.95rem; }
-        .qr-display {
-            margin-top: 1rem; background: white; border-radius: 12px; padding: 8px;
-            width: 140px; height: 140px;
+
+        /* ===== QR Modal ===== */
+        .qr-modal {
+            position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(12px);
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
-        .qr-display img { width: 100%; height: 100%; border-radius: 8px; }
-        .qr-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.5rem; text-align: center; }
+        .qr-modal.active { opacity: 1; pointer-events: auto; }
+        .qr-modal-box {
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
+            padding: 2rem; text-align: center; position: relative;
+            transform: scale(0.9); transition: transform 0.3s ease;
+        }
+        .qr-modal.active .qr-modal-box { transform: scale(1); }
+        .qr-modal-close {
+            position: absolute; top: 1rem; right: 1rem;
+            width: 36px; height: 36px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
+            color: var(--text-secondary); cursor: pointer; display: flex;
+            align-items: center; justify-content: center; font-size: 1.1rem; transition: var(--transition);
+        }
+        .qr-modal-close:hover { background: rgba(255,255,255,0.2); color: var(--text-primary); }
+        .qr-modal-img { width: 200px; height: 200px; border-radius: 12px; margin: 0 auto 1rem; }
+        .qr-modal-label { font-size: 0.95rem; color: var(--text-secondary); }
 
         /* ===== Image Lightbox ===== */
         .lightbox {
             position: fixed; inset: 0; z-index: 1000;
             background: rgba(0,0,0,0.92); backdrop-filter: blur(12px);
             display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-            cursor: zoom-out;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease; cursor: zoom-out;
         }
         .lightbox.active { opacity: 1; pointer-events: auto; }
-        .lightbox img {
-            max-width: 90vw; max-height: 90vh;
-            border-radius: 12px;
-            box-shadow: 0 0 60px rgba(108,92,231,0.3);
-            transform: scale(0.9); transition: transform 0.3s ease;
-            object-fit: contain;
-        }
+        .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 12px; box-shadow: 0 0 60px rgba(108,92,231,0.3); transform: scale(0.9); transition: transform 0.3s ease; object-fit: contain; }
         .lightbox.active img { transform: scale(1); }
         .lightbox-close {
             position: absolute; top: 1.5rem; right: 1.5rem;
             width: 44px; height: 44px; border-radius: 50%;
             background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
             color: white; font-size: 1.4rem; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: var(--transition);
+            display: flex; align-items: center; justify-content: center; transition: var(--transition);
         }
         .lightbox-close:hover { background: rgba(255,255,255,0.2); }
-
-        /* ===== Video Fullscreen Button ===== */
-        .video-fullscreen-btn {
-            position: absolute; bottom: 0.8rem; right: 0.8rem;
-            width: 36px; height: 36px; border-radius: 8px;
-            background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2);
-            color: white; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: var(--transition); z-index: 3; opacity: 0;
-        }
-        .video-card:hover .video-fullscreen-btn { opacity: 1; }
-        .video-fullscreen-btn:hover { background: rgba(0,0,0,0.8); }
-        .video-fullscreen-btn svg { width: 18px; height: 18px; fill: white; }
 
         /* ===== Footer ===== */
         .footer { padding: 2rem; text-align: center; border-top: 1px solid var(--border); position: relative; z-index: 1; }
         .footer p { font-size: 0.85rem; color: var(--text-muted); }
 
-        /* ===== Reveal Animation ===== */
+        /* ===== Reveal ===== */
         .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .reveal.visible { opacity: 1; transform: translateY(0); }
 
@@ -239,14 +235,14 @@
             .about-info { align-items: center; }
         }
         @media (max-width: 600px) {
+            .hero { padding: 5rem 1.5rem 3rem; }
             .gallery-grid, .video-grid, .projects-grid { grid-template-columns: 1fr; }
             .skill-row { gap: 0.5rem; }
             .skill-divider { display: none; }
             .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: rgba(10,10,26,0.98); backdrop-filter: blur(20px); flex-direction: column; padding: 1.5rem 2rem; gap: 1rem; border-bottom: 1px solid var(--border); }
             .nav-links.open { display: flex; }
             .nav-mobile-toggle { display: block; }
-            .section { padding: 4rem 1.5rem; }
-            .tree-nodes { flex-direction: column; align-items: center; }
+            .section { padding: 2rem 1.5rem; }
         }
     </style>
 </head>
@@ -261,8 +257,8 @@
         <div class="nav-inner">
             <a href="#" class="nav-logo">J.JH</a>
             <ul class="nav-links" id="navLinks">
-                <li><a href="#works">作品展示</a></li>
                 <li><a href="#skills">核心能力</a></li>
+                <li><a href="#works">作品展示</a></li>
                 <li><a href="#projects">实战项目</a></li>
                 <li><a href="#about">关于我</a></li>
             </ul>
@@ -276,93 +272,18 @@
         </div>
     </nav>
 
-    <!-- ==================== 作品展示 ==================== -->
-    <section class="section" id="works" style="padding-top: 7rem;">
-        <div class="section-inner">
-            <div class="section-header reveal">
-                <span class="section-label">Works</span>
-                <h2 class="section-title">作品展示</h2>
-                <p class="section-desc">AI 图片与视频创作，从概念到成品</p>
-            </div>
-
-            <!-- 6张图片 -->
-            <div class="gallery-grid reveal">
-                <div class="gallery-item">
-                    <img src="/images/海报1.png" alt="AI 创作海报 1" loading="lazy">
-                </div>
-                <div class="gallery-item">
-                    <img src="/images/海报2.png" alt="AI 创作海报 2" loading="lazy">
-                </div>
-                <div class="gallery-item">
-                    <img src="/images/海报3.png" alt="AI 创作海报 3" loading="lazy">
-                </div>
-                <div class="gallery-item">
-                    <img src="/images/海报4.png" alt="AI 创作海报 4" loading="lazy">
-                </div>
-                <div class="gallery-item">
-                    <img src="/images/海报5.png" alt="AI 创作海报 5" loading="lazy">
-                </div>
-                <div class="gallery-item">
-                    <img src="/images/海报6.png" alt="AI 创作海报 6" loading="lazy">
-                </div>
-            </div>
-
-            <!-- 3个视频 -->
-            <h3 class="video-section-label reveal">🎬 AI 视频作品</h3>
-            <p class="video-subtitle reveal">点击即可播放，无需跳转</p>
-            <div class="video-grid">
-                <div class="video-card reveal">
-                    <div class="video-wrapper" onclick="toggleVideo(this)">
-                        <video src="/works/视频制作1.mp4" preload="metadata" playsinline></video>
-                        <div class="video-play-overlay">
-                            <div class="play-btn">
-                                <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"></polygon></svg>
-                            </div>
-                        </div>
-                        <button class="video-fullscreen-btn" onclick="event.stopPropagation(); goFullscreen(this.closest('.video-wrapper'))">
-                            <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-                        </button>
-                    </div>
-                    <div class="video-card-body">
-                        <div class="video-card-title">视频作品 1</div>
-                        <div class="video-card-desc">AI 辅助视频创作</div>
-                    </div>
-                </div>
-                <div class="video-card reveal">
-                    <div class="video-wrapper" onclick="toggleVideo(this)">
-                        <video src="/works/视频制作2.mp4" preload="metadata" playsinline></video>
-                        <div class="video-play-overlay">
-                            <div class="play-btn">
-                                <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"></polygon></svg>
-                            </div>
-                        </div>
-                        <button class="video-fullscreen-btn" onclick="event.stopPropagation(); goFullscreen(this.closest('.video-wrapper'))">
-                            <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-                        </button>
-                    </div>
-                    <div class="video-card-body">
-                        <div class="video-card-title">视频作品 2</div>
-                        <div class="video-card-desc">AI 辅助视频创作</div>
-                    </div>
-                </div>
-                <div class="video-card reveal">
-                    <div class="video-wrapper" onclick="toggleVideo(this)">
-                        <video src="/works/视频制作3.mp4" preload="metadata" playsinline></video>
-                        <div class="video-play-overlay">
-                            <div class="play-btn">
-                                <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"></polygon></svg>
-                            </div>
-                        </div>
-                        <button class="video-fullscreen-btn" onclick="event.stopPropagation(); goFullscreen(this.closest('.video-wrapper'))">
-                            <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-                        </button>
-                    </div>
-                    <div class="video-card-body">
-                        <div class="video-card-title">视频作品 3</div>
-                        <div class="video-card-desc">AI 辅助视频创作</div>
-                    </div>
-                </div>
-            </div>
+    <!-- ==================== HERO ==================== -->
+    <section class="hero" id="hero">
+        <div class="hero-inner reveal">
+            <h1 class="hero-title">蒋洁慧 · AI 作品集</h1>
+            <p class="hero-desc">
+                用 AI 放大洞察力，让创作更快、更准、更有价值。<br>
+                我热爱 AI 带来的效率革命，也看好它释放人类创造力的长期潜力。
+            </p>
+            <button class="hero-btn" onclick="openQRModal()">
+                📱 关注公众号
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
         </div>
     </section>
 
@@ -385,6 +306,81 @@
                     <div class="skill-item"><span class="skill-icon">🤖</span><span class="skill-name">扣子 Coze</span></div>
                     <div class="skill-divider"></div>
                     <div class="skill-item"><span class="skill-icon">📊</span><span class="skill-name">飞书多维表格</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 作品展示 ==================== -->
+    <section class="section" id="works">
+        <div class="section-inner">
+            <div class="section-header reveal">
+                <span class="section-label">Works</span>
+                <h2 class="section-title">作品展示</h2>
+                <p class="section-desc">AI 多风格商业图片创作，适用于电商直播、社群预热、朋友圈海报等场景。</p>
+            </div>
+
+            <!-- 6张图片 -->
+            <div class="gallery-grid reveal">
+                <div class="gallery-item"><img src="/images/海报1.png" alt="AI 创作海报 1" loading="lazy"></div>
+                <div class="gallery-item"><img src="/images/海报2.png" alt="AI 创作海报 2" loading="lazy"></div>
+                <div class="gallery-item"><img src="/images/海报3.png" alt="AI 创作海报 3" loading="lazy"></div>
+                <div class="gallery-item"><img src="/images/海报4.png" alt="AI 创作海报 4" loading="lazy"></div>
+                <div class="gallery-item"><img src="/images/海报5.png" alt="AI 创作海报 5" loading="lazy"></div>
+                <div class="gallery-item"><img src="/images/海报6.png" alt="AI 创作海报 6" loading="lazy"></div>
+            </div>
+
+            <!-- 3个视频 -->
+            <h3 class="video-section-label reveal">🎬 AI 视频作品</h3>
+            <p class="video-subtitle reveal">点击即可播放，支持全屏观看</p>
+            <div class="video-grid">
+                <!-- 视频1：竖屏 9:16 -->
+                <div class="video-card reveal">
+                    <div class="video-wrapper video-vertical" onclick="toggleVideo(this)">
+                        <video src="/works/视频制作1.mp4" preload="metadata" playsinline></video>
+                        <div class="video-play-overlay">
+                            <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"></polygon></svg></div>
+                        </div>
+                        <button class="video-fullscreen-btn" onclick="event.stopPropagation(); goFullscreen(this.closest('.video-wrapper'))">
+                            <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                        </button>
+                    </div>
+                    <div class="video-card-body">
+                        <div class="video-card-title">卡通IP动画 · 趣味知识分享</div>
+                        <div class="video-card-subtitle">剪映动效 + AI生成角色，适用于轻松种草场景</div>
+                    </div>
+                </div>
+                <!-- 视频2：横屏 16:9 -->
+                <div class="video-card reveal">
+                    <div class="video-wrapper video-horizontal" onclick="toggleVideo(this)">
+                        <video src="/works/视频制作2.mp4" preload="metadata" playsinline></video>
+                        <div class="video-play-overlay">
+                            <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"></polygon></svg></div>
+                        </div>
+                        <button class="video-fullscreen-btn" onclick="event.stopPropagation(); goFullscreen(this.closest('.video-wrapper'))">
+                            <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                        </button>
+                    </div>
+                    <div class="video-card-body">
+                        <div class="video-card-title">数字人科普微课 · 知识可视化</div>
+                        <div class="video-card-subtitle">模拟数字人讲解，适用于教育、职场、健康等领域</div>
+                    </div>
+                </div>
+                <!-- 视频3：竖屏 9:16 -->
+                <div class="video-card reveal">
+                    <div class="video-wrapper video-vertical" onclick="toggleVideo(this)">
+                        <video src="/works/视频制作3.mp4" preload="metadata" playsinline></video>
+                        <div class="video-play-overlay">
+                            <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"></polygon></svg></div>
+                        </div>
+                        <button class="video-fullscreen-btn" onclick="event.stopPropagation(); goFullscreen(this.closest('.video-wrapper'))">
+                            <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                        </button>
+                    </div>
+                    <div class="video-card-body">
+                        <div class="video-card-title">艾草养生锤 · 产品宣传片</div>
+                        <div class="video-card-subtitle">AI辅助实拍级质感，适用于电商等场景</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -435,14 +431,23 @@
                 </div>
                 <div class="about-info">
                     <div class="about-name">春日泡泡</div>
-                    <div class="qr-display">
-                        <img src="/wechat-qrcode.jpg" alt="公众号二维码">
+                    <div style="background: white; border-radius: 12px; padding: 6px; width: 120px; height: 120px;">
+                        <img src="/wechat-qrcode.jpg" alt="公众号二维码" style="width:100%; height:100%; border-radius:8px;">
                     </div>
-                    <div class="qr-label">欢迎扫码观看我的AI学习公众号</div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">欢迎扫码观看我的AI学习公众号</div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- QR Modal -->
+    <div class="qr-modal" id="qrModal" onclick="closeQRModal(event)">
+        <div class="qr-modal-box">
+            <button class="qr-modal-close" onclick="closeQRModal(event)">✕</button>
+            <img class="qr-modal-img" src="/wechat-qrcode.jpg" alt="公众号二维码">
+            <div class="qr-modal-label">欢迎扫码关注我的AI学习公众号</div>
+        </div>
+    </div>
 
     <!-- Image Lightbox -->
     <div class="lightbox" id="lightbox" onclick="closeLightbox()">
@@ -478,14 +483,25 @@
         }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
         document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
+        // QR Modal
+        function openQRModal() {
+            document.getElementById('qrModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeQRModal(e) {
+            if (e.target === document.getElementById('qrModal') || e.target.classList.contains('qr-modal-close') || e.target.textContent === '✕') {
+                document.getElementById('qrModal').classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
         // Image lightbox
         document.querySelectorAll('.gallery-item').forEach(item => {
             item.addEventListener('click', () => {
                 const img = item.querySelector('img');
                 const lightbox = document.getElementById('lightbox');
-                const lightboxImg = document.getElementById('lightbox-img');
-                lightboxImg.src = img.src;
-                lightboxImg.alt = img.alt;
+                document.getElementById('lightbox-img').src = img.src;
+                document.getElementById('lightbox-img').alt = img.alt;
                 lightbox.classList.add('active');
                 document.body.style.overflow = 'hidden';
             });
@@ -494,7 +510,7 @@
             document.getElementById('lightbox').classList.remove('active');
             document.body.style.overflow = '';
         }
-        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeLightbox(); closeQRModal({target:document.getElementById('qrModal')}); } });
 
         // Video fullscreen
         function goFullscreen(wrapper) {
@@ -513,7 +529,6 @@
                 video.pause();
                 card.classList.remove('playing');
             } else {
-                // Pause all other videos first
                 document.querySelectorAll('.video-card.playing').forEach(c => {
                     c.querySelector('video').pause();
                     c.classList.remove('playing');
